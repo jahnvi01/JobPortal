@@ -4,14 +4,19 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "client-install": "npm install --prefix client",
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "test": "mocha",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \" npm run server\" \" npm run client\" ",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false cd client && npm install && npm run build"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
-    "concurrently": "^5.1.0",
+    "concurrently": "^5.2.0",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "express": "^4.17.1",
@@ -19,6 +24,8 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
     "mongoose": "^5.9.9",
-    "nodemon": "^2.0.3"
+    "nodemon": "^2.0.3",
+    "request": "^2.88.2",
+    "sib-api-v3-sdk": "^7.2.2"
   }
 }

@@ -7,7 +7,8 @@ app.use(bodyParser())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api',authroutes)
-mongoose.connect(process.env.mongoURI,{useNewUrlParser:true,useCreateIndex:true})
+mongoURI=require('./config/keys').mongoURI;
+mongoose.connect(mongoURI,{useNewUrlParser:true,useCreateIndex:true})
 .then(()=>console.log("db connected"))
 .catch(err=>console.log(err))
 const port=process.env.PORT||5000;

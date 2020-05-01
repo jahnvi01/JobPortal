@@ -1,19 +1,19 @@
-const {users}=require("../../database/users")
+const {interviewers}=require("../../database/interviewers")
 const jwt=require('jsonwebtoken')
 const expressJwt=require('express-jwt')
 const _ = require('lodash');
-JWT_ACCOUNT_ACTIVATION=require('../../config/keys').JWT_ACCOUNT_ACTIVATION;
+JWT_ACCOUNT_ACTIVATION=require('../../config/keys').JWT_INTERVIEWER_ACTIVATION;
 
-exports.preSignup = (req, res) => {
-    const { fullname, email,contact, password } = req.body;
-    users.findOne({ email: email.toLowerCase() }, (err, user) => {
+exports.intpreSignup = (req, res) => {
+    const { fullname, email,contact, password,company } = req.body;
+    interviewers.findOne({ email: email.toLowerCase() }, (err, user) => {
         if (user) {
             return res.status(400).json({
                 error: 'Email is taken'
             });
         }
-        
-        const token = jwt.sign({ fullname, email, contact,password }, JWT_ACCOUNT_ACTIVATION, { expiresIn: '1000m' });
+
+        const token = jwt.sign({ fullname, email, contact,password ,company}, JWT_ACCOUNT_ACTIVATION, { expiresIn: '1000m' });
 
         var request = require("request");
 
@@ -64,7 +64,7 @@ exports.preSignup = (req, res) => {
    
     
 //     const {fullname,email,contact,password}=req.body;
-//     users.findOne({email}).exec((err,user)=>{
+//     interviewers.findOne({email}).exec((err,user)=>{
 // if(user){
 //     return res.status(400).json({
 //         error:"user already exists"
@@ -72,7 +72,7 @@ exports.preSignup = (req, res) => {
 // }
 // else{
 
-// let newuser=new users({email,fullname,contact,password})
+// let newuser=new interviewers({email,fullname,contact,password})
 // newuser.save()
 // .then(user=>{
 //     res.json({user});
@@ -84,7 +84,7 @@ exports.preSignup = (req, res) => {
     
 //     };
 
-exports.signup = (req, res) => {
+exports.intsignup = (req, res) => {
     const token = req.body.token;
     if (token) {
         jwt.verify(token, JWT_ACCOUNT_ACTIVATION, function(err, decoded) {
@@ -95,11 +95,11 @@ exports.signup = (req, res) => {
                
             }
 
-            const { fullname, email, contact, password } = jwt.decode(token);
+            const { fullname, email, contact, password ,company} = jwt.decode(token);
+console.log("company"+company);
+           
 
-        
-
-            const user = new users({  email,fullname,contact, password });
+            const user = new interviewers({  email,fullname,contact, password ,company});
             user.save((err, user) => {
                 if (err) {
                     return res.status(401).json({
@@ -118,10 +118,10 @@ exports.signup = (req, res) => {
     }
 };
 
-exports.signin=(req,res)=>{
+exports.intsignin=(req,res)=>{
        
     const {email,password}=req.body;
-    users.findOne({email}).exec((err,user)=>{
+    interviewers.findOne({email}).exec((err,user)=>{
 if(err||!user){
     return res.status(400).json({
         error:"No user exists with this email"
@@ -133,7 +133,7 @@ if(!user.authenticate(password)){
         error:"Enter valid password"
     })
 }
-const token=jwt.sign({_id:user._id},'secretkey',{expiresIn:'1d'})
+const token=jwt.sign({_id:user._id},JWT_ACCOUNT_ACTIVATION,{expiresIn:'1d'})
 res.cookie('token',token,{expiresIn:'1d'})
 console.log(user);
 return res.json({
@@ -144,13 +144,9 @@ return res.json({
 // res.json({msg:"hi"}) 
     }
 
-exports.signout=(req,res)=>{
+exports.intsignout=(req,res)=>{
    res.clearCookie('token');
  return res.json({message:"Signout success"})
 };
 
-exports.requireSignin= expressJwt({
-       
-    secret: 'secretkey'
-});
 
