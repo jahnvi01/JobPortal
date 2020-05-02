@@ -8,75 +8,28 @@ body{
 .navbar{
   background-color:blueviolet;
 }
-.subject
-{
-  padding-top: 2%;
- width: 50%;
-  display: flex;
-  list-style: none;
-  color: white;
+.home{
+  background-image: url('./images/home.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  width: 100%;
+  margin: 0% !important;
+  height: 500px;
 }
-.subject-name{
-  margin-right: auto;
+.navbar{
+  margin-bottom:1% ;
+  margin-top: 1%;
+}
+.home-btn{
+  padding: 2%;
+  margin: 2%;
+  width: 150px;
 }
 
-.logo,.nav-item,.test,#add-question-title{
-  color: white;
-  font-family: Verdana, Geneva, sans-serif;
-  font-style: italic;
-  font-weight: bold;
-  font-size: 26px
-}
-#add-question-title{
-  color: black;
-}
-.add-question{
-  padding: 2%;
-  border:1px solid black;
-}
-.add-options{
-  display: flex;
-  justify-content: space-between;
-  margin-top: 1%;
-  margin-bottom: 1%;
-}
-#answer{
-  margin-bottom: 1%;
-}
-.subject-list{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-top: 0%;
-}
-.testlist{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-top: 5%;
-}
-.test{
-  font-size: 16px;
-  }
-  
-.nav-item{
-  font-size: 20px;
-}
-.logo:hover,.nav-item:hover,.test:hover{
-  color:white;
-  cursor: pointer;
-}
-.nav-list{
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  list-style: none;
-}
-.link:hover{
-  text-decoration: none;
-}
+
+
+
 .form{
   display: flex;
     flex-direction: column;
@@ -85,7 +38,7 @@ body{
 
 .block{
   height: auto;
-  background: grey;
+
   margin:3%;
   padding:3%;
   display: flex;
@@ -93,14 +46,8 @@ body{
   justify-content: center;
   align-items: center;
 }
-.testset{
-  background: white;
-}
-#log-title{
-  font-size: 30px;
-  text-align: center;
-  padding: 3%;
-}
+
+
 Link{
   text-decoration-line: none !important;
 }
@@ -114,12 +61,12 @@ Link{
  
   align-self: center;
 }
-#user-input,#password-input,#email-input,#subject-input{
+#user-input,#password-input,#email-input,#subject-input,#contact-input{
   width: 400px;
   height:40px;
 
 }
-#uname,#password-part,#email-part{
+#uname,#password-part,#email-part,#contact-part{
   
   display: flex;
   justify-content: center;
@@ -135,31 +82,9 @@ Link{
   justify-content: center;
 }
 .btn{
-  color: white !important ;
-  background: blueviolet  !important;
+
   font-family: Verdana, Geneva, sans-serif  !important;
   font-weight: bold  !important;
-}
-.options{
-  display: flex;
-  list-style: none;
-}
-.option-set{
-  display: flex;
-  flex-direction: column;
-}
-.option-check{
-  margin: 5px;
-}
-.charts{
-  padding-top: 5%;
-  padding-bottom: 5%;
-}
-.chart-title,.admin-title{
-  text-align: center;
-  font-weight: bold;
-  font-style: italic;
-  font-size: 32px;
 }
 
 @import url(https://fonts.googleapis.com/css?family=Lato:900);
@@ -167,11 +92,6 @@ Link{
   box-sizing:border-box;
 }
 
-div.foo{
-  width: 90%;
-  margin: 0 auto;
-  text-align: center;
-}
 .letter{
   display: inline-block;
   font-weight: 800;
@@ -183,5 +103,3 @@ div.foo{
   transform-style: preserve-3d;
 
 }
-
-
