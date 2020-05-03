@@ -1,8 +1,7 @@
-html,body,.App{
-  background: white;
-}
+
 body{
   font-family: 'Lato', sans-serif;
+  
 
 }
 .navbar{
@@ -16,6 +15,15 @@ body{
   width: 100%;
   margin: 0% !important;
   height: 500px;
+}
+.background{
+  background-image: url('./images/home.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  width: 100%;
+  margin: 0% !important;
+  height: 200px;
 }
 .navbar{
   margin-bottom:1% ;
@@ -38,8 +46,6 @@ body{
 
 .block{
   height: auto;
-
-  margin:3%;
   padding:3%;
   display: flex;
   flex-direction: column;
@@ -61,12 +67,12 @@ Link{
  
   align-self: center;
 }
-#user-input,#password-input,#email-input,#subject-input,#contact-input{
+#user-input,#password-input,#email-input,#subject-input,#contact-input,.input-form{
   width: 400px;
   height:40px;
 
 }
-#uname,#password-part,#email-part,#contact-part{
+#uname,#password-part,#email-part,#contact-part,.input-part{
   
   display: flex;
   justify-content: center;
@@ -102,4 +108,37 @@ Link{
   color: #00B4F1;
   transform-style: preserve-3d;
 
+}
+.font-title{
+  font-size: 20px;
+  font:sans-serif;
+  font-weight: bold;
+  color: darkgray;
+}
+.form-check-label{
+   font:sans-serif;
+  font-weight: bold;
+  color: darkgray; 
+}
+/* .profile-card{
+  padding:1%;
+  background-color: white;
+  margin:3%;
+} */
+.location-style{
+  list-style: none;
+  padding: 1%;
+  font-weight: bold;
+
+}
+.name,.course,.start,.end,.company-name,.start-emp,.end-emp,.jobrole{
+  padding: 1%;
+}
+.name,.company-name{
+  width: 200px;
+}
+.education-list,.employment-list{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

@@ -1,9 +1,9 @@
-const {users}=require("../../database/users")
+const {users,educations,employments}=require("../../database/users")
 const jwt=require('jsonwebtoken')
 const expressJwt=require('express-jwt')
 const _ = require('lodash');
 JWT_ACCOUNT_ACTIVATION=require('../../config/keys').JWT_ACCOUNT_ACTIVATION;
-
+APIKEY=require('../../config/keys').EMAIL_API;
 exports.preSignup = (req, res) => {
     const { fullname, email,contact, password } = req.body;
     users.findOne({ email: email.toLowerCase() }, (err, user) => {
@@ -23,7 +23,7 @@ exports.preSignup = (req, res) => {
           headers: {
             accept: 'application/json',
             'content-type': 'application/json',
-            'api-key': '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'
+            'api-key': APIKEY
           },
           body: `{"sender":{"name":"job-portal","email":"jbdalwadi01@gmail.com"},"to":[{"email":"${email}","name":"${fullname}"}],"replyTo":{"email":"${email}","name":"${fullname}"},"htmlContent":"http://localhost:3000/user-signup/${token}","subject":"verification-email"}`
         };
@@ -97,9 +97,9 @@ exports.signup = (req, res) => {
 
             const { fullname, email, contact, password } = jwt.decode(token);
 
-        
+            const verify=1;
 
-            const user = new users({  email,fullname,contact, password });
+            const user = new users({  email,fullname,contact, password,verify });
             user.save((err, user) => {
                 if (err) {
                     return res.status(401).json({
@@ -107,13 +107,15 @@ exports.signup = (req, res) => {
                     });
                 }
                 return res.json({
-                    message: 'Singup success! Please signin'
+                    message: 'Singup successful!',
+                    user,
+                    token
                 });
             });
         });
     } else {
         return res.json({
-            message: 'Something went wrong. Try again'
+            error: 'Something went wrong. Try again'
         });
     }
 };
@@ -133,12 +135,13 @@ if(!user.authenticate(password)){
         error:"Enter valid password"
     })
 }
-const token=jwt.sign({_id:user._id},'secretkey',{expiresIn:'1d'})
+const token=jwt.sign({_id:user._id},JWT_ACCOUNT_ACTIVATION,{expiresIn:'1d'})
 res.cookie('token',token,{expiresIn:'1d'})
 console.log(user);
 return res.json({
-    token,
-    user
+    message:"signin successful",
+    user,
+    token
 })
 })
 // res.json({msg:"hi"}) 
@@ -151,6 +154,83 @@ exports.signout=(req,res)=>{
 
 exports.requireSignin= expressJwt({
        
-    secret: 'secretkey'
+    secret: JWT_ACCOUNT_ACTIVATION
 });
+
+
+exports.profile= (req, res) => {
+
+    const email=req.body.email;
+    const salary = req.body.salary;
+    const jobrole = req.body.jobrole;
+    const location = req.body.location;
+    const education = req.body.education;
+    const pastEmployment = req.body.pastEmployment;
+    const  yearsOfExperience= req.body.yearsOfExperience;
+    const achievements = req.body.achievement;
+    const skills=req.body.skills
+    console.log(education)
+    console.log(pastEmployment)
+    users.findOne({email}).exec((err,user)=>{
+        user = _.merge(user, {salary,jobrole,location,education,pastEmployment,yearsOfExperience,achievements});
+        if (jobrole) {
+            //categories=categories.toString();
+            let array = jobrole && jobrole.toString().split(',');
+            user.jobrole = array
+        }
+        if (location) {
+            //categories=categories.toString();
+            let array = location && location.toString().split(',');
+            user.location = array
+        }
+        if (skills) {
+            //categories=categories.toString();
+            let array = skills && skills.toString().split(',');
+            user.skills = array
+        }
+    
+        // if (education) {
+        //     //categories=categories.toString();
+        //     let array = education && education.toString().split(',');
+        //     user.education = array
+        // }
+        // if (pastEmployment) {
+        //     //categories=categories.toString();
+        //     let array = pastEmployment && pastEmployment.toString().split(',');
+        //     user.pastEmployment = array
+        // }
+        user.save((err, result) => {
+            if (err) {
+                return res.status(400).json({
+                    error: err
+                });
+
+              
+        }
+        return res.json({
+            message:"profile update successful",  
+            result});
+    });
+})
+  
+
+};
+
+
+exports.view = (req, res) => {
+    const email = req.body.email;
+    users.findOne({ email })
+    .populate('educations', 'name startYear endYear course')
+    .populate('employments', 'companyName startYear endYear companyRole')
+        //.select('fullname contact jobrole location salary education pastEmployment yearsOfExperience skills achievements')
+        .exec((err, data) => {
+            if (err) {
+                return res.json({
+                    error: err
+                });
+            }
+            return res.json(data);
+        });
+};
+
 

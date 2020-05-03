@@ -4,10 +4,9 @@ const crypto=require('crypto')
 mongoose.set('debug',true);
 mongoose.Promise=global.Promise;
 const { ObjectId } = mongoose.Schema;
-
 const Schema=mongoose.Schema;
 const companyschema=new Schema({
-   c_email:{
+  email:{
       type:String,
       required:true,
       unique:true,
@@ -35,9 +34,9 @@ salt:String,
      type : Number ,
      required:true
    },
-   c_location:{
-      type : Array ,
-      default : []
+   headquarter:{
+      type : String,
+      required:true
      },
      noOfEmployees:{
    type:Number,

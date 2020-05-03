@@ -3,17 +3,17 @@ const jwt=require('jsonwebtoken')
 const expressJwt=require('express-jwt')
 const _ = require('lodash');
 JWT_ACCOUNT_ACTIVATION=require('../../config/keys').JWT_COMPANY_ACTIVATION;
-
+APIKEY=require('../../config/keys').EMAIL_API;
 exports.cpreSignup = (req, res) => {
-    const { c_email,company,website, password,foundedyear,c_location,noOfEmployees,stage } = req.body;
-    companies.findOne({ c_email: c_email.toLowerCase() }, (err, user) => {
+    const { email,company,website, password,foundedyear,headquarter,noOfEmployees,stage } = req.body;
+    companies.findOne({ email: email.toLowerCase() }, (err, user) => {
         if (user) {
             return res.status(400).json({
                 error: 'Email is taken'
             });
         }
         
-        const token = jwt.sign({ c_email,company,website, password,foundedyear,c_location,noOfEmployees,stage }, JWT_ACCOUNT_ACTIVATION, { expiresIn: '1000m' });
+        const token = jwt.sign({ email,company,website, password,foundedyear,headquarter,noOfEmployees,stage }, JWT_ACCOUNT_ACTIVATION, { expiresIn: '1000m' });
 
         var request = require("request");
 
@@ -23,16 +23,16 @@ exports.cpreSignup = (req, res) => {
           headers: {
             accept: 'application/json',
             'content-type': 'application/json',
-            'api-key': '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'
+            'api-key': APIKEY
           },
-          body: `{"sender":{"name":"job-portal","email":"jbdalwadi01@gmail.com"},"to":[{"email":"${c_email}","name":"${company}"}],"replyTo":{"email":"${c_email}","name":"${company}"},"htmlContent":"${token}","subject":"verification-email"}`
+          body: `{"sender":{"name":"job-portal","email":"jbdalwadi01@gmail.com"},"to":[{"email":"${email}","name":"${company}"}],"replyTo":{"email":"${email}","name":"${company}"},"htmlContent":"http://localhost:3000/company-signup/${token}","subject":"verification-email"}`
         };
        
         
         request(options, function (error, response, body) {
           if (error) throw new Error(console.log(error));
                    return res.json({
-                message: `Email has been sent to ${c_email}. Follow the instructions to activate your account.`
+                message: `Email has been sent to ${email}. Follow the instructions to activate your account.`
             });
         });
 
@@ -51,7 +51,7 @@ exports.cpreSignup = (req, res) => {
 
     //     sgMail.send(emailData).then(sent => {
     //         return res.json({
-    //             message: `Email has been sent to ${c_email}. Follow the instructions to activate your account.`
+    //             message: `Email has been sent to ${email}. Follow the instructions to activate your account.`
     //         });
     //     });
     });
@@ -64,7 +64,7 @@ exports.cpreSignup = (req, res) => {
    
     
 //     const {fullname,email,contact,password}=req.body;
-//     cerviewers.findOne({c_email}).exec((err,user)=>{
+//     cerviewers.findOne({email}).exec((err,user)=>{
 // if(user){
 //     return res.status(400).json({
 //         error:"user already exists"
@@ -95,11 +95,11 @@ exports.csignup = (req, res) => {
                
             }
 
-            const { c_email,company,website, password,foundedyear,c_location,noOfEmployees,stage } = jwt.decode(token);
-
+            const { email,company,website, password,foundedyear,headquarter,noOfEmployees,stage } = jwt.decode(token);
+const verify=1;
         
 
-            const cmp = new companies({ c_email,company,website, password,foundedyear,c_location,noOfEmployees,stage});
+            const cmp = new companies({ email,company,website, password,foundedyear,headquarter,noOfEmployees,stage,verify});
             cmp.save((err, user) => {
                 if (err) {
                     return res.status(401).json({
@@ -107,7 +107,8 @@ exports.csignup = (req, res) => {
                     });
                 }
                 return res.json({
-                    message: 'Singup success! Please signin'
+                    message: 'Singup success! Please signin',
+                    user,token
                 });
             });
         });
@@ -120,8 +121,8 @@ exports.csignup = (req, res) => {
 
 exports.csignin=(req,res)=>{
        
-    const {c_email,password}=req.body;
-    companies.findOne({c_email}).exec((err,user)=>{
+    const {email,password}=req.body;
+    companies.findOne({email}).exec((err,user)=>{
 if(err||!user){
     return res.status(400).json({
         error:"No company exists with this email"
@@ -137,6 +138,7 @@ const token=jwt.sign({_id:user._id},JWT_ACCOUNT_ACTIVATION,{expiresIn:'1d'})
 res.cookie('token',token,{expiresIn:'1d'})
 console.log(user);
 return res.json({
+    message:"signin successful",
     token,
     user
 })
@@ -144,10 +146,6 @@ return res.json({
 // res.json({msg:"hi"}) 
     }
 
-exports.csignout=(req,res)=>{
-   res.clearCookie('token');
- return res.json({message:"Signout success"})
-};
 
 
 

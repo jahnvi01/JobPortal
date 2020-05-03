@@ -3,7 +3,7 @@ const jwt=require('jsonwebtoken')
 const expressJwt=require('express-jwt')
 const _ = require('lodash');
 JWT_ACCOUNT_ACTIVATION=require('../../config/keys').JWT_INTERVIEWER_ACTIVATION;
-
+APIKEY=require('../../config/keys').EMAIL_API;
 exports.intpreSignup = (req, res) => {
     const { fullname, email,contact, password,company } = req.body;
     interviewers.findOne({ email: email.toLowerCase() }, (err, user) => {
@@ -23,9 +23,9 @@ exports.intpreSignup = (req, res) => {
           headers: {
             accept: 'application/json',
             'content-type': 'application/json',
-            'api-key': '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'
+            'api-key': APIKEY
           },
-          body: `{"sender":{"name":"job-portal","email":"jbdalwadi01@gmail.com"},"to":[{"email":"${email}","name":"${fullname}"}],"replyTo":{"email":"${email}","name":"${fullname}"},"htmlContent":"${token}","subject":"verification-email"}`
+          body: `{"sender":{"name":"job-portal","email":"jbdalwadi01@gmail.com"},"to":[{"email":"${email}","name":"${fullname}"}],"replyTo":{"email":"${email}","name":"${fullname}"},"htmlContent":"http://localhost:3000/company-signup/${token}","subject":"verification-email"}`
         };
        
         
@@ -96,10 +96,10 @@ exports.intsignup = (req, res) => {
             }
 
             const { fullname, email, contact, password ,company} = jwt.decode(token);
-console.log("company"+company);
+const verify=1;
            
 
-            const user = new interviewers({  email,fullname,contact, password ,company});
+            const user = new interviewers({  email,fullname,contact, password ,company,verify});
             user.save((err, user) => {
                 if (err) {
                     return res.status(401).json({
@@ -107,7 +107,9 @@ console.log("company"+company);
                     });
                 }
                 return res.json({
-                    message: 'Singup success! Please signin'
+                    message: 'Singup success! Please signin',
+                    user,
+                    token
                 });
             });
         });
@@ -137,16 +139,12 @@ const token=jwt.sign({_id:user._id},JWT_ACCOUNT_ACTIVATION,{expiresIn:'1d'})
 res.cookie('token',token,{expiresIn:'1d'})
 console.log(user);
 return res.json({
+    message: 'Singin successful',
     token,
     user
 })
 })
 // res.json({msg:"hi"}) 
     }
-
-exports.intsignout=(req,res)=>{
-   res.clearCookie('token');
- return res.json({message:"Signout success"})
-};
 
 

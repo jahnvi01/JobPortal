@@ -1,12 +1,13 @@
 const express=require("express")
 const router=express.Router()
-const {signup,signin,preSignup,requireSignin} =require("../actions/user-function")
+const {signup,signin,preSignup,signout,requireSignin} =require("../actions/user-function")
 const {intsignup,intsignin,intpreSignup} =require("../actions/interviewer-function")
 const {csignup,csignin,cpreSignup} =require("../actions/company-function")
 // user signup
 router.post("/usersignup",signup);
 router.post("/userpreSignup",preSignup);
 router.post('/usersignin',signin);
+router.get('/usersignout',signout);
 
 //interviewer signup
 router.post("/intsignup",intsignup);

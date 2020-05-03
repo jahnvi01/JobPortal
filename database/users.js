@@ -5,6 +5,41 @@ mongoose.Promise=global.Promise;
 const { ObjectId } = mongoose.Schema;
 
 const Schema=mongoose.Schema;
+const educationschema=new Schema({
+name:{
+   type:String
+},
+startYear:{
+   type:Number
+},
+endYear:{
+   type:Number
+
+},
+course:{
+   type:String
+  
+},
+})
+
+const employmentschema=new Schema({
+   companyName:{
+      type:String
+   },
+   startYear:{
+      type:Number
+   },
+   endYear:{
+      type:Number
+   
+   },
+   companyRole:{
+      type:String
+     
+   },
+   })
+   
+
 const userschema=new Schema({
    email:{
       type:String,
@@ -41,18 +76,8 @@ salary:{
    type:Number,
     
 },
-education:[{
-name:String,
-startYear:Number,
-endYear:Number,
-course:String
-}],
-pastEmployment:[{
-   companyName:String,
-   startYear:Number,
-   endYear:Number,
-   companyRole:String
-   }],
+education:[{educationschema}],
+pastEmployment:[{employmentschema}],
   
      yearsOfExperience:{
    type:Number
@@ -110,7 +135,9 @@ return err;
 }
 
 
-
 const users=mongoose.model('users',userschema);
+const educations=mongoose.model('educations',educationschema);
+const employments=mongoose.model('employments',employmentschema);
 
- module.exports={users};
+
+ module.exports={users,educations,employments};
