@@ -167,26 +167,34 @@ exports.profile= (req, res) => {
     const education = req.body.education;
     const pastEmployment = req.body.pastEmployment;
     const  yearsOfExperience= req.body.yearsOfExperience;
-    const achievements = req.body.achievement;
+    const achievements = req.body.achievements;
     const skills=req.body.skills
     console.log(education)
     console.log(pastEmployment)
     users.findOne({email}).exec((err,user)=>{
-        user = _.merge(user, {salary,jobrole,location,education,pastEmployment,yearsOfExperience,achievements});
+    //    user = _.merge(user, {salary,jobrole,location,education,pastEmployment,yearsOfExperience,achievements});
+      user.set(salary,salary);
+      user.set(jobrole,jobrole);
+      user.set(location,location);
+      user.set(education,education);
+      user.set(pastEmployment,pastEmployment);
+      user.set(yearsOfExperience,yearsOfExperience);
+      user.set(skills,skills);
+      user.set(achievements,achievements);
         if (jobrole) {
             //categories=categories.toString();
-            let array = jobrole && jobrole.toString().split(',');
-            user.jobrole = array
+            let array1 = jobrole && jobrole.toString().split(',');
+            user.jobrole = array1
         }
         if (location) {
             //categories=categories.toString();
-            let array = location && location.toString().split(',');
-            user.location = array
+            let array2 = location && location.toString().split(',');
+            user.location = array2
         }
         if (skills) {
             //categories=categories.toString();
-            let array = skills && skills.toString().split(',');
-            user.skills = array
+            let array3= skills && skills.toString().split(',');
+            user.skills = array3
         }
     
         // if (education) {
@@ -199,6 +207,7 @@ exports.profile= (req, res) => {
         //     let array = pastEmployment && pastEmployment.toString().split(',');
         //     user.pastEmployment = array
         // }
+        console.log(user)
         user.save((err, result) => {
             if (err) {
                 return res.status(400).json({

@@ -52,7 +52,7 @@ li.innerHTML = name;
 li.classList.add("location-style");                // Insert text
 document.getElementById("locations").appendChild(li); 
 document.getElementById("location-name").value="";
-console.log(this.state.location)
+
 }
 addSkill=()=>{
     var name=document.getElementById("skill-name").value;
@@ -61,7 +61,7 @@ addSkill=()=>{
     li.innerHTML = name;   
     li.classList.add("location-style");                // Insert text
     document.getElementById("skills").appendChild(li); 
-    console.log(this.state.location)
+ 
     document.getElementById("skill-name").value="";
     }
 
