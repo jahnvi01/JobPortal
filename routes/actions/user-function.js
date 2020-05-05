@@ -1,7 +1,11 @@
 const {users,educations,employments}=require("../../database/users")
+const {jobs} =require('../../database/jobs');
+const {companies} =require('../../database/company');
 const jwt=require('jsonwebtoken')
 const expressJwt=require('express-jwt')
 const _ = require('lodash');
+const mongoose=require("mongoose")
+var ObjectId = mongoose.Types.ObjectId;
 JWT_ACCOUNT_ACTIVATION=require('../../config/keys').JWT_ACCOUNT_ACTIVATION;
 APIKEY=require('../../config/keys').EMAIL_API;
 exports.preSignup = (req, res) => {
@@ -168,19 +172,25 @@ exports.profile= (req, res) => {
     const pastEmployment = req.body.pastEmployment;
     const  yearsOfExperience= req.body.yearsOfExperience;
     const achievements = req.body.achievements;
-    const skills=req.body.skills
-    console.log(education)
-    console.log(pastEmployment)
+    const skills=req.body.skills;
+
+    
+
     users.findOne({email}).exec((err,user)=>{
-    //    user = _.merge(user, {salary,jobrole,location,education,pastEmployment,yearsOfExperience,achievements});
-      user.set(salary,salary);
-      user.set(jobrole,jobrole);
-      user.set(location,location);
-      user.set(education,education);
-      user.set(pastEmployment,pastEmployment);
-      user.set(yearsOfExperience,yearsOfExperience);
-      user.set(skills,skills);
+     user = _.merge(user, {salary,yearsOfExperience,achievements});
+      user.set(salary,parseInt(salary, 10));
+      user.set(jobrole,[]);
+      user.set(location,[]);
+      user.set(education,[]);
+      user.set(pastEmployment,[]);
+      user.set(yearsOfExperience,parseInt(yearsOfExperience, 10));
+      user.set(skills,[]);
       user.set(achievements,achievements);
+      user.education=[];
+      user.pastEmployment=[];
+      user.jobrole=[];
+      user.skills=[];
+      user.location=[];
         if (jobrole) {
             //categories=categories.toString();
             let array1 = jobrole && jobrole.toString().split(',');
@@ -197,16 +207,20 @@ exports.profile= (req, res) => {
             user.skills = array3
         }
     
-        // if (education) {
-        //     //categories=categories.toString();
-        //     let array = education && education.toString().split(',');
-        //     user.education = array
-        // }
-        // if (pastEmployment) {
-        //     //categories=categories.toString();
-        //     let array = pastEmployment && pastEmployment.toString().split(',');
-        //     user.pastEmployment = array
-        // }
+        if (education) {
+            var length=education.length;
+for(var i=0;i<length;i++){
+    user.education.push(education[i]);
+}   
+         
+        }
+        if (pastEmployment) {
+            var length=education.length;
+            for(var i=0;i<length;i++){
+                user.pastEmployment.push(pastEmployment[i]);
+            }  
+          
+        }
         console.log(user)
         user.save((err, result) => {
             if (err) {
@@ -229,8 +243,8 @@ exports.profile= (req, res) => {
 exports.view = (req, res) => {
     const email = req.body.email;
     users.findOne({ email })
-    .populate('educations', 'name startYear endYear course')
-    .populate('employments', 'companyName startYear endYear companyRole')
+    .populate('educations', '_id name startYear endYear course')
+    .populate('employments', '_id companyName startYear endYear companyRole')
         //.select('fullname contact jobrole location salary education pastEmployment yearsOfExperience skills achievements')
         .exec((err, data) => {
             if (err) {
@@ -240,6 +254,96 @@ exports.view = (req, res) => {
             }
             return res.json(data);
         });
+};
+
+
+exports.jobs=(req,res)=>{
+       
+    
+    jobs.find({})
+    .select('_id location company jobrole salary createdAt')
+    .exec((err,job)=>{
+if(err){
+    return res.status(400).json({
+        error:err
+    })
+}
+
+
+return res.json(job)
+})
+// res.json({msg:"hi"}) 
+    }
+
+
+
+    exports.viewJob=(req,res)=>{
+       var _id=req.body._id;
+    console.log(_id+"idddid");
+        jobs.findById(_id)
+         .select('_id skills location company jobrole description salary createdAt')
+        .exec((err,job)=>{
+    if(err){
+        return res.status(400).json({
+            error:err
+        })
+    }
+    
+    
+    companies.findOne({company:job.company}).exec((err,company)=>{
+        if(err){
+            return res.status(400).json({
+                error:err
+            })
+        }
+        
+        
+        return res.json({job,company})
+        })
+    })
+
+        }
+    
+    
+exports.apply= (req, res) => {
+
+        const jobId = req.body.jobId;
+    const userId = req.body.userId;
+  
+    
+
+    jobs.findById({_id:jobId}).exec((err,job)=>{
+var checkId=job.applications.toString();
+       if(checkId.includes(userId)){
+        return res.status(400).json({
+            error: "Already Applied"
+        })  
+       }
+job.applications.push(userId);
+var applications=job.applications;
+        if (applications) {
+            //categories=categories.toString();
+            let array1 = applications && applications.toString().split(',');
+            job.applications = array1
+        }
+        
+     console.log(job);
+    
+        job.save((err, result) => {
+            if (err) {
+                return res.status(400).json({
+                    error: err
+                });
+
+              
+        }
+        return res.json({
+            message:"Application successful",  
+            result});
+    });
+})
+  
+
 };
 
 

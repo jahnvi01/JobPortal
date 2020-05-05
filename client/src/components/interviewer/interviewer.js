@@ -23,9 +23,13 @@ class Interviewer extends Component {
      
       return (
         <div>
-          
-        
-    Interviewer
+
+<div className="row unit-5 background text-center" >
+      
+      <div className="col-md-6 offset-3" style={{alignSelf:"center"}}>
+            <h2 style={{color:"white",fontSize:"40px",fontWeight:"bold"}}>Interviewer Dashboard</h2>
+        </div>
+          </div>
         
         </div>
       );

@@ -76,8 +76,8 @@ salary:{
    type:Number,
     
 },
-education:[{educationschema}],
-pastEmployment:[{employmentschema}],
+education:[educationschema],
+pastEmployment:[employmentschema],
   
      yearsOfExperience:{
    type:Number

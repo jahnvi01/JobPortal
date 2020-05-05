@@ -6,7 +6,18 @@ class Header extends Component {
   
  
   render() {
-
+var home='/';
+if(isAuth()){
+  if(isAuth().role===1){
+    home='/users'
+  }
+  if(isAuth().role===2){
+    home='/company'
+  }
+  if(isAuth().role===3){
+    home='/interviewer'
+  }
+}
     return (
         <div>
         <nav className="navbar navbar-expand-lg navbar-light bg-white">
@@ -18,7 +29,7 @@ class Header extends Component {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav ml-auto">
             <li className="nav-item active">
-              <Link className="nav-link" to="/">Home <span className="sr-only">(current)</span></Link>
+              <Link className="nav-link" to={home}>Home <span className="sr-only">(current)</span></Link>
             </li>
 
 

@@ -1,4 +1,5 @@
 const {interviewers}=require("../../database/interviewers")
+const {companies}=require("../../database/company")
 const jwt=require('jsonwebtoken')
 const expressJwt=require('express-jwt')
 const _ = require('lodash');
@@ -12,7 +13,13 @@ exports.intpreSignup = (req, res) => {
                 error: 'Email is taken'
             });
         }
-
+        companies.findOne({ company }, (err, cmp) => {
+if(err){
+    return res.status(400).json({
+        error: err
+    });
+}
+      if(cmp){
         const token = jwt.sign({ fullname, email, contact,password ,company}, JWT_ACCOUNT_ACTIVATION, { expiresIn: '1000m' });
 
         var request = require("request");
@@ -25,64 +32,29 @@ exports.intpreSignup = (req, res) => {
             'content-type': 'application/json',
             'api-key': APIKEY
           },
-          body: `{"sender":{"name":"job-portal","email":"jbdalwadi01@gmail.com"},"to":[{"email":"${email}","name":"${fullname}"}],"replyTo":{"email":"${email}","name":"${fullname}"},"htmlContent":"http://localhost:3000/company-signup/${token}","subject":"verification-email"}`
+          body: `{"sender":{"name":"job-portal","email":"jbdalwadi01@gmail.com"},"to":[{"email":"${email}","name":"${fullname}"}],"replyTo":{"email":"${email}","name":"${fullname}"},"htmlContent":"http://localhost:3000/interviewer-signup/${token}","subject":"verification-email"}`
         };
        
         
         request(options, function (error, response, body) {
           if (error) throw new Error(console.log(error));
                    return res.json({
-                message: `Email has been sent to ${email}. Follow the instructions to activate your account.`
+                message: `Email has been sent to ${email}.... Follow the instructions to activate your account.`
             });
         });
-
-    //     const emailData = {
-    //         from: process.env.EMAIL_FROM,
-    //         to: email,
-    //         subject: `Account activation link`,
-    //         html: `
-    //         <p>Please use the following link to activate your acccount:</p>
-    //         <p>${process.env.CLIENT_URL}/auth/account/${token}</p>
-    //         <hr />
-    //         <p>This email may contain sensetive information</p>
-    //         <p>https://seoblog.com</p>
-    //     `
-    //     };
-
-    //     sgMail.send(emailData).then(sent => {
-    //         return res.json({
-    //             message: `Email has been sent to ${email}. Follow the instructions to activate your account.`
-    //         });
-    //     });
+    }
+    else{
+      return res.status(400).json({
+          error: 'Company does not exist on this platform'
+      });  
+    }
+})
     });
 };
 
 
 
 
-// exports.signup=(req,res)=>{
-   
-    
-//     const {fullname,email,contact,password}=req.body;
-//     interviewers.findOne({email}).exec((err,user)=>{
-// if(user){
-//     return res.status(400).json({
-//         error:"user already exists"
-//     })
-// }
-// else{
-
-// let newuser=new interviewers({email,fullname,contact,password})
-// newuser.save()
-// .then(user=>{
-//     res.json({user});
-// })
-
-// }
-
-// })
-    
-//     };
 
 exports.intsignup = (req, res) => {
     const token = req.body.token;

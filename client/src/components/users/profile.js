@@ -7,19 +7,77 @@ import {authentication,isAuth,userAuth} from '../../functions/auth';
 class Profile extends Component {
   state = {
     visible: false,
+    fullname:"",
     message:"",
     error:"",
     loading:false,
     jobrole:[],
     location:[],
     skills:[],
+    salary:"",
+    yearsOfExperience:"",
+    achievements:"",
     education:[],
     pastEmployment:[],
     resume:""
   };
   componentWillMount(){
-    userAuth(this.props);   
-   }
+    userAuth(this.props); 
+    const email=isAuth().email;
+fetch('/api/users/view',{
+  method: "post",
+  headers: {
+    'Accept': 'application/json, text/plain, */*',
+    'Content-Type': 'application/json'
+  },body:JSON.stringify({email})
+})
+.then(res=>res.json())
+.then(res=>this.setState({
+  error:res.error||"",
+  fullname:res.fullname||"",
+  salary:res.salary,
+  jobrole: res.jobrole || [],
+  skills: res.skills || [],
+  achievements: res.achievements || "",
+  location: res.location ||[] ,
+  yearsOfExperience: res.yearsOfExperience || "",
+  education: res.education || [],
+  pastEmployment: res.pastEmployment || [],
+}))  
+
+// document.getElementById("experience").value= this.state.yearsOfExperience;
+// document.getElementById("salary").value=this.state.salary ;  
+
+}
+
+setvalues=()=>{
+if(this.state.fullname!==""){
+  console.log(this.state);
+  document.getElementById("experience").value=this.state.yearsOfExperience;
+  document.getElementById("salary").value=this.state.salary;
+  document.getElementById("achievement").value=this.state.achievements;
+const c=document.getElementsByClassName("role-list").length;
+for(var i=0;i<c;i++){
+var li= document.getElementsByClassName("role-list")[i].childNodes;
+if(this.state.jobrole.includes(li[1].innerHTML)){
+  li[0].checked=true;
+}
+}
+this.state.location.filter(loc=>{
+  this.setLocation(loc);
+  
+});
+this.state.skills.filter(skill=>{
+  this.setSkill(skill);
+  });
+}
+  this.state.education.map(data=>{
+    this.addEducation(data.name,data.startYear,data.endYear,data.course)
+  })
+  this.state.pastEmployment.map(data=>{
+    this.addEmployment(data.companyName,data.startYear,data.endYear,data.companyRole)
+  })
+}
   handlejobrole=(event)=>{
 const role=event.target.nextSibling.innerHTML;
 if(event.target.checked){
@@ -31,63 +89,57 @@ else{
 }
 
   }
-getprofile=()=>{
-const email=isAuth().email;
-fetch('/api/users/view',{
-  method: "post",
-  headers: {
-    'Accept': 'application/json, text/plain, */*',
-    'Content-Type': 'application/json'
-  },body:JSON.stringify({email})
-})
-.then(res=>res.json())
-.then(res=>console.log(res))
-}
+
 
 addLocation=()=>{
 var name=document.getElementById("location-name").value;
 this.state.location.push(name);
-var li = document.createElement("LI");   // Create a <button> element
+this.setLocation(name);
+
+}
+setLocation=(name)=>{
+  var li = document.createElement("LI");   // Create a <button> element
 li.innerHTML = name;   
 li.classList.add("location-style");                // Insert text
 document.getElementById("locations").appendChild(li); 
-document.getElementById("location-name").value="";
-
+  document.getElementById("location-name").value="";
 }
 addSkill=()=>{
     var name=document.getElementById("skill-name").value;
     this.state.skills.push(name);
-    var li = document.createElement("LI");   // Create a <button> element
-    li.innerHTML = name;   
-    li.classList.add("location-style");                // Insert text
-    document.getElementById("skills").appendChild(li); 
- 
-    document.getElementById("skill-name").value="";
+this.setSkill(name)
     }
+setSkill=(name)=>{
+  var li = document.createElement("LI");   // Create a <button> element
+  li.innerHTML = name;   
+  li.classList.add("location-style");                // Insert text
+  document.getElementById("skills").appendChild(li); 
 
-    addEducation=()=>{
+  document.getElementById("skill-name").value="";
+}
+    addEducation=(clg,startYear,endYear,branch)=>{
 var div = document.createElement("DIV"); 
 div.setAttribute('class', 'education-list');       
 var ta = document.createElement("INPUT");   // Create a <button> element
         ta.setAttribute('class', 'name'); 
         ta.setAttribute('placeholder', 'Enter Institute Name'); 
         ta.setAttribute('type', 'text'); 
- 
+        ta.setAttribute('value', clg||'');
         var course = document.createElement("INPUT"); 
         course.setAttribute('class', 'course'); 
         course.setAttribute('placeholder', 'course'); 
         course.setAttribute('type', 'text'); 
-
+course.setAttribute('value', branch||'');
   var start = document.createElement("INPUT"); 
   start.setAttribute('class', 'start'); 
   start.setAttribute('placeholder', 'start-year'); 
   start.setAttribute('type', 'number'); 
-
+start.setAttribute('value', startYear||'');
 var end = document.createElement("INPUT"); 
 end.setAttribute('class', 'end'); 
 end.setAttribute('placeholder', 'end-year'); 
 end.setAttribute('type', 'number'); 
-
+end.setAttribute('value', endYear||'');
         div.appendChild(ta);
         div.appendChild(course);
         div.appendChild(start);
@@ -97,29 +149,29 @@ end.setAttribute('type', 'number');
         }
     
 
-        addEmployment=()=>{
+        addEmployment=(company,startYear,endYear,role)=>{
             var div = document.createElement("DIV"); 
             div.setAttribute('class', 'employment-list');       
             var ta = document.createElement("INPUT");   // Create a <button> element
                     ta.setAttribute('class', 'company-name'); 
                     ta.setAttribute('placeholder', 'Enter Company Name'); 
-                    ta.setAttribute('type', 'text'); 
-             
+                    ta.setAttribute('type', 'text');
+                    ta.setAttribute('value', company||"");
                     var course = document.createElement("INPUT"); 
                     course.setAttribute('class', 'jobrole'); 
                     course.setAttribute('placeholder', 'Job Role'); 
                     course.setAttribute('type', 'text'); 
-            
+            course.setAttribute('value', role||"");
               var start = document.createElement("INPUT"); 
               start.setAttribute('class', 'start-emp'); 
               start.setAttribute('placeholder', 'start-year'); 
               start.setAttribute('type', 'number'); 
-            
+            start.setAttribute('value', startYear||"");
             var end = document.createElement("INPUT"); 
             end.setAttribute('class', 'end-emp'); 
             end.setAttribute('placeholder', 'end-year'); 
             end.setAttribute('type', 'number'); 
-            
+            end.setAttribute('value', endYear||"");
                     div.appendChild(ta);
                     div.appendChild(course);
                     div.appendChild(start);
@@ -225,15 +277,9 @@ fetch('/api/users/profile',{
 
 
 // }
-
-
-
   }
-
-
-
   render() {
-     
+     this.setvalues();
       return (
         <div>
   
@@ -251,19 +297,19 @@ fetch('/api/users/profile',{
 </div>
     <div className="col-md-4" >
         <ul style={{listStyle:"none"}}>
-<li>
+<li className="role-list">
                 <input type="checkbox" onChange={(event)=>{this.handlejobrole(event)}} className="mr-2" />
                 <label className="form-check-label">Android Engineer</label>
             </li>
-            <li>
+            <li className="role-list">
                 <input type="checkbox" onChange={(event)=>{this.handlejobrole(event)}} className="mr-2" />
                 <label className="form-check-label">Backend Engineer</label>
             </li>
-            <li>
+            <li className="role-list">
                 <input type="checkbox" onChange={(event)=>{this.handlejobrole(event)}} className="mr-2" />
                 <label className="form-check-label">Data Engineer</label>
             </li>
-            <li>
+            <li className="role-list">
                 <input type="checkbox" onChange={(event)=>{this.handlejobrole(event)}} className="mr-2" />
                 <label className="form-check-label">DevOps</label>
             </li>
@@ -273,19 +319,19 @@ fetch('/api/users/profile',{
 
     <div className="col-md-4">
     <ul style={{listStyle:"none"}}>
-<li>
+<li className="role-list">
                 <input type="checkbox" onChange={(event)=>{this.handlejobrole(event)}} className="mr-2" />
                 <label className="form-check-label">Front-end Engineer</label>
             </li>
-            <li>
+            <li className="role-list">
                 <input type="checkbox" onChange={(event)=>{this.handlejobrole(event)}} className="mr-2" />
                 <label className="form-check-label">Full Stack Engineer</label>
             </li>
-            <li>
+            <li className="role-list">
                 <input type="checkbox" onChange={(event)=>{this.handlejobrole(event)}} className="mr-2" />
                 <label className="form-check-label">IOS Engineer</label>
             </li>
-            <li>
+            <li className="role-list">
                 <input type="checkbox" onChange={(event)=>{this.handlejobrole(event)}} className="mr-2" />
                 <label className="form-check-label">QA/SDET</label>
             </li>
@@ -295,19 +341,19 @@ fetch('/api/users/profile',{
 
     <div className="col-md-4">
     <ul style={{listStyle:"none"}}>
-<li>
+<li className="role-list">
                 <input type="checkbox" onChange={(event)=>{this.handlejobrole(event)}} className="mr-2" />
                 <label className="form-check-label">Data Scientist</label>
             </li>
-            <li>
+            <li className="role-list">
                 <input type="checkbox" onChange={(event)=>{this.handlejobrole(event)}} className="mr-2" />
                 <label className="form-check-label">Engineering Manager</label>
             </li>
-            <li>
+            <li className="role-list">
                 <input type="checkbox" onChange={(event)=>{this.handlejobrole(event)}} className="mr-2" />
                 <label className="form-check-label">Product Manager</label>
             </li>
-            <li>
+            <li className="role-list">
                 <input type="checkbox" onChange={(event)=>{this.handlejobrole(event)}} className="mr-2" />
                 <label className="form-check-label">others</label>
             </li>
@@ -316,7 +362,7 @@ fetch('/api/users/profile',{
 
             <div className="col-md-12" style={{display:"flex",alignItems:"center"}}>
 <p className="m-5 font-title">Salary Expectation (per enum) :</p> 
-<input type="number" min="0" id="salary" width="10" />
+<input type="number" min="0"  id="salary"  width="10" />
 </div>
 
 <div className="col-md-12" >
@@ -349,7 +395,7 @@ fetch('/api/users/profile',{
 
 <div className="col-md-12" style={{display:"flex",alignItems:"center"}}>
 <p className="m-5 font-title">Years Of Experience :</p> 
-<input type="number" min="0" id="experience" width="10" />
+<input type="number" min="0" id="experience"  width="10" />
 </div>
 
 <div className="col-md-12" style={{display:"flex",alignItems:"center"}}>
@@ -376,7 +422,7 @@ fetch('/api/users/profile',{
                       
 </div> 
 <button type="submit" onClick={()=>this.handleSubmit()} className="btn btn-success m-5">Update Profile</button>  
-<button  onClick={()=>this.getprofile()} className="btn btn-success m-5">View Profile</button> 
+ 
         </div>
       );
     }

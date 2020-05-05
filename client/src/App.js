@@ -9,6 +9,7 @@ import UserActive from './components/auth/user-active';
 import CompanyActive from './components/auth/company-active';
 import Signin from './components/auth/signin';
 import Users from './components/users/users';
+import ViewJob from './components/users/view-job';
 import IntSignup from './components/auth/interviewer-signup';
 import IntActive from './components/auth/interviewer-active';
 import Company from './components/company/company';
@@ -30,6 +31,7 @@ class App extends Component {
     <Route exact path="/interviewer-signup" component={IntSignup} />
     <Route exact path="/users" component={Users} />
     <Route exact path="/profile" component={Profile} />
+    <Route exact path="/view/:id" component={ViewJob} />
     <Route exact path="/company" component={Company} />
     <Route exact path="/interviewer" component={Interviewer} />
     <Route exact path="/signin" component={Signin} />

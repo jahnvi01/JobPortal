@@ -1,4 +1,5 @@
 const {companies}=require("../../database/company")
+const {jobs}=require("../../database/jobs")
 const jwt=require('jsonwebtoken')
 const expressJwt=require('express-jwt')
 const _ = require('lodash');
@@ -145,6 +146,47 @@ return res.json({
 })
 // res.json({msg:"hi"}) 
     }
+
+
+
+exports.postJob= (req, res) => {
+
+    var company=req.body.company;
+    var salary = req.body.salary;
+    var jobrole = req.body.jobrole;
+    var location = req.body.location;
+    var skills=req.body.skills;
+    var description=req.body.description;
+
+    
+ 
+        if (location) {
+            //categories=categories.toString();
+            let array2 = location && location.toString().split(',');
+            location = array2
+        }
+        if (skills) {
+            //categories=categories.toString();
+            let array3= skills && skills.toString().split(',');
+           skills = array3
+        }
+    
+
+        const job = new jobs({ company,jobrole,description,salary,skills,location});
+        job.save((err, post) => {
+            if (err) {
+                return res.status(401).json({
+                    error: err
+                });
+            }
+            return res.json({
+                message: 'Job Posted Successfully',
+                post
+            });
+        });
+  
+
+};
 
 
 

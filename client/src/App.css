@@ -120,6 +120,19 @@ Link{
   font-weight: bold;
   color: darkgray; 
 }
+.post-title{
+  font-size: 24px;
+  font:sans-serif;
+  font-weight: bold;
+}
+.font{
+  font:sans-serif;
+  font-weight: bold; 
+  font-size: 18px;
+  color:gray;
+  padding: 3%;
+
+}
 /* .profile-card{
   padding:1%;
   background-color: white;
@@ -141,4 +154,22 @@ Link{
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.post-font{
+  font-size: 20px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-weight: bold;
+  color: darkgrey;
+}
+.job-details{
+  background: white;
+    align-items: center;
+    padding: 1%;
+    margin: 2%;
+    border: 1px solid lightgray;
+}
+.post-card{
+  padding: 2%;
+  background: white;
+ 
 }
