@@ -116,7 +116,24 @@ return res.json({
     user
 })
 })
-// res.json({msg:"hi"}) 
+
     }
 
 
+    exports.viewTeam=(req,res)=>{
+       var company=req.body.company;
+    
+        interviewers.find({company})
+        .select('_id email fullname contact')
+        .exec((err,team)=>{
+    if(err){
+        return res.status(400).json({
+            error:err
+        })
+    }
+    
+    
+    return res.json(team)
+    })
+  
+        }

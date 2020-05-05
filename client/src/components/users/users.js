@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link,withRouter } from 'react-router-dom';
-
+import moment from 'moment';
 import {isAuth,userAuth} from '../../functions/auth';
 
 class Users extends Component {
@@ -44,7 +44,7 @@ var jobs=this.state.jobs.map(job=>{
  </div>
  <div className="col-md-3 post-font">
   <h5>{job.salary}₹</h5>
-
+ <h5 style={{fontSize:"16px"}}>{moment(job.createdAt).fromNow()}</h5>
  </div>
  <div className="col-md-3 post-font">
    <Link to={`/view/${job._id}`}>

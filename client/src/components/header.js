@@ -37,6 +37,10 @@ if(isAuth()){
            <li className="nav-item">
               <Link className="nav-link" to='/profile' style={{cursor:"pointer"}}>Profile</Link>
               </li>)}
+              {isAuth() && isAuth().role===2 &&(
+           <li className="nav-item">
+              <Link className="nav-link" to='/team' style={{cursor:"pointer"}}>Team</Link>
+              </li>)}
 
             <li className="nav-item">
               <Link className="nav-link" to="#">Why Us</Link>

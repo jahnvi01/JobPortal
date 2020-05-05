@@ -100,7 +100,7 @@ fetch('/api/company/post-job',{
 </div>
 <div className="col-md-12" >
    <div style={{display:"flex",alignItems:"center"}}>
-<p className="m-5 font-title">Interested Locations :</p> 
+<p className="m-5 font-title">Locations :</p> 
 <input type="text" id="location-name" width="30" />
 <button onClick={()=>this.addLocation()}>Add</button>
 </div>
@@ -131,20 +131,20 @@ fetch('/api/company/post-job',{
         <div className="col-md-4">
         <div className="post-card">
 <div style={{display:"flex",alignItems:"center"}} >
-<i className='far fa-address-card' style={{fontSize:'24px',color:"gray"}}></i>
+
 <p className="m-2 font-title">company Details:</p> 
 </div>
 <div  style={{display:"flex",alignItems:"center"}}>
-<p className="m-1 font-title">Company :</p> 
+<i className='far fa-building p-1' style={{fontSize:'20px',color:"gray"}}></i>
       <p className="m-1 font-title">{isAuth().company}</p> 
 </div>
 
 <div  style={{display:"flex",alignItems:"center"}}>
-<p className="m-1 font-title">Contact:</p> 
+<i className='far fa-address-card' style={{fontSize:'20px',color:"gray"}}></i>
       <p className="m-1 font-title">{isAuth().email}</p> 
 </div>
 <div  style={{display:"flex",alignItems:"center"}}>
-<p className="m-1 font-title">Website:</p> 
+<i className='fas fa-link' style={{fontSize:'20px',color:"gray"}}></i>
       <p className="m-1 font-title">{isAuth().website}</p> 
 </div>
 <div  style={{display:"flex",alignItems:"center"}}>
