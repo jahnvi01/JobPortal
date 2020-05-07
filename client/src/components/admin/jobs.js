@@ -1,29 +1,28 @@
 import React, { Component } from 'react';
 import { Link,withRouter } from 'react-router-dom';
-import {isAuth,companyAuth} from '../../functions/auth';
+import {isAuth,adminAuth} from '../../functions/auth';
 import moment from 'moment';
-class Team extends Component {
+class AdminJobs extends Component {
   state = {
     visible: false,
     message:"",
     error:"",
     loading:false,
     jobs:[]
-  
   };
   componentWillMount(){
-    companyAuth(this.props); 
-     var company=isAuth().company 
-    fetch('/api/company/jobs',{
-        method: "post",
+
+    adminAuth(this.props); 
+    fetch('/api/users/jobs',{
+        method: "get",
         headers: {
           'Accept': 'application/json, text/plain, */*',
           'Content-Type': 'application/json'
-        },body:JSON.stringify({company})
+        }
       })
       .then(res=>res.json())
       .then(res=>this.setState({jobs:res}))
-  }
+    }
   showJobs=()=>{
     if(this.state.jobs){
   var jobs=this.state.jobs.map(job=>{
@@ -46,8 +45,8 @@ class Team extends Component {
    <h5 style={{fontSize:"16px"}}>{moment(job.createdAt).fromNow()}</h5>
    </div>
    <div className="col-md-3 post-font">
-     <Link to={`/view/${job._id}`}>
-   <button type="button" className="btn btn-outline-primary">View</button>
+     <Link to={`/admin/schedule-interview/${job._id}`}>
+   <button type="button" className="btn btn-outline-primary">Schedule Interviews</button>
   </Link>
      </div>
     </div>
@@ -62,29 +61,29 @@ class Team extends Component {
       )
     }
   }
-
-  render() {
-     console.log(this.state)
-      return (
-        <div>
-<div className="row unit-5 background text-center" >
-      
-      <div className="col-md-6 offset-3" style={{alignSelf:"center"}}>
-            <h2 style={{color:"white",fontSize:"40px",fontWeight:"bold"}}>Contact Interviewers</h2>
-        </div>
+    render() {
+       
+        return (
+          <div>
+   
+            <div className="row unit-5 background text-center" >
+        
+        <div className="col-md-6 offset-3" style={{alignSelf:"center"}}>
+              <h2 style={{color:"white",fontSize:"40px",fontWeight:"bold"}}> View Companies</h2>
           </div>
+            </div>
+  
           <div className="container">
-  
-  {this.showJobs()}
-
-   </div>
-        </div>
     
-      );
+         {this.showJobs()}
+  
+          </div>
+          </div>
+        );
+      }
     }
-  }
+    
   
-
-
   
-  export default withRouter(Team);
+    
+    export default withRouter(AdminJobs);

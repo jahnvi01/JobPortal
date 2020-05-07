@@ -1,8 +1,11 @@
 const {interviewers}=require("../../database/interviewers")
+const {interviews}=require("../../database/interviews")
 const {companies}=require("../../database/company")
 const jwt=require('jsonwebtoken')
 const expressJwt=require('express-jwt')
 const _ = require('lodash');
+const mongoose=require("mongoose")
+var ObjectId = mongoose.Types.ObjectId;
 JWT_ACCOUNT_ACTIVATION=require('../../config/keys').JWT_INTERVIEWER_ACTIVATION;
 APIKEY=require('../../config/keys').EMAIL_API;
 exports.intpreSignup = (req, res) => {
@@ -13,13 +16,8 @@ exports.intpreSignup = (req, res) => {
                 error: 'Email is taken'
             });
         }
-        companies.findOne({ company }, (err, cmp) => {
-if(err){
-    return res.status(400).json({
-        error: err
-    });
-}
-      if(cmp){
+
+     
         const token = jwt.sign({ fullname, email, contact,password ,company}, JWT_ACCOUNT_ACTIVATION, { expiresIn: '1000m' });
 
         var request = require("request");
@@ -42,13 +40,8 @@ if(err){
                 message: `Email has been sent to ${email}.... Follow the instructions to activate your account.`
             });
         });
-    }
-    else{
-      return res.status(400).json({
-          error: 'Company does not exist on this platform'
-      });  
-    }
-})
+    
+
     });
 };
 
@@ -69,7 +62,7 @@ exports.intsignup = (req, res) => {
 
             const { fullname, email, contact, password ,company} = jwt.decode(token);
 const verify=1;
-           
+          
 
             const user = new interviewers({  email,fullname,contact, password ,company,verify});
             user.save((err, user) => {
@@ -121,9 +114,9 @@ return res.json({
 
 
     exports.viewTeam=(req,res)=>{
-       var company=req.body.company;
+      
     
-        interviewers.find({company})
+        interviewers.find({})
         .select('_id email fullname contact')
         .exec((err,team)=>{
     if(err){
@@ -137,3 +130,75 @@ return res.json({
     })
   
         }
+
+
+        exports.view=(req,res)=>{
+      var _id=req.body._id
+    
+            interviewers.findById({_id})
+                       .exec((err,user)=>{
+        if(err){
+            return res.status(400).json({
+                error:err
+            })
+        }
+        
+        
+        return res.json({user})
+        })
+      
+            }
+
+
+            exports.update= (req, res) => {
+                const { _id,email,company,fullname,contact, password,timings,experience } = req.body;
+             
+            
+                interviewers.findById({_id}).exec((err,interviewer)=>{
+                    if (err) {
+                        return res.status(400).json({
+                            error: err
+                        });
+                    }
+                    interviewer = _.merge(interviewer, {email,company,fullname,contact, password,timings,experience });
+            console.log(interviewer)
+                    interviewer.save((err, result) => {
+                        if (err) {
+                            return res.status(400).json({
+                                error: err
+                            });
+            
+                          
+                    }
+                    return res.json({
+                        message:"Account update successful",  
+                        result});
+                });
+            })
+        }
+
+
+
+        exports.interviews=(req,res)=>{
+            var _id=req.body._id
+          
+            
+        interviews.find({interviewer:ObjectId(_id)})
+        .populate('interviewer','_id timings')
+        .populate('applicant','_id email fullname')
+        .populate('job','_id company jobrole skills')
+        .exec((err, interview) => {
+                if (err) {
+                    return res.json({
+                        error: err
+                    });
+                }
+               
+               if(interview){
+                return res.json(data); 
+               }
+        
+              })
+            
+                  }
+      

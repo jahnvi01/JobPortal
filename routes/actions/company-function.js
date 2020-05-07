@@ -36,54 +36,12 @@ exports.cpreSignup = (req, res) => {
                 message: `Email has been sent to ${email}. Follow the instructions to activate your account.`
             });
         });
-
-    //     const emailData = {
-    //         from: process.env.EMAIL_FROM,
-    //         to: email,
-    //         subject: `Account activation link`,
-    //         html: `
-    //         <p>Please use the following link to activate your acccount:</p>
-    //         <p>${process.env.CLIENT_URL}/auth/account/${token}</p>
-    //         <hr />
-    //         <p>This email may contain sensetive information</p>
-    //         <p>https://seoblog.com</p>
-    //     `
-    //     };
-
-    //     sgMail.send(emailData).then(sent => {
-    //         return res.json({
-    //             message: `Email has been sent to ${email}. Follow the instructions to activate your account.`
-    //         });
-    //     });
     });
 };
 
 
 
 
-// exports.signup=(req,res)=>{
-   
-    
-//     const {fullname,email,contact,password}=req.body;
-//     cerviewers.findOne({email}).exec((err,user)=>{
-// if(user){
-//     return res.status(400).json({
-//         error:"user already exists"
-//     })
-// }
-// else{
-
-// let newuser=new cerviewers({email,fullname,contact,password})
-// newuser.save()
-// .then(user=>{
-//     res.json({user});
-// })
-
-// }
-
-// })
-    
-//     };
 
 exports.csignup = (req, res) => {
     const token = req.body.token;
@@ -184,6 +142,76 @@ exports.postJob= (req, res) => {
                 post
             });
         });
+  
+
+};
+
+
+
+exports.updateDetails= (req, res) => {
+    const { _id,email,company,website, password,foundedyear,headquarter,noOfEmployees,stage } = req.body;
+ 
+
+    companies.findById({_id}).exec((err,comp)=>{
+     comp = _.merge(comp, {email,company,website,password,foundedyear,headquarter,noOfEmployees,stage});
+console.log(comp)
+        comp.save((err, result) => {
+            if (err) {
+                return res.status(400).json({
+                    error: err
+                });
+
+              
+        }
+        return res.json({
+            message:"profile update successful",  
+            result});
+    });
+})
+  
+
+};
+
+
+exports.companyDetails= (req, res) => {
+    const _id = req.body._id;
+ 
+
+    companies.findById({_id}).exec((err,comp)=>{
+
+     
+            if (err) {
+                return res.status(400).json({
+                    error: err
+                });
+
+              
+        }
+        return res.json(comp);
+
+})
+  
+
+};
+
+
+exports.jobs= (req, res) => {
+    const company = req.body.company;
+ 
+
+    jobs.find({company}).exec((err,comp)=>{
+
+     
+            if (err) {
+                return res.status(400).json({
+                    error: err
+                });
+
+              
+        }
+        return res.json(comp);
+
+})
   
 
 };

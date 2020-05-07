@@ -15,7 +15,7 @@ class ViewJob extends Component {
   };
   componentWillMount(){
 
-    userAuth(this.props);   
+  //  userAuth(this.props);   
 var _id=this.props.match.params.id;
 fetch('/api/users/viewJob',{
     method: "post",
@@ -50,7 +50,9 @@ showSkills=()=>{
 }
 
 handleSubmit=()=>{
-
+if(!isAuth()){
+  this.props.history.push('/')
+}
 var jobId=this.state.job._id
 var userId=isAuth()._id;
 var apply={
@@ -109,8 +111,11 @@ fetch('/api/users/apply',{
 </div>
 <p className="font-title" style={{color:"gray",padding:"2%"}}>Description:</p> 
 <p style={{color:"gray",padding:"2%"}}>{this.state.job.description}</p>
-<button type="submit" onClick={()=>this.handleSubmit()} className="btn btn-success m-5">Apply Here</button>  
+{isAuth() && isAuth()===1 &&(
+  <button type="submit" onClick={()=>this.handleSubmit()} className="btn btn-success m-5">Apply Here</button>  
  
+)}
+
 </div>
 
 

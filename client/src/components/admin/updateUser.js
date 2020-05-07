@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import { Link,withRouter } from 'react-router-dom';
 import Header from '../header';
-import {authentication,isAuth,userAuth} from '../../functions/auth';
+import {isAuth,adminAuth} from '../../functions/auth';
 
-class Profile extends Component {
+class UpdateUser extends Component {
   state = {
     visible: false,
     fullname:"",
@@ -12,6 +12,9 @@ class Profile extends Component {
     error:"",
     loading:false,
     jobrole:[],
+    email:"",
+    contact:"",
+  
     location:[],
     skills:[],
     salary:"",
@@ -22,8 +25,9 @@ class Profile extends Component {
     resume:""
   };
   componentWillMount(){
-    userAuth(this.props); 
-    const _id=isAuth()._id;
+    adminAuth(this.props); 
+    var _id=this.props.match.params.id;
+ 
 fetch('/api/users/view',{
   method: "post",
   headers: {
@@ -34,6 +38,8 @@ fetch('/api/users/view',{
 .then(res=>res.json())
 .then(res=>{this.setState({
   error:res.error||"",
+  email:res.email||"",
+  contact:res.contact||"",
   fullname:res.fullname||"",
   salary:res.salary,
   jobrole: res.jobrole || [],
@@ -43,9 +49,12 @@ fetch('/api/users/view',{
   yearsOfExperience: res.yearsOfExperience || "",
   education: res.education || [],
   pastEmployment: res.pastEmployment || [],
-})
+});
 this.setvalues();
-  })  
+})  
+
+// document.getElementById("experience").value= this.state.yearsOfExperience;
+// document.getElementById("salary").value=this.state.salary ;  
 
 }
 
@@ -235,7 +244,7 @@ this.setState({education:list})
  
     this.setState({pastEmployment:list})
       }  
-var email=isAuth().email;
+var email=this.state.email;
 console.log(email)
 var profile={
 
@@ -278,7 +287,7 @@ fetch('/api/users/profile',{
 // }
   }
   render() {
-    
+  
       return (
         <div>
   
@@ -430,4 +439,4 @@ fetch('/api/users/profile',{
 
 
   
-  export default withRouter(Profile);
+  export default withRouter(UpdateUser);

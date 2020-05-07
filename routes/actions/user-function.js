@@ -241,8 +241,8 @@ for(var i=0;i<length;i++){
 
 
 exports.view = (req, res) => {
-    const email = req.body.email;
-    users.findOne({ email })
+    const _id = req.body._id;
+    users.findById({ _id })
     .populate('educations', '_id name startYear endYear course')
     .populate('employments', '_id companyName startYear endYear companyRole')
         //.select('fullname contact jobrole location salary education pastEmployment yearsOfExperience skills achievements')

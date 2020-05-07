@@ -114,3 +114,20 @@ export const interviewerAuth= function(props){
     }
     
 }
+
+export const adminAuth= function(props){
+
+    if(!isAuth()){
+        props.history.push('/admin/signin')
+    }
+    else if(isAuth() && isAuth().role===3){
+        props.history.push('/interviewer')
+    }   
+   else if(isAuth() && isAuth().role===2){
+        props.history.push('/company')
+    }
+    else if(isAuth() && isAuth().role===1){
+        props.history.push('/users')
+    }
+    
+}

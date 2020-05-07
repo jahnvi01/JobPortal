@@ -31,7 +31,19 @@ const interviewerschema=new Schema({
 },
 salt:String,
 
-company:{ type: String, ref: 'companies',  required:true },
+company:{ type: String, required:true },
+credits:{
+type:Number,
+default:0
+},
+timings:{
+   type:String,
+   default:"10:00 AM to 5:00 PM "
+},
+experience:{
+   type:Number,
+   default:0
+},
  
 role:{
    type:Number,
