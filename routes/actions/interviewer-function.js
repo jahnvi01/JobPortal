@@ -184,7 +184,7 @@ return res.json({
           
             
         interviews.find({interviewer:ObjectId(_id)})
-        .populate('interviewer','_id timings')
+       
         .populate('applicant','_id email fullname')
         .populate('job','_id company jobrole skills')
         .exec((err, interview) => {
@@ -195,10 +195,73 @@ return res.json({
                 }
                
                if(interview){
-                return res.json(data); 
+                return res.json(interview); 
                }
+               
         
               })
             
                   }
       
+ exports.interviewDetails=(req,res)=>{
+                    var {_id,jobId,applicantId}=req.body;
+                
+                    
+                interviews.find({interviewer:ObjectId(_id),job:ObjectId(jobId),applicant:ObjectId(applicantId)})
+               
+                .populate('applicant','_id email fullname contact skills education pastEmployment achievements yearsOfExperience')
+                .populate('job','_id company jobrole skills salary location')
+                .exec((err, interview) => {
+                        if (err) {
+                            return res.json({
+                                error: err
+                            });
+                        }
+                       
+                       if(interview){
+                        return res.json(interview); 
+                       }
+                       
+                
+                      })
+                    
+                          }
+              
+   exports.interviewDone=(req,res)=>{
+                            var {_id,jobId,applicantId,interviewDone,selection}=req.body;
+                        
+                            var selected=parseInt(selection, 10)
+                            interviewDone=parseInt(interviewDone, 10)
+                        interviews.findOneAndUpdate({interviewer:ObjectId(_id),job:ObjectId(jobId),applicant:ObjectId(applicantId),$set: { "interviewDone" : interviewDone, "selected" : selected }})
+                       
+                         .exec((err, interview) => {
+                                if (err) {
+                                    return res.json({
+                                        error: err
+                                    });
+                                }
+                                return res.json({
+                                   message:"Sent to Admin",
+                                   interview
+                                });
+                            //    interview = _.merge(interview, {interviewDone,selected});
+                            //     interview.set(interviewDone,interviewDone);
+                            //     interview.set(selected,selected);
+
+                            //    console.log(interview)
+                            //    interview.save((err,result)=>{
+                            //     if (err) {
+                            //         return res.json({
+                            //             error: err
+                            //         });
+                            //     } 
+                            //     return res.json({
+                            //        message:"Sent successfully to admin",
+                            //        result
+                            //     });
+                            //    })
+                        
+                              })
+                            
+                                  }
+                      

@@ -24,6 +24,7 @@ import IntActive from './components/auth/interviewer-active';
 import Company from './components/company/company';
 import Team from './components/company/team';
 import Interviewer from './components/interviewer/interviewer';
+import Applicant from './components/interviewer/applicant'
 import Account from './components/interviewer/account';
 import Header from './components/header';
 import Profile from './components/users/profile';
@@ -55,6 +56,7 @@ class App extends Component {
     <Route exact path="/company" component={Company} />
     <Route exact path="/jobs" component={Team} />
     <Route exact path="/interviewer" component={Interviewer} />
+    <Route exact path="/details/:applicantId/:jobId" component={Applicant} />
     <Route exact path="/account/:id" component={Account} />
     <Route exact path="/signin" component={Signin} />
     <Route exact path="/user-signup/:token" component={UserActive} />
