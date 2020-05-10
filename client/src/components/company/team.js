@@ -45,9 +45,14 @@ class Team extends Component {
     <h5>{job.salary}₹</h5>
    <h5 style={{fontSize:"16px"}}>{moment(job.createdAt).fromNow()}</h5>
    </div>
-   <div className="col-md-3 post-font">
+   <div className="col-md-1 post-font">
      <Link to={`/view/${job._id}`}>
    <button type="button" className="btn btn-outline-primary">View</button>
+  </Link>
+     </div>
+     <div className="col-md-2 post-font">
+     <Link to={`/candidates/${job._id}`}>
+   <button type="button" className="btn btn-outline-primary">Candidates</button>
   </Link>
      </div>
     </div>
@@ -70,7 +75,7 @@ class Team extends Component {
 <div className="row unit-5 background text-center" >
       
       <div className="col-md-6 offset-3" style={{alignSelf:"center"}}>
-            <h2 style={{color:"white",fontSize:"40px",fontWeight:"bold"}}>Contact Interviewers</h2>
+            <h2 style={{color:"white",fontSize:"40px",fontWeight:"bold"}}>Posted Jobs</h2>
         </div>
           </div>
           <div className="container">

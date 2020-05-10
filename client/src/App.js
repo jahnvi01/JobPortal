@@ -22,6 +22,7 @@ import ViewJob from './components/users/view-job';
 import IntSignup from './components/auth/interviewer-signup';
 import IntActive from './components/auth/interviewer-active';
 import Company from './components/company/company';
+import Candidates from './components/company/candidates';
 import Team from './components/company/team';
 import Interviewer from './components/interviewer/interviewer';
 import Applicant from './components/interviewer/applicant'
@@ -54,6 +55,7 @@ class App extends Component {
     <Route exact path="/profile" component={Profile} />
     <Route exact path="/view/:id" component={ViewJob} />
     <Route exact path="/company" component={Company} />
+    <Route exact path="/candidates/:id" component={Candidates} />
     <Route exact path="/jobs" component={Team} />
     <Route exact path="/interviewer" component={Interviewer} />
     <Route exact path="/details/:applicantId/:jobId" component={Applicant} />

@@ -1,8 +1,11 @@
 const {companies}=require("../../database/company")
 const {jobs}=require("../../database/jobs")
+const {interviews}=require("../../database/interviews")
 const jwt=require('jsonwebtoken')
 const expressJwt=require('express-jwt')
 const _ = require('lodash');
+const mongoose=require("mongoose")
+var ObjectId = mongoose.Types.ObjectId;
 JWT_ACCOUNT_ACTIVATION=require('../../config/keys').JWT_COMPANY_ACTIVATION;
 APIKEY=require('../../config/keys').EMAIL_API;
 exports.cpreSignup = (req, res) => {
@@ -215,6 +218,31 @@ exports.jobs= (req, res) => {
   
 
 };
+
+exports.candidates=(req,res)=>{
+    var _id=req.body._id
+  
+    
+interviews.find({job:ObjectId(_id),interviewDone:1,selected:1})
+
+.populate('applicant','_id email fullname contact')
+//.populate('job','_id company jobrole skills')
+.exec((err, interview) => {
+        if (err) {
+            return res.json({
+                error: err
+            });
+        }
+       
+       if(interview){
+        return res.json(interview); 
+       }
+       
+
+      })
+    
+          }
+
 
 
 
