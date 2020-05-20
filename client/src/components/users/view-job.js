@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import {connect} from 'react-redux';
-import { Link,withRouter } from 'react-router-dom';
-import {authentication,isAuth,userAuth} from '../../functions/auth';
-
+import {withRouter } from 'react-router-dom';
+import {isAuth,userAuth} from '../../functions/auth';
+import ShowAlert from '../../functions/alert';
 class ViewJob extends Component {
   state = {
     visible: false,
@@ -111,9 +110,10 @@ fetch('/api/users/apply',{
 </div>
 <p className="font-title" style={{color:"gray",padding:"2%"}}>Description:</p> 
 <p style={{color:"gray",padding:"2%"}}>{this.state.job.description}</p>
-{isAuth() && isAuth()===1 &&(
-  <button type="submit" onClick={()=>this.handleSubmit()} className="btn btn-success m-5">Apply Here</button>  
- 
+{isAuth() && isAuth().role===1 &&(
+ <div> <button type="submit" onClick={()=>this.handleSubmit()} className="btn btn-success m-5">Apply Here</button>  
+  <ShowAlert error={this.state.error} message={this.state.message}/></div>
+
 )}
 
 </div>
@@ -156,6 +156,7 @@ fetch('/api/users/apply',{
 <p className="m-1 font-title">Stage:</p> 
       <p className="m-1 font-title">{this.state.company.stage}</p> 
 </div>
+
 </div>
 
 </div>

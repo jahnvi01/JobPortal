@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import {connect} from 'react-redux';
-import { Link,withRouter } from 'react-router-dom';
 import {authentication,isAuth} from '../../functions/auth';
-import Header from '../header';
+import ShowAlert from '../../functions/alert';
+
 class Signin extends Component {
+  
   state = {
     visible: false,
     message:"",
@@ -12,13 +12,38 @@ class Signin extends Component {
     token:"",
     user:"",
   };
+  componentWillUnmount(){
+    authentication(this.state,()=>{
+      console.log(isAuth());
+      if(isAuth()){
+   
+if(isAuth().role===1){
+  console.log(isAuth().role)
+  this.props.history.push('/users');
+}
+else if(isAuth().role===2){
+  this.props.history.push('/company');
+}
+else if(isAuth().role===3){
+  this.props.history.push('/interviewer');
+}
+      
+else{ 
+  this.props.history.push('/signin');
+}
+     
+        }
+    })
+ 
+    }
+ 
   handleDetail=(event)=>{
     event.preventDefault();
 
     var password=document.getElementById('password-input').value;
     var email=document.getElementById('email-input').value;
     var role=document.getElementById('role-input').value;      
-    if( password && email && role){
+    if( password && email && role!=="Select Your Role"){
     var post={
   
       password:password,
@@ -36,7 +61,7 @@ else if(role==="Company"){
 else if(role==="Interviewer"){
   api="/api/intsignin";
 }
-fetch(`${api}`,{
+    fetch(`${api}`,{
   method: "post",
   headers: {
     'Accept': 'application/json, text/plain, */*',
@@ -54,6 +79,7 @@ fetch(`${api}`,{
         if(isAuth()){
      
   if(isAuth().role===1){
+    console.log(isAuth().role)
     this.props.history.push('/users');
   }
   else if(isAuth().role===2){
@@ -63,9 +89,10 @@ fetch(`${api}`,{
     this.props.history.push('/interviewer');
   }
         
+  else{ 
+    this.props.history.push('/signin');
   }
-          else{ 
-           this.props.history.push('/signin');
+       
           }
       })
   
@@ -76,15 +103,20 @@ fetch(`${api}`,{
   )
 
     }
+    else{
+      this.setState({error:"Please fill up all the fields"})
+    }
   
   }
   render() {
 
+
       return (
-        <div>
+        <div className="home">
           
         
         <div className="block">
+          <ShowAlert error={this.state.error} message={this.state.message}/>
         <div className="row log">
             <div className="col-md-12 log-card">
             <h4 id="log-title" style={{textAlign:"center"}}>User Signin </h4>

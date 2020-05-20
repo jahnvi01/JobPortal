@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link,withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
 import {isAuth,signout} from '../functions/auth';
 class Header extends Component {
   
@@ -82,7 +81,7 @@ class Header extends Component {
 
           {isAuth() && isAuth().role===1 &&(
          <li className="nav-item">
-            <Link className="nav-link" to='/profile' style={{cursor:"pointer"}}>Profile</Link>
+            <Link className="nav-link" to='/searchJobs' style={{cursor:"pointer"}}>Jobs</Link>
             </li>)}
             {isAuth() && isAuth().role===2 &&(
          <li className="nav-item">
@@ -96,7 +95,7 @@ class Header extends Component {
             <Link className="nav-link" to="#">Why Us</Link>
           </li>
           <li className="nav-item">
-            <Link className="nav-link" to="#">Contact</Link>
+            <Link className="nav-link" to="/contactUs">Contact</Link>
           </li>
           <li className="nav-item">
             <Link className="nav-link" to="#">Services</Link>

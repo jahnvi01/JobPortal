@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link,withRouter } from 'react-router-dom';
-import {isAuth,adminAuth} from '../../functions/auth';
-
+import {adminAuth} from '../../functions/auth';
+import ShowAlert from '../../functions/alert';
 class Dashboard extends Component {
   state = {
     visible: false,
@@ -22,7 +22,7 @@ class Dashboard extends Component {
         }
       })
       .then(res=>res.json())
-      .then(res=>this.setState({users:[res]}))
+      .then(res=>this.setState({users:res,error:res.error}))
   }
 
 
@@ -30,6 +30,7 @@ class Dashboard extends Component {
     if(this.state.users){
        
   var users=this.state.users.map(user=>{
+    console.log(user)
     return(
       <div className="row job-details" key={user._id}>
    <div className="col-md-2">
@@ -48,9 +49,14 @@ class Dashboard extends Component {
    <i className='fas fa-phone p-1' style={{fontSize:'20px',color:"gray"}}></i>
     <h5>{user.contact}</h5>
     </div>
-   <div className="col-md-3 post-font">
+   <div className="col-md-2 post-font">
+     <Link to={`/admin/user-applications/${user._id}`}>
+   <button type="button" className="btn btn-outline-success">Applications</button>
+  </Link>
+     </div>
+     <div className="col-md-1 post-font">
      <Link to={`/admin/users/${user._id}`}>
-   <button type="button" className="btn btn-outline-primary">Update</button>
+   <button type="button" className="btn btn-outline-success">Update</button>
   </Link>
      </div>
     </div>
@@ -73,7 +79,7 @@ class Dashboard extends Component {
 <div className="row unit-5 background text-center" >
       
       <div className="col-md-6 offset-3" style={{alignSelf:"center"}}>
-            <h2 style={{color:"white",fontSize:"40px",fontWeight:"bold"}}>Admin Dashboard </h2>
+            <h2 style={{color:"white",fontSize:"40px",fontWeight:"bold"}}>View Users </h2>
         </div>
           </div>
           <div className="container">

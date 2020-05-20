@@ -57,7 +57,7 @@ const userschema=new Schema({
    contact:{
       type:String,
       required:true,
-     
+   
   },
   hashed_password:{
    type:String,
@@ -89,14 +89,17 @@ pastEmployment:[employmentschema],
   achievements:{
    type : String
   },
-  photo: {
-   data: Buffer,
-   contentType: String
+fileName:{
+   type : String
+},
+filePath:{
+   type : String
 },
 role:{
    type:Number,
    default:1
 },
+applications: [{ type: ObjectId, ref: 'jobs'}],
 verify:{
    type:Number,
    default:0  

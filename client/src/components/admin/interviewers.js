@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link,withRouter } from 'react-router-dom';
 import {isAuth,adminAuth} from '../../functions/auth';
-
+import ShowAlert from '../../functions/alert';
 class Interviewer extends Component {
   state = {
     visible: false,
@@ -23,7 +23,7 @@ class Interviewer extends Component {
         }
       })
       .then(res=>res.json())
-      .then(res=>this.setState({interviewers:res}))
+      .then(res=>this.setState({interviewers:res,error:res.error}))
   }
 
  showTeam=()=>{
@@ -49,7 +49,7 @@ var interviewers=this.state.interviewers.map(interviewer=>{
   </div>
  <div className="col-md-3 post-font">
    <Link to={`/admin/contact/${interviewer._id}`}>
- <button type="button" className="btn btn-outline-primary">Contact</button>
+ <button type="button" className="btn btn-outline-success">Contact</button>
 </Link>
    </div>
   </div>
@@ -76,7 +76,7 @@ return interviewers;
         </div>
           </div>
           <div className="container">
-  
+          <ShowAlert error={this.state.error} message={this.state.message}/>
   {this.showTeam()}
 
    </div>

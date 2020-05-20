@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import {connect} from 'react-redux';
 import { Link,withRouter } from 'react-router-dom';
-import Header from '../header';
+import ShowAlert from '../../functions/alert';
+
 class CompanySignup extends Component {
   state = {
     visible: false,
@@ -40,16 +40,17 @@ return fetch('/api/cpresignup',{
   },body:JSON.stringify(post)
 })
 .then(res=>res.json())
-.then(res=>console.log(res))
+.then(res=>this.setState({message:res.message||"",error:res.error||""}))
     }
   }
   render() {
 
       return (
-        <div>
+        <div className="signup">
           
         
         <div className="block">
+        <ShowAlert error={this.state.error} message={this.state.message}/>
         <div className="row log">
             <div className="col-md-12 log-card">
             <h4 id="log-title" style={{textAlign:"center"}}>Company Registration </h4>

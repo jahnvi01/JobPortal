@@ -31,7 +31,8 @@ class Interviewer extends Component {
 
 
   showinterviews=()=>{
-    if(this.state.interviews){
+    if(this.state.interviews && this.state.interviews.length!==0){
+      console.log("err")
   var interviews=this.state.interviews.map(interview=>{
     if(interview.interviewDone===0){
     return(
@@ -60,7 +61,7 @@ class Interviewer extends Component {
      </div> */}
      <div className="col-md-3 post-font">
      <Link to={`/details/${interview.applicant._id}/${interview.job._id}`}>
-   <button type="button" className="btn btn-outline-primary">Visit</button>
+   <button type="button" className="btn btn-outline-success">Visit</button>
   </Link>
      </div>
     </div>

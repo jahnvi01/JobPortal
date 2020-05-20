@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import {connect} from 'react-redux';
-import { Link,withRouter } from 'react-router-dom';
-import Header from '../header';
+import {withRouter } from 'react-router-dom';
 import {authentication,isAuth} from '../../functions/auth';
+import ShowAlert from '../../functions/alert';
+
 class IntActive extends Component {
   state = {
     visible: false,
@@ -13,6 +13,7 @@ class IntActive extends Component {
     user:"",
 
   };
+
   componentWillMount(){
      
       this.setState({token:this.props.match.params.token});
@@ -21,6 +22,17 @@ class IntActive extends Component {
         this.props.history.push('/interviewer');
 }
       
+  }
+  componentWillUnmount(){
+    authentication(this.state,()=>{
+      if(isAuth() && isAuth().role===3){
+
+      this.props.history.push('/interviewer');
+}
+        else{ 
+         this.props.history.push('/interviewer-signup');
+        }
+    })
   }
 activate=()=>{
     const token=this.state.token;
@@ -32,8 +44,8 @@ activate=()=>{
         },body:JSON.stringify({token})
       })
       .then(res=>res.json())
-      .then(res=>{this.setState({message:res.message||"",error:res.error||"",user:res.user||""});
-      if(this.state.message){
+      .then(res=>{this.setState({message:res.message||"",error:res.error||"",user:res.user||""})
+      if(res.message){
 
         authentication(this.state,()=>{
             if(isAuth() && isAuth().role===3){
@@ -61,12 +73,12 @@ componentDidMount(){
         <div>
           
         
-    
+          <ShowAlert error={this.state.error} message={this.state.message}/>
         <div className="container">
                 <h3 className="pb-4">Hey,  Ready to activate your account?</h3>
                 {showLoading()}
            
-                      <button className="btn btn-outline-primary" onClick={()=>{this.activate()}}>
+                      <button className="btn btn-outline-success" onClick={()=>{this.activate()}}>
                         Activate Account
                     </button>
               

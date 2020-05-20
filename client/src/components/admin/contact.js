@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Link,withRouter } from 'react-router-dom';
-import {isAuth,adminAuth} from '../../functions/auth';
-
+import {withRouter } from 'react-router-dom';
+import {adminAuth} from '../../functions/auth';
+import ShowAlert from '../../functions/alert';
 class Contact extends Component {
   state = {
     visible: false,
@@ -73,10 +73,10 @@ return fetch('/api/interviewer/update',{
   },body:JSON.stringify(post)
 })
 .then(res=>res.json())
-.then(res=>console.log(res))
+.then(res=>this.setState({error:res.error||"",message:res.message||""}))
    }
    else{
-       alert("enter email password and contact details properly")
+      this.setState({error:"enter email password and contact details properly"})
    }
 
   }
@@ -134,8 +134,8 @@ return fetch('/api/interviewer/update',{
                  </div>
               
         </form>
-        <input id="reg" type="submit" className="btn btn-outline-primary m-3" onClick={(event)=>{this.handleSubmit(event)}} value="Update "/>
-      
+        <input id="reg" type="submit" className="btn btn-outline-success m-3" onClick={(event)=>{this.handleSubmit(event)}} value="Update "/>
+        <ShowAlert error={this.state.error} message={this.state.message}/>
       </div>
  
 <div className="col-md-6"></div>

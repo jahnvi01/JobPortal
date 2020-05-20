@@ -5,7 +5,11 @@ const jwt=require('jsonwebtoken')
 const expressJwt=require('express-jwt')
 const _ = require('lodash');
 const mongoose=require("mongoose")
+const formidable=require('formidable')
 var ObjectId = mongoose.Types.ObjectId;
+
+
+
 JWT_ACCOUNT_ACTIVATION=require('../../config/keys').JWT_ACCOUNT_ACTIVATION;
 APIKEY=require('../../config/keys').EMAIL_API;
 exports.preSignup = (req, res) => {
@@ -173,24 +177,35 @@ exports.profile= (req, res) => {
     const  yearsOfExperience= req.body.yearsOfExperience;
     const achievements = req.body.achievements;
     const skills=req.body.skills;
-
-    
-
+const fileName=req.body.fileName;
+const filePath=req.body.filePath;
+console.log(fileName)
     users.findOne({email}).exec((err,user)=>{
      user = _.merge(user, {salary,yearsOfExperience,achievements});
       user.set(salary,parseInt(salary, 10));
       user.set(jobrole,[]);
       user.set(location,[]);
-      user.set(education,[]);
+       console.log(education)
+     user.set(education,[]);
       user.set(pastEmployment,[]);
+     
       user.set(yearsOfExperience,parseInt(yearsOfExperience, 10));
       user.set(skills,[]);
+      user.set(filePath,filePath);
+      user.set(fileName,fileName);
       user.set(achievements,achievements);
-      user.education=[];
+     user.education=[];
       user.pastEmployment=[];
       user.jobrole=[];
       user.skills=[];
       user.location=[];
+  var photo={data:"",contentType:""}
+
+user.fileName=fileName;
+user.filePath=filePath;
+
+      user.set(photo,photo)
+      user.photo=photo
         if (jobrole) {
             //categories=categories.toString();
             let array1 = jobrole && jobrole.toString().split(',');
@@ -207,21 +222,30 @@ exports.profile= (req, res) => {
             user.skills = array3
         }
     
-        if (education) {
+        if (education && education!==null) {
             var length=education.length;
-for(var i=0;i<length;i++){
-    user.education.push(education[i]);
-}   
+            user.education=education;
          
-        }
-        if (pastEmployment) {
+//             for(var i=0;i<user.education.length;i++){
+//                 user.education.pop(1);
+//                 console.log("pop")
+//             } 
+// for(var i=0;i<length;i++){
+//     user.education.push(education[i]);
+// }   
+
+         
+       }
+        if (pastEmployment && pastEmployment!==null) {
             var length=education.length;
-            for(var i=0;i<length;i++){
-                user.pastEmployment.push(pastEmployment[i]);
-            }  
+            user.pastEmployment=pastEmployment;
+            // for(var i=0;i<length;i++){
+            //     user.pastEmployment.push(pastEmployment[i]);
+            // }  
           
         }
-        console.log(user)
+       
+         console.log(user)
         user.save((err, result) => {
             if (err) {
                 return res.status(400).json({
@@ -245,14 +269,29 @@ exports.view = (req, res) => {
     users.findById({ _id })
     .populate('educations', '_id name startYear endYear course')
     .populate('employments', '_id companyName startYear endYear companyRole')
-        //.select('fullname contact jobrole location salary education pastEmployment yearsOfExperience skills achievements')
+       .select('_id email fullname contact jobrole location salary education pastEmployment yearsOfExperience skills achievements fileName filePath')
         .exec((err, data) => {
             if (err) {
                 return res.json({
                     error: err
                 });
             }
-            return res.json(data);
+            jobs.find({})
+            .select('_id location company jobrole salary createdAt')
+            .sort({createdAt:-1})
+            .limit(5)
+            .exec((err,job)=>{
+        if(err){
+            return res.status(400).json({
+                error:err
+            })
+        }
+        
+        
+        return res.json({job,data})
+        })
+
+
         });
 };
 
@@ -337,13 +376,91 @@ var applications=job.applications;
 
               
         }
-        return res.json({
-            message:"Application successful",  
-            result});
+        users.findById({_id:userId}).exec((err,user)=>{
+           
+            user.applications.push(jobId);
+            var applications=user.applications;
+                    if (applications) {
+                        //categories=categories.toString();
+                        let array1 = applications && applications.toString().split(',');
+                        user.applications = array1
+                    }
+                                   
+                    user.save((err, data) => {
+                        if (err) {
+                            return res.status(400).json({
+                                error: err
+                            });
+            
+                          
+                    }
+                    return res.json({
+                        message:"Application successful",  
+                        });
+                });
+            })
+              
+            
     });
 })
   
 
 };
+exports.resume = (req, res) => {
+    const _id = req.body._id
+    users.findById({_id })
+        .select('photo')
+        .exec((err, user) => {
+            if (err) {
+                return res.status(400).json({
+                    error: err
+                });
+            }
+            // let stream = new Duplex();
+            // // stream.push(user.photo.data);
+            // stream.push(user.photo.data);
+            // stream.push(null);
+            // console.log(stream)
+            // res.set('Content-Type', "application/pdf");
+          
+          return res.send(user.photo.data);
+        //   res.header('Content-type', 'application/pdf');
+        //   return stream.pipe(res)
+        });
+    };
 
+exports.upload=(req,res)=>{
 
+if (req.files === null) {
+    return res.status(400).json({ msg: 'No file uploaded' });
+  }
+
+  const file=req.files.file;
+console.log("jahnvi");
+  var _id=req.body._id;
+  var name=file.name.split('.');
+
+  name=_id+"."+name[1]
+  console.log(name)
+  file.mv(`${__dirname}/../../client/public/uploads/${name}`, err => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send(err);
+    }
+
+    res.json({ fileName: name, filePath: `/uploads/${name}` });
+  });
+// const form= new formidable.IncomingForm()
+// form.keepExtensions=true
+// form.parse(req,(err,fields,files)=>{
+//     if(err){
+//         console.log(err)
+//        return res.json({error:err})
+//     }
+//     console.log(files)
+//     console.log(fields)
+//     console.log("enterr")
+//    return res.json({message:"uploaded"})
+// })
+
+}

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Link,withRouter } from 'react-router-dom';
-import {isAuth,adminAuth} from '../../functions/auth';
-
+import {withRouter } from 'react-router-dom';
+import {adminAuth} from '../../functions/auth';
+import ShowAlert from '../../functions/alert';
 class UpdateCompany extends Component {
   state = {
     visible: false,
@@ -94,7 +94,7 @@ return fetch('/api/company/update',{
   },body:JSON.stringify(post)
 })
 .then(res=>res.json())
-.then(res=>console.log(res))
+.then(res=>this.setState({message:res.message||"",error:res.error||""}))
     }
 
   }
@@ -163,7 +163,7 @@ return fetch('/api/company/update',{
           </div>       
 </form>
 <button type="submit" onClick={(event)=>this.handleSubmit(event)} className="btn btn-success m-5">Update Profile</button>  
-
+<ShowAlert error={this.state.error} message={this.state.message}/>
 </div>
    
     

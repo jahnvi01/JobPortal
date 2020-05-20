@@ -47,7 +47,7 @@ return res.json({
 
 exports.getUsers = (req, res) => {
   
-    users.findOne({})
+    users.find({})
     // .populate('educations', '_id name startYear endYear course')
     // .populate('employments', '_id companyName startYear endYear companyRole')
         .select('fullname contact email')
@@ -159,9 +159,102 @@ exports.getCompanies = (req, res) => {
                           });
                   };
 
-                  exports.getSchedule = (req, res) => {
+         exports.getSchedule = (req, res) => {
                      
                                
                           };
         
-                  
+    exports.interviewStatus=(req,res)=>{
+                            var {jobId,applicantId}=req.body;
+                        
+                            
+                        interviews.find({job:ObjectId(jobId),applicant:ObjectId(applicantId)})
+                       
+                        .populate('interviewer','_id email fullname contact')
+                        
+                        .exec((err, interview) => {
+                                if (err) {
+                                    return res.json({
+                                        error: err
+                                    });
+                                }
+                               
+                               if(interview){
+                                return res.json(interview); 
+                               }
+                               
+                        
+                              })
+                            
+                                  }
+       exports.credits=(req,res)=>{
+                                    var {job,credits,applicant,interviewer}=req.body;
+                                
+                                    var credits=parseInt(credits, 10)
+                                    
+                                interviews.findOneAndUpdate({interviewer:ObjectId(interviewer),job:ObjectId(job),applicant:ObjectId(applicant),$set: { "credits":credits }})
+                               
+                                 .exec((err, interview) => {
+                                        if (err) {
+                                            return res.json({
+                                                error: err
+                                            });
+                                        }
+                                      interviewers.findOneAndUpdate({_id:ObjectId(interviewer), $inc: { credits: credits } })  
+                                     
+                                      
+                                 .exec((err, result) => {
+                                    if (err) {
+                                        return res.json({
+                                            error: err
+                                        });
+                                    }
+                                       return res.json({
+                                           message:"Credited to interviewer account",
+                                       
+                                        });
+                                })
+                                   
+                                                       
+                                      })
+                                    
+                                          }
+         exports.getApplications = (req, res) => {
+                                            var _id=req.body._id;
+                                            var info=[]; 
+                                                      users.findById({_id})
+                                                       .populate('applications', '_id company jobrole salary')
+                                                      // .populate('employments', '_id companyName startYear endYear companyRole')
+                                                   .select('_id applications')
+                                                          .exec((err, data) => {
+                                                              if (err) {
+                                                                  return res.json({
+                                                                      error: err
+                                                                  });
+                                                              }
+                                                                var array=[]
+                                                             data.applications=data.applications.map(application=>array.push(application._id))                   
+                                            console.log(array)
+                                                    interviews.find({job:{$in:array},applicant:ObjectId(_id)})
+                                                    .populate('interviewer','_id email timings')
+                                                    .exec((err, interview) => {
+                                                            if (err) {
+                                                                return res.json({
+                                                                    error: err
+                                                                });
+                                                            }
+                                                           
+                                                           if(interview){
+                                                            return res.json({data,interview});
+                                                          }
+                                                          else{
+                                                            return res.json({data,interview:[]}); 
+                                                          }
+                                                           
+                                                             
+                                                  })
+                                                                           
+                                                      });
+                                                  };
+                                                  
+                                                      

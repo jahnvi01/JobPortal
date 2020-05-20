@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link,withRouter } from 'react-router-dom';
 import {isAuth,companyAuth} from '../../functions/auth';
-
+import ShowAlert from '../../functions/alert';
 class Candidates extends Component {
   state = {
     visible: false,
@@ -22,6 +22,7 @@ class Candidates extends Component {
     },body:JSON.stringify({_id})
   })
   .then(res=>res.json())
+  //.then(res=>console.log(res))
   .then(res=>this.setState({interviews:res||[]}))
 
   }
@@ -47,7 +48,7 @@ class Candidates extends Component {
    </div>
       <div className="col-md-2 post-font">
      <Link to={`/candidate-details/${interview.applicant._id}/${interview.job._id}`}>
-   <button type="button" className="btn btn-outline-primary">Visit</button>
+   <button type="button" className="btn btn-outline-success">Visit</button>
   </Link>
      </div>
     </div>
@@ -58,7 +59,7 @@ class Candidates extends Component {
     }
     else{
       return(
-        <h3>No Candidates To Show</h3>
+        <h3 style={{textAlign:"center"}}>No Candidates To Show</h3>
       )
     }
   }
@@ -75,8 +76,9 @@ class Candidates extends Component {
             <h2 style={{color:"white",fontSize:"40px",fontWeight:"bold"}}>View Candidates</h2>
         </div>
           </div>
+
           <div className="container">
-  
+  <ShowAlert error={this.state.error} message={this.state.message}/>
   {this.showinterviews()}
 
    </div>

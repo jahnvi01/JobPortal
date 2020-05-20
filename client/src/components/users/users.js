@@ -1,40 +1,67 @@
 import React, { Component } from 'react';
 import { Link,withRouter } from 'react-router-dom';
-import moment from 'moment';
 import {isAuth,userAuth} from '../../functions/auth';
-
+import moment from 'moment';
+import ShowAlert from '../../functions/alert';
 class Users extends Component {
   state = {
     visible: false,
+    jobs:[],
+    fullname:"",
     message:"",
     error:"",
+    fileName:"",
+    filePath:"",
     loading:false,
-    token:"",
-    jobs:[],
-
+    jobrole:[],
+    location:[],
+    skills:[],
+    salary:"",
+    yearsOfExperience:"",
+    achievements:"",
+    education:[],
+    pastEmployment:[],
+    resume:""
   };
   componentWillMount(){
-    userAuth(this.props);   
-    fetch('/api/users/jobs',{
-      method: "get",
-      headers: {
-        'Accept': 'application/json, text/plain, */*',
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(res=>res.json())
-    .then(res=>this.setState({jobs:res}))
-  }
+    userAuth(this.props); 
+    const _id=isAuth()._id;
+fetch('/api/users/view',{
+  method: "post",
+  headers: {
+    'Accept': 'application/json, text/plain, */*',
+    'Content-Type': 'application/json'
+  },body:JSON.stringify({_id})
+})
+.then(res=>res.json())
+.then(res=>{this.setState({
+  error:res.data.error||"",
+  fullname:res.data.fullname||"",
+  salary:res.data.salary,
+  jobrole: res.data.jobrole || [],
+  skills: res.data.skills || [],
+  achievements: res.data.achievements || "",
+  location: res.data.location ||[] ,
+  yearsOfExperience: res.data.yearsOfExperience || "",
+  education: res.data.education || [],
+  pastEmployment: res.data.pastEmployment || [],
+  fileName:res.data.fileName ||"",
+  filePath:res.data.filePath || "",
+  jobs:res.job
+})
+this.setvalues();
+  })  
+
+}
+
+
 showJobs=()=>{
-  if(this.state.jobs){
+  if(this.state.jobs && this.state.jobs.length!==0){
 var jobs=this.state.jobs.map(job=>{
   return(
     <div className="row job-details" key={job._id}>
- <div className="col-md-2">
- <i className='fas fa-briefcase' style={{fontSize:'36px',color:"gray",background:"lightgray",padding:"5%"}}></i>
- </div>
- <div className="col-md-4 post-font" style={{color:"black"}}>
-  <h4>{job.jobrole}</h4>
+ <div className="col-md-3 post-font" style={{color:"black"}}>
+  <h5>{job.jobrole}</h5>
   <div style={{display:"flex"}}>
   <i className='far fa-building p-1' style={{fontSize:'20px',color:"gray"}}></i>
   <h5 className="post-font p-1">{job.company}</h5>
@@ -46,40 +73,468 @@ var jobs=this.state.jobs.map(job=>{
   <h5>{job.salary}₹</h5>
  <h5 style={{fontSize:"16px"}}>{moment(job.createdAt).fromNow()}</h5>
  </div>
- <div className="col-md-3 post-font">
+ <div className="col-md-4" style={{display:"flex"}}>
+ <i className="material-icons p-1" style={{fontSize:"20px",color:"gray"}}>pin_drop</i>
+    {this.showLocation(job.location)}
+ </div>
+ <div className="col-md-2 post-font">
    <Link to={`/view/${job._id}`}>
- <button type="button" className="btn btn-outline-primary">View</button>
+ <button type="button" className="btn btn-outline-success">View</button>
 </Link>
    </div>
+
+
   </div>
   )
 
 })
 return jobs;
   }
-  else{
-    return(
-      <h3>No Jobs To Show</h3>
-    )
-  }
+
 }
+
+
+
+setvalues=()=>{
+if(this.state.fullname!==""){
+  console.log(this.state);
+  document.getElementById("experience").value=this.state.yearsOfExperience;
+  document.getElementById("salary").value=this.state.salary;
+  document.getElementById("achievement").value=this.state.achievements;
+const c=document.getElementsByClassName("role-list").length;
+for(var i=0;i<c;i++){
+var li= document.getElementsByClassName("role-list")[i].childNodes;
+if(this.state.jobrole.includes(li[1].innerHTML)){
+  li[0].checked=true;
+}
+}
+this.state.location.filter(loc=>{
+  this.setLocation(loc);
+  
+});
+this.state.skills.filter(skill=>{
+  this.setSkill(skill);
+  });
+}
+  this.state.education.map(data=>{
+    this.addEducation(data.name,data.startYear,data.endYear,data.course)
+  })
+  this.state.pastEmployment.map(data=>{
+    this.addEmployment(data.companyName,data.startYear,data.endYear,data.companyRole)
+  })
+}
+  handlejobrole=(event)=>{
+const role=event.target.nextSibling.innerHTML;
+if(event.target.checked){
+    this.state.jobrole.push(role)
+}
+else{
+  this.setState({jobrole: this.state.jobrole.filter(word=>word!==role)}) 
+
+}
+
+  }
+
+
+addLocation=()=>{
+var name=document.getElementById("location-name").value;
+this.state.location.push(name);
+this.setLocation(name);
+
+}
+setLocation=(name)=>{
+  var li = document.createElement("LI");   // Create a <button> element
+li.innerHTML = name;   
+li.classList.add("location-style");                // Insert text
+document.getElementById("locations").appendChild(li); 
+  document.getElementById("location-name").value="";
+}
+addSkill=()=>{
+    var name=document.getElementById("skill-name").value;
+    this.state.skills.push(name);
+this.setSkill(name)
+    }
+    showLocation=(location)=>{
+      if(location){
+           return  location.map(city=>{
+          return (
+          <p className="font p-1" key={city}>{city}</p> 
+          )
+      })
+  }
+  }
+setSkill=(name)=>{
+  var li = document.createElement("LI");   // Create a <button> element
+  li.innerHTML = name;   
+  li.classList.add("location-style");                // Insert text
+  document.getElementById("skills").appendChild(li); 
+
+  document.getElementById("skill-name").value="";
+}
+    addEducation=(clg,startYear,endYear,branch)=>{
+var div = document.createElement("DIV"); 
+div.setAttribute('class', 'education-list');       
+var ta = document.createElement("INPUT");   // Create a <button> element
+        ta.setAttribute('class', 'name'); 
+        ta.setAttribute('placeholder', 'Institute Name'); 
+        ta.setAttribute('type', 'text'); 
+        ta.setAttribute('value', clg||'');
+        var course = document.createElement("INPUT"); 
+        course.setAttribute('class', 'course'); 
+        course.setAttribute('placeholder', 'course'); 
+        course.setAttribute('type', 'text'); 
+course.setAttribute('value', branch||'');
+  var start = document.createElement("INPUT"); 
+  start.setAttribute('class', 'start'); 
+  start.setAttribute('placeholder', 'start-year'); 
+  start.setAttribute('type', 'number'); 
+start.setAttribute('value', startYear||'');
+var end = document.createElement("INPUT"); 
+end.setAttribute('class', 'end'); 
+end.setAttribute('placeholder', 'end-year'); 
+end.setAttribute('type', 'number'); 
+end.setAttribute('value', endYear||'');
+        div.appendChild(ta);
+        div.appendChild(course);
+        div.appendChild(start);
+        div.appendChild(end);
+      document.getElementById("education").appendChild(div); 
+   
+        }
+    
+
+        addEmployment=(company,startYear,endYear,role)=>{
+            var div = document.createElement("DIV"); 
+            div.setAttribute('class', 'employment-list');       
+            var ta = document.createElement("INPUT");   // Create a <button> element
+                    ta.setAttribute('class', 'company-name'); 
+                    ta.setAttribute('placeholder', 'Company Name'); 
+                    ta.setAttribute('type', 'text');
+                    ta.setAttribute('value', company||"");
+                    var course = document.createElement("INPUT"); 
+                    course.setAttribute('class', 'jobrole'); 
+                    course.setAttribute('placeholder', 'Job Role'); 
+                    course.setAttribute('type', 'text'); 
+            course.setAttribute('value', role||"");
+              var start = document.createElement("INPUT"); 
+              start.setAttribute('class', 'start-emp'); 
+              start.setAttribute('placeholder', 'start-year'); 
+              start.setAttribute('type', 'number'); 
+            start.setAttribute('value', startYear||"");
+            var end = document.createElement("INPUT"); 
+            end.setAttribute('class', 'end-emp'); 
+            end.setAttribute('placeholder', 'end-year'); 
+            end.setAttribute('type', 'number'); 
+            end.setAttribute('value', endYear||"");
+                    div.appendChild(ta);
+                    div.appendChild(course);
+                    div.appendChild(start);
+                    div.appendChild(end);
+                  document.getElementById("employment").appendChild(div); 
+               
+                    }
+
+
+ addResume=(e)=>{
+if(e.target.files[0].size<=20000000){
+  this.setState({resume:e.target.files[0]})
+  console.log(this.state.resume)
+}
+
+}
+viewResume=()=>{
+  var _id=isAuth()._id
+  fetch('/api/users/resume',{
+    method: "post",
+    headers: {
+      'Accept': 'application/json, text/plain, */*',
+      'Content-Type': 'application/json',
+       responseType: 'blob' 
+    },body:JSON.stringify({_id})
+  })
+  //  .then(res=>res.json())
+  //  .then(res=>{this.setState({resume:res});
+  //  console.log(res)
+  // //  var  file={data: JSON.parse(res)}
+  // //   console.log(file)
+  // })
+
+  .then(res => {
+    //Create a Blob from the PDF Stream
+    console.log(res)
+        const file = new Blob(
+          [res], 
+          {type: 'application/pdf'});
+    //Build a URL from the file
+        const fileURL = URL.createObjectURL(file);
+    //Open the URL on new Window
+        window.open(fileURL);
+    })
+    .catch(error => {
+        console.log(error);
+    });
+}
+uploadResume=(e)=>{
+  e.preventDefault();  
+  var formData = new FormData() 
+ console.log(this.state.resume)
+  formData.append('file', this.state.resume);
+  formData.append('_id',isAuth()._id);
+  fetch('/api/users/upload',{
+    method: "post",
+    body:formData
+  })
+  .then(res=>res.json())
+  .then(res=>this.setState({fileName:res.fileName,filePath:res.filePath}))
+}
+  handleSubmit=()=>{
+                   
+    var salary=document.getElementById("salary").value;
+    var experience=document.getElementById("experience").value;
+    var achievement=document.getElementById("achievement").value;   
+          this.setState({education:[],pastEmployment:[]})
+      
+         
+  var education=document.getElementById("education")
+  var c=education.childElementCount;
+  this.state.pastEmployment=[];
+  this.state.education=[];
+ var list=[];
+  for(var i=0;i<c;i++){
+var name=document.getElementsByClassName("name")[i].value;
+var course=document.getElementsByClassName("course")[i].value;
+var start=document.getElementsByClassName("start")[i].value;
+var end=document.getElementsByClassName("end")[i].value;
+var data={
+  name:name,
+  startYear:start,
+  endYear:end,
+  course:course
+}
+list=this.state.education;
+list.push(data)
+
+console.log(list);
+this.setState({education:list})
+  }     
+  var employment=document.getElementById("employment")
+  var c=employment.childElementCount;
+  list=[];
+  this.state.pastEmployment=[];
+  for(var i=0;i<c;i++){
+    var company=document.getElementsByClassName("company-name")[i].value;
+    var role=document.getElementsByClassName("jobrole")[i].value;
+    var start=document.getElementsByClassName("start-emp")[i].value;
+    var end=document.getElementsByClassName("end-emp")[i].value;
+    var data={
+      companyName:company,
+      startYear:start,
+      endYear:end,
+      companyRole:role
+    }
+     list=this.state.pastEmployment;
+     console.log(list);
+    list.push(data)
+
+ 
+    this.setState({pastEmployment:list})
+      }  
+var email=isAuth().email;
+console.log(email);
+
+var profile={
+
+email:email,
+salary:salary,
+jobrole:this.state.jobrole,
+location:this.state.location,
+education:this.state.education,
+pastEmployment:this.state.pastEmployment,
+yearsOfExperience:experience,
+achievements:achievement,
+skills:this.state.skills,
+fileName:this.state.fileName,
+filePath:this.state.filePath,
+}
+
+
+fetch('/api/users/profile',{
+  method: "post",
+  headers: {
+    'Accept': 'application/json, text/plain,multipart/form-data, */*',
+    'Content-Type': 'application/json'
+  },body:JSON.stringify(profile)
+})
+.then(res=>res.json())
+//.then(res=>console.log(res))
+ .then(res=>this.setState({message:res.message||"",error:res.error||""}))
+// if(this.state.message){
+
+//   authentication(this.state,()=>{
+//       if(isAuth() && isAuth().role===1){
+   
+//        this.props.history.push('/users');
+// }
+//         else{ 
+//          this.props.history.push('/user-signup');
+//         }
+//     })
+
+
+
+// }
+  }
   render() {
-     
+    
       return (
         <div>
- 
+   <ShowAlert error={this.state.error} message={this.state.message}/>
           <div className="row unit-5 background text-center" >
       
       <div className="col-md-6 offset-3" style={{alignSelf:"center"}}>
-            <h2 style={{color:"white",fontSize:"40px",fontWeight:"bold"}}> View Companies</h2>
+      <h2 style={{color:"white",fontSize:"40px",fontWeight:"bold"}}> Welcome {isAuth().fullname}</h2>
         </div>
           </div>
 
-        <div className="container">
   
-       {this.showJobs()}
+<div className="row profile-card">
+<div className="col-md-6" >
+<div className="col-md-12" >
+<p className="m-3 font-title">Select Your Job-role:</p> 
+</div>
+    <div className="col-md-12" >
+        <ul style={{listStyle:"none"}}>
+<li className="role-list">
+                <input type="checkbox" onChange={(event)=>{this.handlejobrole(event)}} className="mr-2" />
+                <label className="form-check-label">Android Engineer</label>
+            </li>
+            <li className="role-list">
+                <input type="checkbox" onChange={(event)=>{this.handlejobrole(event)}} className="mr-2" />
+                <label className="form-check-label">Backend Engineer</label>
+            </li>
+            <li className="role-list">
+                <input type="checkbox" onChange={(event)=>{this.handlejobrole(event)}} className="mr-2" />
+                <label className="form-check-label">Data Engineer</label>
+            </li>
+            <li className="role-list">
+                <input type="checkbox" onChange={(event)=>{this.handlejobrole(event)}} className="mr-2" />
+                <label className="form-check-label">DevOps</label>
+            </li>
 
-        </div>
+<li className="role-list">
+                <input type="checkbox" onChange={(event)=>{this.handlejobrole(event)}} className="mr-2" />
+                <label className="form-check-label">Front-end Engineer</label>
+            </li>
+            <li className="role-list">
+                <input type="checkbox" onChange={(event)=>{this.handlejobrole(event)}} className="mr-2" />
+                <label className="form-check-label">Full Stack Engineer</label>
+            </li>
+            <li className="role-list">
+                <input type="checkbox" onChange={(event)=>{this.handlejobrole(event)}} className="mr-2" />
+                <label className="form-check-label">IOS Engineer</label>
+            </li>
+            <li className="role-list">
+                <input type="checkbox" onChange={(event)=>{this.handlejobrole(event)}} className="mr-2" />
+                <label className="form-check-label">QA/SDET</label>
+            </li>
+
+<li className="role-list">
+                <input type="checkbox" onChange={(event)=>{this.handlejobrole(event)}} className="mr-2" />
+                <label className="form-check-label">Data Scientist</label>
+            </li>
+            <li className="role-list">
+                <input type="checkbox" onChange={(event)=>{this.handlejobrole(event)}} className="mr-2" />
+                <label className="form-check-label">Engineering Manager</label>
+            </li>
+            <li className="role-list">
+                <input type="checkbox" onChange={(event)=>{this.handlejobrole(event)}} className="mr-2" />
+                <label className="form-check-label">Product Manager</label>
+            </li>
+            <li className="role-list">
+                <input type="checkbox" onChange={(event)=>{this.handlejobrole(event)}} className="mr-2" />
+                <label className="form-check-label">others</label>
+            </li>
+</ul>
+            </div>
+
+            <div className="col-md-12" style={{alignItems:"center",marginTop:"1%"}}>
+<p className="m-3 font-title">Salary Expectation (per enum):</p> 
+<input className="m-3" type="number" min="0"  id="salary"  width="10" />
+</div>
+
+<div className="col-md-12" >
+   <div style={{alignItems:"center"}}>
+<p className="m-3 font-title">Interested Locations</p> 
+<input className="m-3" type="text" id="location-name" width="30" />
+<button onClick={()=>this.addLocation()}>Add</button>
+</div>
+<div>
+    <ul id="locations" style={{display:"flex"}}>
+
+    </ul>
+</div>
+</div>
+
+
+
+<div className="col-md-12" >
+   <div style={{alignItems:"center"}}>
+<p className="m-3 font-title">Skills</p> 
+<input className="m-3" type="text" id="skill-name" width="30" />
+<button onClick={()=>this.addSkill()}>Add</button>
+</div>
+<div>
+    <ul id="skills" style={{display:"flex"}}>
+
+    </ul>
+</div>
+</div>
+
+<div className="col-md-12" style={{alignItems:"center"}}>
+<p className="m-3 font-title">Years Of Experience</p> 
+<input className="m-3" type="number" min="0" id="experience"  width="10" />
+</div>
+
+<div className="col-md-12" style={{alignItems:"center"}}>
+<p className="m-3 font-title">Achievements</p> 
+<textarea className="m-3" type="text" id="achievement" rows="3" cols="50" />
+</div>
+
+
+
+<div className="col-md-12" style={{display:"flex",alignItems:"center"}}>
+<p className="m-3 font-title">Education</p> 
+<button onClick={()=>this.addEducation()}>Add</button>
+</div>
+<div id="education"></div>
+
+<div className="col-md-12" style={{display:"flex",alignItems:"center"}}>
+<p className="m-3 font-title">Past Employment</p> 
+<button onClick={()=>this.addEmployment()}>Add</button>
+</div>
+<div id="employment"></div>     
+<div className="col-md-12" style={{display:"flex",alignItems:"center"}}>
+<p className="m-3 font-title">Resume</p> 
+<form action='.' method="POST" enctype="multipart/form-data">
+<input type="file" onChange={(event)=>{this.addResume(event)}} accept="application/pdf"/>
+<button id="upload" className="btn btn-success m-1" onClick={(event)=>this.uploadResume(event)}>Upload</button> 
+ {this.state.filePath && (<Link to={`/resume/${isAuth()._id}`}> <button className="btn btn-success m-1" id="resume">View Resume</button> </Link>)}
+  </form>
+</div> 
+<div className="col-md-12" style={{display:"flex",alignItems:"center"}}>
+<button type="submit" onClick={()=>this.handleSubmit()} className="btn btn-success m-5">Update Profile</button>  
+ 
+</div>
+</div>
+<div className="col-md-6">
+<div className="row" style={{margin:"2%"}}>
+<div className="col-md-12">
+  <h5 id="heading">Top Jobs</h5>
+  </div>
+  </div>
+{this.showJobs()}
+</div>
+</div>
         </div>
       );
     }
@@ -89,3 +544,195 @@ return jobs;
 
   
   export default withRouter(Users);
+
+
+
+
+// import React, { Component } from 'react';
+// import { Link,withRouter } from 'react-router-dom';
+// import moment from 'moment';
+// import {isAuth,userAuth} from '../../functions/auth';
+// import ShowAlert from '../../functions/alert';
+// class Users extends Component {
+//   state = {
+//     visible: false,
+//     message:"",
+//     error:"",
+//     loading:false,
+//     token:"",
+//     jobs:[],
+//     list:[]
+
+//   };
+//   componentWillMount(){
+//     userAuth(this.props);   
+//     fetch('/api/users/jobs',{
+//       method: "get",
+//       headers: {
+//         'Accept': 'application/json, text/plain, */*',
+//         'Content-Type': 'application/json'
+//       }
+//     })
+//     .then(res=>res.json())
+//     .then(res=>this.setState({jobs:res,list:res}))
+//   }
+//   showLocation=(location)=>{
+//     if(location){
+//          return  location.map(city=>{
+//         return (
+//         <p className="font p-1" key={city}>{city}</p> 
+//         )
+//     })
+// }
+// }
+
+// handleSubmit=(event,jobId)=>{
+//   if(!isAuth()){
+//     this.props.history.push('/')
+//   }
+//   var jobId=jobId;
+//   var userId=isAuth()._id;
+//   var apply={
+//   jobId:jobId,
+//   userId:userId
+//   }
+//   var alert=event.target.parentNode.nextSibling;
+ 
+//   fetch('/api/users/apply',{
+//     method: "post",
+//     headers: {
+//       'Accept': 'application/json, text/plain, */*',
+//       'Content-Type': 'application/json'
+//     },body:JSON.stringify(apply)
+//   })
+//   .then(res=>res.json())
+//   .then(res=>{this.setState({error:res.error||"",message:res.message||""})
+//   alert.setAttribute('style', 'display: block');
+// })
+//   }
+  
+// showJobs=()=>{
+//   if(this.state.jobs){
+// var jobs=this.state.jobs.map(job=>{
+//   return(
+//     <div className="row job-details" key={job._id}>
+//  <div className="col-md-2">
+//  <i className='fas fa-briefcase' style={{fontSize:'36px',color:"gray",background:"lightgray",padding:"5%"}}></i>
+//  </div>
+//  <div className="col-md-3 post-font" style={{color:"black"}}>
+//   <h4>{job.jobrole}</h4>
+//   <div style={{display:"flex"}}>
+//   <i className='far fa-building p-1' style={{fontSize:'20px',color:"gray"}}></i>
+//   <h5 className="post-font p-1">{job.company}</h5>
+  
+//   </div>
+
+//  </div>
+//  <div className="col-md-2 post-font">
+//   <h5>{job.salary}₹</h5>
+//  <h5 style={{fontSize:"16px"}}>{moment(job.createdAt).fromNow()}</h5>
+//  </div>
+//  <div className="col-md-3" style={{display:"flex"}}>
+//  <i className="material-icons p-1" style={{fontSize:"20px",color:"gray"}}>pin_drop</i>
+//     {this.showLocation(job.location)}
+//  </div>
+//  <div className="col-md-1 post-font">
+//    <Link to={`/view/${job._id}`}>
+//  <button type="button" className="btn btn-outline-success">View</button>
+// </Link>
+//    </div>
+//    <div className="col-md-1 post-font">
+
+//  <button type="button"  onClick={(event)=>this.handleSubmit(event,job._id)} className="btn btn-outline-success">Apply</button>
+
+//    </div>
+//    <div className="alert">    <ShowAlert error={this.state.error} message={this.state.message}/></div>
+
+//   </div>
+//   )
+
+// })
+// return jobs;
+//   }
+//   else{
+//     return(
+//       <h3>No Jobs To Show</h3>
+//     )
+//   }
+// }
+// addFilters=()=>{
+//  var role=document.getElementById("role").value;
+//  var salary=document.getElementById("salary").value;
+//  var location=document.getElementById("location").value;
+//   console.log(role+salary)
+//   var jobs=this.state.list;
+//   if(role!=="Select Job Role" && role){
+//     jobs=jobs.filter(job=>job.jobrole===role);
+//   }
+//   if(salary){
+//     salary=parseInt(salary,10)
+//    jobs=jobs.filter(job=>job.salary<=salary);
+ 
+//   }
+//   if(location){
+//     jobs=jobs.filter(job=>job.location.includes(location)); 
+//   }
+//   console.log(jobs)
+//   this.setState({jobs:jobs})
+// }
+//   render() {
+     
+//       return (
+//         <div>
+ 
+//           <div className="row unit-5 background text-center" >
+      
+//       <div className="col-md-6 offset-3" style={{alignSelf:"center"}}>
+//             <h2 style={{color:"white",fontSize:"40px",fontWeight:"bold"}}> View Companies</h2>
+//         </div>
+//           </div>
+
+//     <div className="container">
+//     <div className="row job-details">
+//   <div className="col-md-3">
+//     <select id="role">
+//       <option>Select Job Role</option>
+//       <option>Android Engineer </option>
+//       <option>Backend Engineer </option>
+//       <option>Data Engineer </option>
+//       <option> DevOps</option>
+//       <option>Frontend Developer</option>
+//       <option>Full stack developer</option>
+//       <option> IOS Engineer</option>
+//       <option>QA/SDET </option>
+//       <option>Data Scientist </option>
+//       <option>Engineering Manager </option>
+//       <option>Product Manager </option>
+     
+//     </select>
+//   </div>
+//   <div className="col-md-3">
+//     <input type="number" placeholder="Salary" id="salary"/>
+//   </div>
+//   <div className="col-md-3">
+//     <input type="text" placeholder="location" id="location"/>
+//     </div>
+//   {/* <div className="col-md-3"><input type="number" /></div> */}
+//   <div className="col-md-3"><input type="submit" value="Filter" className="btn btn-outline-success" onClick={()=>{this.addFilters()}}/></div>
+//   </div>
+//   <div className="row">
+//     <div className="col-md-12">
+//        {this.showJobs()}
+//        </div>
+//        </div>
+//        </div>
+//         </div>
+  
+//       );
+//     }
+//   }
+  
+
+
+  
+//   export default withRouter(Users);

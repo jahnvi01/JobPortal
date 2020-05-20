@@ -51,7 +51,9 @@ exports.csignup = (req, res) => {
     if (token) {
         jwt.verify(token, JWT_ACCOUNT_ACTIVATION, function(err, decoded) {
             if (err) {
+                console.log(err)
                 return res.status(401).json({
+                
                     error: err
                 });
                
@@ -64,6 +66,7 @@ const verify=1;
             const cmp = new companies({ email,company,website, password,foundedyear,headquarter,noOfEmployees,stage,verify});
             cmp.save((err, user) => {
                 if (err) {
+                    console.log(err)
                     return res.status(401).json({
                         error: err
                     });
@@ -168,7 +171,7 @@ console.log(comp)
         }
         return res.json({
             message:"profile update successful",  
-            result});
+            });
     });
 })
   
@@ -221,12 +224,11 @@ exports.jobs= (req, res) => {
 
 exports.candidates=(req,res)=>{
     var _id=req.body._id
-  
     
 interviews.find({job:ObjectId(_id),interviewDone:1,selected:1})
 
 .populate('applicant','_id email fullname contact')
-//.populate('job','_id company jobrole skills')
+.populate('job','_id company')
 .exec((err, interview) => {
         if (err) {
             return res.json({
@@ -245,5 +247,52 @@ interviews.find({job:ObjectId(_id),interviewDone:1,selected:1})
 
 
 
+
+                
+ exports.candidatesDetails=(req,res)=>{
+    var {jobId,applicantId}=req.body;
+
+    
+interviews.find({job:ObjectId(jobId),applicant:ObjectId(applicantId)})
+
+.populate('applicant','_id email fullname contact skills education pastEmployment achievements yearsOfExperience')
+.exec((err, interview) => {
+        if (err) {
+            return res.json({
+                error: err
+            });
+        }
+       
+       if(interview){
+        return res.json(interview); 
+       }
+       
+
+      })
+    
+          }
+
+exports.companyInterview=(req,res)=>{
+            var {_id,jobId,applicantId,companyInterview,jobSelection}=req.body;
+        
+            jobSelection=parseInt(jobSelection, 10)
+            companyInterview=parseInt(companyInterview, 10)
+        interviews.findOneAndUpdate({interviewer:ObjectId(_id),job:ObjectId(jobId),applicant:ObjectId(applicantId),$set: { "companyInterview" : companyInterview, "jobSelection" : jobSelection }})
+       
+         .exec((err, interview) => {
+                if (err) {
+                    return res.json({
+                        error: err
+                    });
+                }
+                return res.json({
+                   message:"Sent to Admin",
+                   interview
+                });
+                               
+              })
+            
+                  }
+      
 
 

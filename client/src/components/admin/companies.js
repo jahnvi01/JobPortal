@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link,withRouter } from 'react-router-dom';
-import {isAuth,adminAuth} from '../../functions/auth';
+import {adminAuth} from '../../functions/auth';
 
 class Companies extends Component {
   state = {
@@ -50,7 +50,7 @@ class Companies extends Component {
     </div>
    <div className="col-md-3 post-font">
      <Link to={`/admin/companies/${company._id}`}>
-   <button type="button" className="btn btn-outline-primary">Update</button>
+   <button type="button" className="btn btn-outline-success">Update</button>
   </Link>
   
      </div>

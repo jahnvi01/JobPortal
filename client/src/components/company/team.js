@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link,withRouter } from 'react-router-dom';
 import {isAuth,companyAuth} from '../../functions/auth';
 import moment from 'moment';
+import ShowAlert from '../../functions/alert';
 class Team extends Component {
   state = {
     visible: false,
@@ -47,12 +48,12 @@ class Team extends Component {
    </div>
    <div className="col-md-1 post-font">
      <Link to={`/view/${job._id}`}>
-   <button type="button" className="btn btn-outline-primary">View</button>
+   <button type="button" className="btn btn-outline-success">View</button>
   </Link>
      </div>
      <div className="col-md-2 post-font">
      <Link to={`/candidates/${job._id}`}>
-   <button type="button" className="btn btn-outline-primary">Candidates</button>
+   <button type="button" className="btn btn-outline-success">Candidates</button>
   </Link>
      </div>
     </div>
@@ -79,7 +80,7 @@ class Team extends Component {
         </div>
           </div>
           <div className="container">
-  
+          <ShowAlert error={this.state.error} message={this.state.message}/>
   {this.showJobs()}
 
    </div>

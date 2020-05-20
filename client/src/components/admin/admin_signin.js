@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {authentication,isAuth} from '../../functions/auth';
+import ShowAlert from '../../functions/alert';
 class AdminSignin extends Component {
   state = {
     visible: false,
@@ -63,10 +64,11 @@ fetch('/api/admin/adminSignin',{
   render() {
 
       return (
-        <div>
+        <div className="home">
           
         
         <div className="block">
+        <ShowAlert error={this.state.error} message={this.state.message}/>
         <div className="row log">
             <div className="col-md-12 log-card">
             <h4 id="log-title" style={{textAlign:"center"}}>Admin Signin </h4>

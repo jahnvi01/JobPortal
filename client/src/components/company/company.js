@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import {connect} from 'react-redux';
-import { Link,withRouter } from 'react-router-dom';
-import Header from '../header';
-import {authentication,isAuth,companyAuth} from '../../functions/auth';
+import { withRouter } from 'react-router-dom';
 
+import {isAuth,companyAuth} from '../../functions/auth';
+import ShowAlert from '../../functions/alert';
 class Company extends Component {
   state = {
     visible: false,
@@ -123,7 +122,7 @@ fetch('/api/company/post-job',{
 
 </div>
 <button type="submit" onClick={()=>this.handleSubmit()} className="btn btn-success m-5">Post Job</button>  
- 
+<ShowAlert error={this.state.error} message={this.state.message}/>
 </div>
 
 

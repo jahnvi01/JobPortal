@@ -33,7 +33,10 @@ selected:{
     type:Number,
     default:0
 },
-
+companyInterview:{
+    type:Number,
+    default:0
+},
 interviewDone:{
     type:Number,
     default:0
@@ -42,6 +45,10 @@ jobSelection:{
     type:Number,
     default:0
 },
+credits:{
+    type:Number,
+    default:0  
+}
 });
 
 const interviews =mongoose.model('interviews',interviewschema);

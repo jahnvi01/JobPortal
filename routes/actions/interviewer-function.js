@@ -172,7 +172,7 @@ return res.json({
                     }
                     return res.json({
                         message:"Account update successful",  
-                        result});
+                       });
                 });
             })
         }
@@ -181,7 +181,7 @@ return res.json({
 
         exports.interviews=(req,res)=>{
             var _id=req.body._id
-          
+          console.log(_id+"fv")
             
         interviews.find({interviewer:ObjectId(_id)})
        
@@ -244,23 +244,7 @@ return res.json({
                                    message:"Sent to Admin",
                                    interview
                                 });
-                            //    interview = _.merge(interview, {interviewDone,selected});
-                            //     interview.set(interviewDone,interviewDone);
-                            //     interview.set(selected,selected);
-
-                            //    console.log(interview)
-                            //    interview.save((err,result)=>{
-                            //     if (err) {
-                            //         return res.json({
-                            //             error: err
-                            //         });
-                            //     } 
-                            //     return res.json({
-                            //        message:"Sent successfully to admin",
-                            //        result
-                            //     });
-                            //    })
-                        
+                                               
                               })
                             
                                   }

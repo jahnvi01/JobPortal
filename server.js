@@ -2,12 +2,14 @@ const express =require('express');
 const bodyParser=require('body-parser');
 const mongoose=require('mongoose')
 const app=express();
+const fileupload=require("express-fileupload")
 const authroutes=require('./routes/api/auth')
 const userroutes=require('./routes/api/users')
 const interviewerroutes=require('./routes/api/interviewer')
 const companyroutes=require('./routes/api/company')
 const adminroutes=require('./routes/api/admin')
 app.use(bodyParser())
+app.use(fileupload())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api/users',userroutes)

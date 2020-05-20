@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import {connect} from 'react-redux';
 import { Link,withRouter } from 'react-router-dom';
-import Header from '../header';
-import {isAuth,adminAuth} from '../../functions/auth';
-
+import {adminAuth} from '../../functions/auth';
+import ShowAlert from '../../functions/alert';
 class UpdateUser extends Component {
   state = {
     visible: false,
@@ -14,7 +12,8 @@ class UpdateUser extends Component {
     jobrole:[],
     email:"",
     contact:"",
-  
+    fileName:"",
+    filePath:"",
     location:[],
     skills:[],
     salary:"",
@@ -49,6 +48,9 @@ fetch('/api/users/view',{
   yearsOfExperience: res.yearsOfExperience || "",
   education: res.education || [],
   pastEmployment: res.pastEmployment || [],
+  fileName:res.fileName ||"",
+  filePath:res.filePath || "",
+  resume:""
 });
 this.setvalues();
 })  
@@ -57,7 +59,29 @@ this.setvalues();
 // document.getElementById("salary").value=this.state.salary ;  
 
 }
-
+addResume=(e)=>{
+  if(e.target.files[0].size<=20000000){
+    this.setState({resume:e.target.files[0]})
+    console.log(this.state.resume)
+  }
+  
+  }
+  
+  uploadResume=(e)=>{
+    
+    e.preventDefault(); 
+    var _id=this.props.match.params.id; 
+    var formData = new FormData() 
+   console.log(this.state.resume)
+    formData.append('file', this.state.resume);
+    formData.append('_id',_id);
+    fetch('/api/users/upload',{
+      method: "post",
+      body:formData
+    })
+    .then(res=>res.json())
+    .then(res=>this.setState({fileName:res.fileName,filePath:res.filePath,error:res.error||""}))
+  }
 setvalues=()=>{
 if(this.state.fullname!==""){
   console.log(this.state);
@@ -256,7 +280,9 @@ education:this.state.education,
 pastEmployment:this.state.pastEmployment,
 yearsOfExperience:experience,
 achievements:achievement,
-skills:this.state.skills
+skills:this.state.skills,
+fileName:this.state.fileName,
+filePath:this.state.filePath,
 }
 
 
@@ -268,8 +294,8 @@ fetch('/api/users/profile',{
   },body:JSON.stringify(profile)
 })
 .then(res=>res.json())
-.then(res=>console.log(res))
-// .then(res=>this.setState({message:res.message||"",error:res.error||"",user:res.user||""}))
+//.then(res=>console.log(res))
+.then(res=>this.setState({message:res.message||"",error:res.error||""}))
 // if(this.state.message){
 
 //   authentication(this.state,()=>{
@@ -287,7 +313,7 @@ fetch('/api/users/profile',{
 // }
   }
   render() {
-  
+    var _id=this.props.match.params.id;
       return (
         <div>
   
@@ -426,11 +452,14 @@ fetch('/api/users/profile',{
 <div id="employment"></div>     
 <div className="col-md-12" style={{display:"flex",alignItems:"center"}}>
 <p className="m-5 font-title">Resume :</p> 
+<form action='.' method="POST" enctype="multipart/form-data">
 <input type="file" onChange={(event)=>{this.addResume(event)}} accept="application/pdf"/>
-                      
+<button id="upload" className="btn btn-success m-1" onClick={(event)=>this.uploadResume(event)}>Upload</button> 
+ {this.state.filePath && (<Link to={`/resume/${_id}`}> <button className="btn btn-success m-1" id="resume">View Resume</button> </Link>)}
+  </form>                 
 </div> 
 <button type="submit" onClick={()=>this.handleSubmit()} className="btn btn-success m-5">Update Profile</button>  
- 
+<ShowAlert error={this.state.error} message={this.state.message}/>
         </div>
       );
     }

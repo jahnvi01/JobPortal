@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link,withRouter } from 'react-router-dom';
-import {isAuth,adminAuth} from '../../functions/auth';
+import ShowAlert from '../../functions/alert';
+import {adminAuth} from '../../functions/auth';
 import moment from 'moment';
 class AdminJobs extends Component {
   state = {
@@ -21,7 +22,7 @@ class AdminJobs extends Component {
         }
       })
       .then(res=>res.json())
-      .then(res=>this.setState({jobs:res}))
+      .then(res=>this.setState({jobs:res,error:res.error}))
     }
   showJobs=()=>{
     if(this.state.jobs){
@@ -46,7 +47,7 @@ class AdminJobs extends Component {
    </div>
    <div className="col-md-3 post-font">
      <Link to={`/admin/schedule-interview/${job._id}`}>
-   <button type="button" className="btn btn-outline-primary">Schedule Interviews</button>
+   <button type="button" className="btn btn-outline-success">Schedule Interviews</button>
   </Link>
      </div>
     </div>
@@ -76,7 +77,7 @@ class AdminJobs extends Component {
           <div className="container">
     
          {this.showJobs()}
-  
+         <ShowAlert error={this.state.error} message={this.state.message}/>
           </div>
           </div>
         );

@@ -1,5 +1,5 @@
 import cookie from 'js-cookie';
-  
+
 export const setCookie=(key,value)=>{
    
 
@@ -131,3 +131,5 @@ export const adminAuth= function(props){
     }
     
 }
+
+ 
