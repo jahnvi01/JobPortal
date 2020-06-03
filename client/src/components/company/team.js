@@ -75,7 +75,7 @@ class Team extends Component {
         <div>
 <div className="row unit-5 background text-center" >
       
-      <div className="col-md-6 offset-3" style={{alignSelf:"center"}}>
+      <div className="col-md-6 offset-3" id="backgroundText" style={{alignSelf:"center"}}>
             <h2 style={{color:"white",fontSize:"40px",fontWeight:"bold"}}>Posted Jobs</h2>
         </div>
           </div>

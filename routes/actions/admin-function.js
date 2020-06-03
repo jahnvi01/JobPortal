@@ -43,7 +43,48 @@ return res.json({
 
 
 
+    exports.getData = (req, res) => {
+  
+        users.find({},{$limit:5})
+        .sort({_id:1})
 
+            .select('fullname contact email')
+            .exec((err, users) => {
+                if (err) {
+                    return res.json({
+                        error: err
+                    });
+                }
+
+                companies.find({},{$limit:5})
+                .sort({_id:1})
+                .select('_id email company website headquarter')
+                .exec((err,company)=>{
+                    if(err){
+                        return res.status(400).json({
+                            error:err
+                        })
+                    }
+                    
+                    interviewers.find({},{$limit:5})
+                    .sort({_id:1})
+                    .select('_id email fullname contact')
+                    .exec((err,team)=>{
+                if(err){
+                    return res.status(400).json({
+                        error:err
+                    })
+                }
+                
+                
+                return res.json({users,company,team})
+                })  
+                  
+                    })
+
+               
+            });
+    };
 
 exports.getUsers = (req, res) => {
   

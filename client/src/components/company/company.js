@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-
 import {isAuth,companyAuth} from '../../functions/auth';
 import ShowAlert from '../../functions/alert';
 class Company extends Component {
@@ -44,6 +43,7 @@ setSkill=(name)=>{
 
   document.getElementById("skill-name").value="";
 }
+
 handleSubmit=()=>{
 console.log(this.state);
 var role=document.getElementById("post-role").value
@@ -67,7 +67,7 @@ fetch('/api/company/post-job',{
   },body:JSON.stringify(postJob)
 })
 .then(res=>res.json())
-.then(res=>console.log(res))
+.then(res=>this.setState({message:res.message||"",error:res.error||""}))
 }
   render() {
      
@@ -75,31 +75,32 @@ fetch('/api/company/post-job',{
         <div>
 <div className="row unit-5 background text-center" >
       
-      <div className="col-md-6 offset-3" style={{alignSelf:"center"}}>
+      <div className="col-md-6 offset-3" id="backgroundText" style={{alignSelf:"center"}}>
             <h2 style={{color:"white",fontSize:"40px",fontWeight:"bold"}}>Post a job</h2>
         </div>
           </div>
         
-          <div className="row m-5" >
+          <div className="row m-3" >
       
       <div className="col-md-8 post-card">
       <div className="row profile-card">
-<div className="col-md-12" style={{display:"flex",alignItems:"center"}} >
-<p className="m-5 font-title">Job-role:</p> 
+<div className="col-md-12" style={{alignItems:"center"}} >
+<p className="m-3 font-title">Job-role:</p> 
 <input type="text" min="0"  id="post-role" />
 </div>
-<div className="col-md-12" style={{display:"flex",alignItems:"center"}}>
-<p className="m-5 font-title">Salary (Per Enum) :</p> 
+<div className="col-md-12" style={{alignItems:"center"}}>
+<p className="m-3 font-title">Salary (Per Enum):</p> 
 <input type="number" min="0" id="package"  width="10" />
 </div>
 
-<div className="col-md-12" style={{display:"flex",alignItems:"center"}}>
-<p className="m-5 font-title">Description:</p> 
-<textarea type="text" id="description" rows="5" cols="100" />
+<div className="col-md-12" style={{alignItems:"center"}}>
+<p className="m-3 font-title">Description:</p> 
+<textarea className="form-control"  rows="3" id="description"  />
+
 </div>
 <div className="col-md-12" >
-   <div style={{display:"flex",alignItems:"center"}}>
-<p className="m-5 font-title">Locations :</p> 
+   <div style={{alignItems:"center"}}>
+<p className="m-3 font-title">Locations:</p> 
 <input type="text" id="location-name" width="30" />
 <button onClick={()=>this.addLocation()}>Add</button>
 </div>
@@ -111,8 +112,8 @@ fetch('/api/company/post-job',{
 </div>
 
 <div className="col-md-12" >
-   <div style={{display:"flex",alignItems:"center"}}>
-<p className="m-5 font-title">Skills :</p> 
+   <div style={{alignItems:"center"}}>
+<p className="m-3 font-title">Skills:</p> 
 <input type="text" id="skill-name" width="30" />
 <button onClick={()=>this.addSkill()}>Add</button>
 </div>
@@ -121,7 +122,7 @@ fetch('/api/company/post-job',{
 </ul>
 
 </div>
-<button type="submit" onClick={()=>this.handleSubmit()} className="btn btn-success m-5">Post Job</button>  
+<button type="submit" onClick={()=>this.handleSubmit()} className="btn btn-success m-3">Post Job</button>  
 <ShowAlert error={this.state.error} message={this.state.message}/>
 </div>
 

@@ -75,31 +75,31 @@ fetch('/api/users/apply',{
         <div>
 <div className="row unit-5 background text-center" >
       
-      <div className="col-md-6 offset-3" style={{alignSelf:"center"}}>
+      <div className="col-md-6 offset-3"  id="backgroundText" style={{alignSelf:"center"}}>
             <h2 style={{color:"white",fontSize:"40px",fontWeight:"bold"}}>Apply for a job</h2>
         </div>
           </div>
         
-          <div className="row m-5" >
+          <div className="row" >
       
       <div className="col-md-8 post-card">
       <div className="row profile-card">
 <div className="m-5 col-md-12" style={{alignItems:"center"}} >
       <p className="post-title">{this.state.job.jobrole}</p>
-      <div style={{display:"flex",alignItems:"center"}}>
-      <div style={{display:"flex"}}>
+      <div className="row" style={{alignItems:"center"}}>
+      <div className="col-md-2" style={{display:"flex"}}>
   <i className='far fa-building p-1' style={{fontSize:'20px',color:"#28a745"}}></i>
   <p className="font" style={{color:"#28a745"}}>{this.state.company.company}</p>
   </div>
-  <div style={{display:"flex",paddingLeft:"2%"}} >
-  <i className="material-icons p-1" style={{fontSize:"20px",color:"gray"}}>pin_drop</i>
+  <div  style={{display:"flex",paddingLeft:"2%"}} >
+  <i className="material-icons p-1" style={{fontSize:"25px",color:"gray"}}>pin_drop</i>
     {this.showLocation()}
   </div>
 
 </div>
 <div className="mt-2" style={{display:"flex",alignItems:"center"}}>
-<p className="font-title">Salary(Per Enum) :</p> 
-<p className="font-title">{this.state.job.salary} ₹</p>
+<p className="font-title">Salary(Annual):</p> 
+<p className="font-title">{this.state.job.salary}₹</p>
 </div>
 <div className="mt-2" style={{display:"flex",alignItems:"center"}}>
 <p className="font-title">Skills :</p> 

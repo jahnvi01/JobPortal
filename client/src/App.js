@@ -8,6 +8,7 @@ import './App.css';
 import UserSignup from './components/auth/user-signup';
 import AdminSignin from './components/admin/admin_signin';
 import UpdateUser from './components/admin/updateUser';
+import ListUsers from './components/admin/users';
 import Dashboard from './components/admin/dashboard';
 import Companies from './components/admin/companies';
 import Applications from './components/admin/user-applications';
@@ -54,6 +55,7 @@ class App extends Component {
     <Route exact path="/resume/:id" component={Resume} />
     <Route exact path="/admin/signin" component={AdminSignin} />
     <Route exact path="/admin/dashboard" component={Dashboard} />
+    <Route exact path="/admin/List-Users" component={ListUsers} />
     <Route exact path="/admin/users/:id" component={UpdateUser} />
     <Route exact path="/admin/companies" component={Companies} />
     <Route exact path="/admin/companies/:id" component={updateCompany} />

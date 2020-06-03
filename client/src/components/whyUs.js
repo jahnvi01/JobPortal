@@ -6,7 +6,9 @@ import people from'../images/people.png';
 import person from'../images/person.png';
 import education from'../images/education.png';
 import Accounting from'../images/accounting.png';
-
+import { Steps, Divider } from 'antd';
+import Footer from './footer';
+const { Step } = Steps;
 class WhyUs extends Component {
   state = {
     visible: false,
@@ -60,7 +62,38 @@ else{
 </div>
    
 
+<div className="row" style={{marginTop:"2%"}}>
+    <div className="col-md-12">
+      <div>
+      <h2 style={{fontSize:"20px",color:"black",  padding: "1%",textAlign:"center",fontWeight:"bold"}} >Find Best Candidates In Just 3 Steps</h2>
+      </div>
+
+        
+           </div>
+        </div>
    
+<div className="container" style={{margin:"5%"}}>
+   
+<div className="row">
+    <div className="col-md-12">
+<Steps >
+          <Step title="Step 1" description="Post Your Requirements" />
+          <Step title="Step 2" description="Schedule An Interview" />
+          <Step title="Step 3" description="Find Your Best Fit" />
+        </Steps>
+
+        </div></div></div>
+<div className="row">
+    <div className="col-md-12">
+      <div>
+      <h2 style={{fontSize:"20px",color:"black",  padding: "1%",textAlign:"center",fontWeight:"bold"}} > Why Choose Us?</h2>
+      </div>
+
+        
+           
+        </div>
+      </div>
+
 
 <div className="container">
 
@@ -121,7 +154,7 @@ else{
 
 <div className="col-md-12" style={{alignItems:"center"}}>
 <p className="m-3 font-title">What brings your company to this platform?</p> 
-<textarea type="text" id="description" id="message" rows="5" cols="80" />
+<textarea type="text"  id="message" className="form-control"  rows="5" />
 </div>
 
 <button type="submit" onClick={()=>this.handleSubmit()} className="btn btn-success m-3">Send</button>  
@@ -134,7 +167,7 @@ else{
 
 
 </div>
-
+<Footer />
         </div>
     
       );

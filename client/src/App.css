@@ -4,9 +4,15 @@ body{
   overflow-x: hidden;
 
 }
-.navbar{
-  background-color:blueviolet;
+/* .sticky{
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
 }
+.navbar{
+  margin:0 !important;
+} */
 .home{
   background-image: url('./images/hero_2.jpg');
   background-repeat: no-repeat;
@@ -74,8 +80,8 @@ Link{
  
   align-self: center;
 }
-#user-input,#password-input,#email-input,#subject-input,#contact-input,.input-form{
-  width: 400px;
+.inputform{
+  width: 350px;
   height:40px;
 
 }
@@ -137,7 +143,7 @@ Link{
   font-weight: bold; 
   font-size: 17px;
   color:gray;
-  padding: 3%;
+  padding: 2%;
 
 }
 /* .profile-card{
@@ -193,3 +199,39 @@ font-weight: bold;
 .alert{
   display: none;
 }
+.ant-steps-item-title::after{
+  background-color: black !important;
+}
+.ant-steps-item-wait .ant-steps-item-icon,.ant-steps-item-process .ant-steps-item-icon,.ant-steps-icon  {
+  background: #28a745;
+  border-color: #28a745;
+  color: white !important;
+}
+.ant-steps-item-title{
+  color: black !important;
+}
+.ant-steps-item-description{
+   color:black !important;
+   font-weight: 500;
+   font-size: 16px;
+}
+a:hover{
+  text-decoration: none !important;
+}
+.page-footer, .page-footer h5 ,.page-footer a{
+  background-color: #3e4551 !important; 
+  color: white !important;
+}
+@media only screen and (max-width: 650px) {
+.inputform{
+    width:auto;
+    height:auto;
+  
+  }
+}
+
+@media only screen and (max-width: 768px) {
+#backgroundText{
+margin: 0px;
+}
+  }

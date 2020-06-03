@@ -434,7 +434,7 @@ fetch('/api/users/profile',{
 
 <div className="col-md-12" style={{display:"flex",alignItems:"center"}}>
 <p className="m-5 font-title">Achievements :</p> 
-<textarea type="text" id="achievement" rows="3" cols="50" />
+<textarea type="text" id="achievement" className="form-control"  rows="3" />
 </div>
 </div>
 

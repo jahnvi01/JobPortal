@@ -56,30 +56,30 @@ return fetch('/api/cpresignup',{
             <h4 id="log-title" style={{textAlign:"center"}}>Company Registration </h4>
             <form className="form">
                  <div id="company-part" className="input-part"> 
-                 <input type="text" id="company-input" className="input-form" placeholder="Company" required="required" />
+                 <input type="text" id="company-input" className="inputform" placeholder="Company" required="required" />
                  </div>
 
                  <div id="website-part" className="input-part"> 
-                 <input type="text" id="website-input" className="input-form" placeholder="www.abc.com" required="required" />
+                 <input type="text" id="website-input" className="inputform" placeholder="www.abc.com" required="required" />
                  </div>
 
              <div id="email-part" className="input-part">
-                 <input type="email" id="email-input" className="input-form" placeholder="E-mail" required="required" />
+                 <input type="email" id="email-input" className="inputform" placeholder="E-mail" required="required" />
                  </div>
                  <div id="year-part" className="input-part">
-                 <input type="number" id="year-input" className="input-form" placeholder="Founded Year" required="required" />
+                 <input type="number" id="year-input" className="inputform" placeholder="Founded Year" required="required" />
                  </div>
                  <div id="employees-part" className="input-part">
-                 <input type="number" id="employees-input" className="input-form" placeholder="No Of Employees" required="required" />
+                 <input type="number" id="employees-input" className="inputform" placeholder="No Of Employees" required="required" />
                  </div>
                   <div id="password-part" className="input-part">
-                 <input type="password" id="password-input" className="input-form" placeholder="Password" required="required" />
+                 <input type="password" id="password-input" className="inputform" placeholder="Password" required="required" />
                  </div>
                  <div id="headquarter-part" className="input-part">
-                 <input type="text" id="headquarter-input" className="input-form" placeholder="headquarter" required="required" />
+                 <input type="text" id="headquarter-input" className="inputform" placeholder="headquarter" required="required" />
                  </div>
                  <div id="stage-part" className="input-part"> 
-                 <select type="text" id="stage-input" className="input-form" placeholder="Stage" required="required">
+                 <select type="text" id="stage-input" className="inputform" placeholder="Stage" required="required">
                     <option>Select company stage</option>
                     <option>Seed</option>
                     <option>Series A</option>

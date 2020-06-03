@@ -75,14 +75,14 @@ fetch('/api/admin/adminSignin',{
             <form className="form">
               
              <div id="email-part">
-                 <input type="text" id="username-input" className="input-form" placeholder="Username" required="required" />
+                 <input type="text" id="username-input" className="inputform" placeholder="Username" required="required" />
                  </div>
                                 <div id="password-part">
-                 <input type="password" id="password-input" placeholder="Password" required="required" />
+                 <input type="password" id="password-input" className="inputform" placeholder="Password" required="required" />
                  </div>
                           <input id="reg" type="submit" onClick={(event)=>{this.handleDetail(event)}} value="Signin"/>
- 
         </form>
+ 
              </div>
              </div>
             </div>

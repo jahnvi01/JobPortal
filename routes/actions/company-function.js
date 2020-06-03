@@ -145,7 +145,7 @@ exports.postJob= (req, res) => {
             }
             return res.json({
                 message: 'Job Posted Successfully',
-                post
+                
             });
         });
   

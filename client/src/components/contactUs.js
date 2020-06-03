@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import ShowAlert from '../functions/alert';
+import Footer from './footer';
 class ContactUs extends Component {
   state = {
     visible: false,
@@ -43,7 +44,7 @@ else{
     }
 
      
-      <div className="col-md-6 offset-3" style={{alignSelf:"center"}}>
+      <div className="col-md-6 offset-3"  id="backgroundText" style={{alignSelf:"center"}}>
             <h2 style={{color:"white",fontSize:"40px",fontWeight:"bold"}}>Conatct Us</h2>
         </div>
           </div>
@@ -63,7 +64,7 @@ else{
 
 <div className="col-md-12" style={{alignItems:"center"}}>
 <p className="m-3 font-title">Message:</p> 
-<textarea type="text" id="description" id="message" rows="5" cols="80" />
+<textarea type="text"  id="message" rows="5" className="form-control"/>
 </div>
 
 <button type="submit" onClick={()=>this.handleSubmit()} className="btn btn-success m-3">Message</button>  
@@ -97,7 +98,7 @@ else{
 
 
 </div>
-
+<Footer />
         </div>
     
       );

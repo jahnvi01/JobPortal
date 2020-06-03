@@ -139,11 +139,11 @@ handleCheckbox=()=>{
   if(this.state.interview!==""){
 
     return(
-        <div className="row m-5" >
+        <div className="row" >
       
         <div className="col-md-8 post-card">
         <div className="row profile-card">
-  <div className="m-5 col-md-12" style={{alignItems:"center"}} >
+  <div className="m-3 col-md-12" style={{alignItems:"center"}} >
         <p className="post-title">{this.state.interview.job.jobrole}</p>
         <div style={{display:"flex",alignItems:"center"}}>
         <div style={{display:"flex"}}>
@@ -157,11 +157,11 @@ handleCheckbox=()=>{
   
   </div>
   <div className="mt-2" style={{display:"flex",alignItems:"center"}}>
-  <p className="font-title">Salary(Per Enum) :</p> 
+  <p className="font-title">Salary(Annual):</p> 
   <p className="font-title">{this.state.interview.job.salary} ₹</p>
   </div>
   <div className="mt-2" style={{display:"flex",alignItems:"center"}}>
-  <p className="font-title">Skills Required :</p> 
+  <p className="font-title">Skills Required:</p> 
   {this.showSkills(this.state.interview.job.skills)}
   </div>
   
@@ -179,15 +179,15 @@ handleCheckbox=()=>{
   </div>
   <div className="mt-2" style={{display:"flex",alignItems:"center"}}>
   <p className="font-title">Email:</p> 
-  <p className="font-title">{this.state.interview.applicant.email} ₹</p>
+  <p className="font-title">{this.state.interview.applicant.email}</p>
   </div>
   <div className="mt-2" style={{display:"flex",alignItems:"center"}}>
   <p className="font-title">skills:</p> 
   {this.showSkills(this.state.interview.applicant.skills)}
   </div>
-  <div className="mt-2" style={{display:"flex",alignItems:"center"}}>
+  <div className="mt-2" style={{alignItems:"center"}}>
   <p className="font-title">Achievements:</p> 
-  <p className="font-title">{this.state.interview.applicant.achievements}</p>
+  <p style={{color:"gray"}}>{this.state.interview.applicant.achievements}</p>
   </div>
   <div className="mt-2" style={{display:"flex",alignItems:"center"}}>
   <p className="font-title">Years Of Experience:</p> 
@@ -273,7 +273,7 @@ handleCheckbox=()=>{
 
 <div className="row unit-5 background text-center" >
       
-      <div className="col-md-6 offset-3" style={{alignSelf:"center"}}>
+      <div className="col-md-6 offset-3" id="backgroundText" style={{alignSelf:"center"}}>
             <h2 style={{color:"white",fontSize:"40px",fontWeight:"bold"}}>Interview Details</h2>
         </div>
           </div>

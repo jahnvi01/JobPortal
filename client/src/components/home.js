@@ -4,6 +4,9 @@ import Money from'../images/money.png';
 import Tools from'../images/tools.png';
 import Accounting from'../images/accounting.png';
 import Engineer from'../images/engineer.png';
+import { Steps, Divider } from 'antd';
+import Footer from './footer';
+const { Step } = Steps;
 class Home extends Component {
   
  
@@ -36,11 +39,31 @@ class Home extends Component {
 
 </div>
 </div>
+<div className="row" style={{marginTop:"2%"}}>
+    <div className="col-md-12">
+      <div>
+      <h2 style={{fontSize:"20px",color:"black",  padding: "1%",textAlign:"center",fontWeight:"bold"}} >Boost Your Career In Just 3 Steps</h2>
+      </div>
+
+        
+           </div>
+        </div>
+   
+<div className="container" style={{margin:"5%"}}>
    
 <div className="row">
     <div className="col-md-12">
+<Steps >
+          <Step title="Step 1" description="Complete Your Profile" />
+          <Step title="Step 2" description="Apply For Jobs" />
+          <Step title="Step 3" description="Find Your Dream Job" />
+        </Steps>
+
+        </div></div></div>
+<div className="row">
+    <div className="col-md-12">
       <div>
-      <h2 style={{fontSize:"20px",color:"black",border:"1px solid #28a745",background:"white"}} id="heading"> Why Choose Us?</h2>
+      <h2 style={{fontSize:"20px",color:"black",  padding: "1%",textAlign:"center",fontWeight:"bold"}} > Why Choose Us?</h2>
       </div>
 
         
@@ -89,8 +112,9 @@ class Home extends Component {
         </div>
   
       </div>
+  
 </div>
-
+<Footer />
 
       </div>
     );

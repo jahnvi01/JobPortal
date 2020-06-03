@@ -123,13 +123,13 @@ else if(role==="Interviewer"){
             <form className="form">
               
              <div id="email-part">
-                 <input type="email" id="email-input" placeholder="E-mail" required="required" />
+                 <input type="email" id="email-input" className="inputform" placeholder="E-mail" required="required" />
                  </div>
                                 <div id="password-part">
-                 <input type="password" id="password-input" placeholder="Password" required="required" />
+                 <input type="password" id="password-input" className="inputform" placeholder="Password" required="required" />
                  </div>
              <div id="role-part" className="input-part"> 
-                 <select type="text" id="role-input" className="input-form" placeholder="Stage" required="required">
+                 <select type="text" id="role-input" className="inputform" placeholder="Stage" required="required">
                     <option>Select Your Role</option>
                     <option>Candidate</option>
                     <option>Company</option>

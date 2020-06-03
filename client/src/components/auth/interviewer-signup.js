@@ -50,20 +50,20 @@ return fetch('/api/intpresignup',{
             <h4 id="log-title" style={{textAlign:"center"}}>Interviewer Registration </h4>
             <form className="form">
                  <div id="uname"> 
-                 <input type="text" id="user-input" placeholder="Fullname" required="required" />
+                 <input type="text" id="user-input" className="inputform" placeholder="Fullname" required="required" />
                  </div>
 
              <div id="email-part">
-                 <input type="email" id="email-input" placeholder="E-mail" required="required" />
+                 <input type="email" id="email-input" className="inputform" placeholder="E-mail" required="required" />
                  </div>
                  <div id="contact-part">
-                 <input type="number" id="contact-input" placeholder="contact number" required="required" />
+                 <input type="number" id="contact-input" className="inputform" placeholder="contact number" required="required" />
                  </div>
                  <div id="company-part" className="input-part"> 
-                 <input type="text" id="company-input" className="input-form" placeholder="Company" required="required" />
+                 <input type="text" id="company-input" className="inputform" className="input-form" placeholder="Company" required="required" />
                  </div>
                   <div id="password-part">
-                 <input type="password" id="password-input" placeholder="Password" required="required" />
+                 <input type="password" id="password-input" className="inputform" placeholder="Password" required="required" />
                  </div>
         <input id="reg" type="submit" onClick={(event)=>{this.handleDetail(event)}} value="Register "/>
         <Link to="/signin"><p id="new">Already have an account? Login here.</p></Link>

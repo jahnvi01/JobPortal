@@ -23,7 +23,7 @@ class Interviewer extends Component {
         }
       })
       .then(res=>res.json())
-      .then(res=>this.setState({interviewers:res,error:res.error}))
+      .then(res=>this.setState({interviewers:res||"",error:res.error||""}))
   }
 
  showTeam=()=>{

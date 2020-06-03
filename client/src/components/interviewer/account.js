@@ -88,7 +88,7 @@ return fetch('/api/interviewer/update',{
   },body:JSON.stringify(post)
 })
 .then(res=>res.json())
-.then(res=>console.log(res))
+.then(res=>this.setState({message:res.message||"",error:res.error||""}))
    }
    else{
      this.setState({error:"enter email password and contact details properly"})
@@ -160,57 +160,65 @@ return fetch('/api/interviewer/update',{
 
 <div className="row unit-5 background text-center" >
       
-      <div className="col-md-6 offset-3" style={{alignSelf:"center"}}>
+      <div className="col-md-6 offset-3" id="backgroundText" style={{alignSelf:"center"}}>
             <h2 style={{color:"white",fontSize:"40px",fontWeight:"bold"}}>Your Account</h2>
         </div>
           </div>
           <div className="row profile-card">
 <div className="col-md-6" >
          
-          <div className="col-md-12" style={{display:"flex",alignItems:"center"}}>
-<p className="m-5 font-title">Credits :</p> 
-<p className="m-5 font-title" id="credits"></p> 
+          <div className="col-md-12" style={{alignItems:"center"}}>
+<p className="m-2 font-title">Credits:</p> 
+<p className="m-2 font-title" id="credits"></p> 
               
 </div>
-          <div className="col-md-12" style={{display:"flex",alignItems:"center"}}>
-<p className="m-5 font-title">Full Name:</p> 
+          <div className="col-md-12" style={{alignItems:"center"}}>
+<p className="m-2 font-title">Full Name:</p> 
 <input type="text" id="user-input" placeholder="Fullname" required="required" />
               
 </div>
 
-<div className="col-md-12" style={{display:"flex",alignItems:"center"}}>
-<p className="m-5 font-title">Email :</p> 
+<div className="col-md-12" style={{alignItems:"center"}}>
+<p className="m-2 font-title">Email :</p> 
 <input type="email" id="email-input" placeholder="E-mail" required="required" />
                  </div>
                  
-                 <div className="col-md-12" style={{display:"flex",alignItems:"center"}}>
-<p className="m-5 font-title">Contact:</p> 
+                 <div className="col-md-12" style={{alignItems:"center"}}>
+<p className="m-2 font-title">Contact:</p> 
                  <input type="number" id="contact-input" placeholder="contact number" required="required" />
                  </div>
+
                  </div>
                  <div className="col-md-6">
-                 <div className="col-md-12" style={{display:"flex",alignItems:"center"}}>
-<p className="m-5 font-title">Company:</p> 
+                 <div className="col-md-12" style={{alignItems:"center"}}>
+<p className="m-2 font-title">Company:</p> 
                  <input type="text" id="company-input" className="input-form" placeholder="Company" />
                  </div>
-                 <div className="col-md-12" style={{display:"flex",alignItems:"center"}}>
-<p className="m-5 font-title">Password:</p> 
+                 <div className="col-md-12" style={{alignItems:"center"}}>
+<p className="m-2 font-title">Password:</p> 
                  <input type="password" id="password-input" placeholder="Password" required="required" />
                  </div>
-                 <div className="col-md-12" style={{display:"flex",alignItems:"center"}}>
-<p className="m-5 font-title">Available Timings:</p> 
+                 <div className="col-md-12" style={{alignItems:"center"}}>
+<p className="m-2 font-title">Available Timings:</p> 
                  <textarea type="text" id="timings-input" placeholder="Morning 8:00 AM to 10:00 AM" required="required" />
                  </div>
-                 <div className="col-md-12" style={{display:"flex",alignItems:"center"}}>
-<p className="m-5 font-title">Years of experience:</p> 
+                 <div className="col-md-12" style={{alignItems:"center"}}>
+<p className="m-2 font-title">Years of experience:</p> 
                  <input type="number" id="experience-input" placeholder="1" />
                  </div>
-     
+           
     
       </div>
-      <input id="reg" type="submit" className="btn btn-outline-success" onClick={(event)=>{this.handleSubmit(event)}} value="Update "/>
-      
+
       </div>
+     
+<div className="row" style={{margin:"1%"}}>
+  <div className="col-md-12">
+  <input  type="submit" className="btn btn-outline-success m-2" onClick={(event)=>{this.handleSubmit(event)}} value="Update "/>
+  </div>
+  
+  
+  </div>
       <div className="container">
 <div className="row" style={{margin:"3%"}}>
   <div className="col-md-12">
