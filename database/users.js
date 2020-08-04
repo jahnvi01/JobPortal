@@ -57,7 +57,7 @@ const userschema=new Schema({
    contact:{
       type:String,
       required:true,
-   
+      default:"Not Given"
   },
   hashed_password:{
    type:String,

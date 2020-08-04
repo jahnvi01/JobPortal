@@ -4,6 +4,8 @@ import { Switch, Route} from 'react-router-dom';
 import Home from './components/home';
 import ConatctUs from './components/contactUs';
 import WhyUs from './components/whyUs';
+import IntroI from './components/interviewer';
+import IntroC from './components/candidate';
 import './App.css';
 import UserSignup from './components/auth/user-signup';
 import AdminSignin from './components/admin/admin_signin';
@@ -17,6 +19,7 @@ import updateCompany from './components/admin/updateCompany';
 import CompanySignup from './components/auth/company-signup';
 import Contact from './components/admin/contact';
 import AdminJobs from './components/admin/jobs';
+import Messages from './components/admin/messages';
 import Schedule from './components/admin/scheduleInterview';
 import UserActive from './components/auth/user-active';
 import CompanyActive from './components/auth/company-active';
@@ -47,13 +50,16 @@ class App extends Component {
      <div className="bg-light">   
     <Route exact path="/" component={Home} />
     <Route exact path="/contactUs" component={ConatctUs} /> 
+    <Route exact path="/whyUs-candidates" component={IntroC} /> 
     <Route exact path="/whyUs" component={WhyUs} /> 
+    <Route exact path="/whyUs-interviewers" component={IntroI} /> 
     <Route exact path="/user-signup" component={UserSignup} />
     <Route exact path="/company-signup" component={CompanySignup} />
     <Route exact path="/interviewer-signup" component={IntSignup} />
     <Route exact path="/users" component={Users} />
     <Route exact path="/resume/:id" component={Resume} />
     <Route exact path="/admin/signin" component={AdminSignin} />
+    <Route exact path="/admin/messages" component={Messages} />
     <Route exact path="/admin/dashboard" component={Dashboard} />
     <Route exact path="/admin/List-Users" component={ListUsers} />
     <Route exact path="/admin/users/:id" component={UpdateUser} />

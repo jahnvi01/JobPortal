@@ -52,7 +52,10 @@ handleSubmit=(jobId)=>{
       })
       .then(res=>res.json())
       .then(res=>{this.setState({message:res.message,error:res.error||""})
-    this.props.history.push(`/admin/user-applications/${applicantId}`)
+      if(res.message==="Successfully Assigned"){
+       window.location.reload()
+      }
+
     })
 }}
   showjobs=()=>{
@@ -128,7 +131,13 @@ match=1;
     }
   }
   
-  render() {
+  removeAlert=()=>{
+    if(this.state.message || this.state.error) {
+      setTimeout(()=>{ this.setState({error:"",message:""}) }, 3000);
+    }
+   }
+    render() {
+    this.removeAlert()
      
       return (
         <div>

@@ -61,8 +61,13 @@ fetch('/api/admin/adminSignin',{
     }
   
   }
-  render() {
-
+ removeAlert=()=>{
+    if(this.state.message || this.state.error) {
+      setTimeout(()=>{ this.setState({error:"",message:""}) }, 3000);
+    }
+   }
+    render() {
+    this.removeAlert()
       return (
         <div className="home">
           

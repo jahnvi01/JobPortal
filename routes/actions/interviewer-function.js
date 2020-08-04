@@ -49,6 +49,42 @@ exports.intpreSignup = (req, res) => {
 
 
 
+
+
+exports.intgoogleSignup = (req, res) => {
+    const {token,fullname,email,password,contact} = req.body;
+  
+            
+
+            const verify=1;
+            interviewers.findOne({ email: email }, (err, olduser) => {
+            if (olduser) {
+                return res.status(400).json({
+                    error: 'Email is taken'
+                });
+            }
+            
+            const user = new interviewers({  email,fullname,contact, password,verify });
+            user.save((err, user) => {
+                if (err) {
+                    return res.status(401).json({
+                        error: err
+                    });
+                }
+                return res.json({
+                    message: 'Signup successful!',
+                    user,
+                    token
+                });
+            });
+        })
+};
+
+
+
+
+
+
 exports.intsignup = (req, res) => {
     const token = req.body.token;
     if (token) {
@@ -72,7 +108,7 @@ const verify=1;
                     });
                 }
                 return res.json({
-                    message: 'Singup success! Please signin',
+                    message: 'Signup success! Please signin',
                     user,
                     token
                 });
@@ -97,7 +133,7 @@ if(err||!user){
 
 if(!user.authenticate(password)){
     return res.status(400).json({
-        error:"Enter valid password"
+        error:"Enter valid details"
     })
 }
 const token=jwt.sign({_id:user._id},JWT_ACCOUNT_ACTIVATION,{expiresIn:'1d'})

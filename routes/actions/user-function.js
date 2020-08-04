@@ -14,7 +14,7 @@ JWT_ACCOUNT_ACTIVATION=require('../../config/keys').JWT_ACCOUNT_ACTIVATION;
 APIKEY=require('../../config/keys').EMAIL_API;
 exports.preSignup = (req, res) => {
     const { fullname, email,contact, password } = req.body;
-    users.findOne({ email: email.toLowerCase() }, (err, user) => {
+    users.findOne({ email: email }, (err, user) => {
         if (user) {
             return res.status(400).json({
                 error: 'Email is taken'
@@ -115,7 +115,7 @@ exports.signup = (req, res) => {
                     });
                 }
                 return res.json({
-                    message: 'Singup successful!',
+                    message: 'Signup successful!',
                     user,
                     token
                 });
@@ -127,6 +127,49 @@ exports.signup = (req, res) => {
         });
     }
 };
+
+
+
+
+
+exports.googleSignup = (req, res) => {
+    const {token,fullname,email,password,contact} = req.body;
+  
+            
+
+            const verify=1;
+            users.findOne({ email: email }, (err, olduser) => {
+            if (olduser) {
+                return res.status(400).json({
+                    error: 'Email is taken'
+                });
+            }
+            
+            const user = new users({  email,fullname,contact, password,verify });
+            user.save((err, user) => {
+                if (err) {
+                    return res.status(401).json({
+                        error: err
+                    });
+                }
+                return res.json({
+                    message: 'Signup successful!',
+                    user,
+                    token
+                });
+            });
+        })
+};
+
+
+
+
+
+
+
+
+
+
 
 exports.signin=(req,res)=>{
        
@@ -140,7 +183,7 @@ if(err||!user){
 
 if(!user.authenticate(password)){
     return res.status(400).json({
-        error:"Enter valid password"
+        error:"Enter valid details"
     })
 }
 const token=jwt.sign({_id:user._id},JWT_ACCOUNT_ACTIVATION,{expiresIn:'1d'})
@@ -450,17 +493,6 @@ console.log("jahnvi");
 
     res.json({ fileName: name, filePath: `/uploads/${name}` });
   });
-// const form= new formidable.IncomingForm()
-// form.keepExtensions=true
-// form.parse(req,(err,fields,files)=>{
-//     if(err){
-//         console.log(err)
-//        return res.json({error:err})
-//     }
-//     console.log(files)
-//     console.log(fields)
-//     console.log("enterr")
-//    return res.json({message:"uploaded"})
-// })
+
 
 }

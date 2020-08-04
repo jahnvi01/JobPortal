@@ -38,7 +38,7 @@ class Dashboard extends Component {
    <div className="col-md-2">
    <i className='fas fa-house-user' style={{fontSize:'36px',color:"gray",background:"lightgray",padding:"5%"}}></i>
    </div>
-   <div className="col-md-4 post-font" style={{color:"black"}}>
+   <div className="col-md-3 post-font" style={{color:"black"}}>
     <h4>{user.fullname}</h4>
     <div style={{display:"flex"}}>
     <i className='far fa-address-card p-1' style={{fontSize:'18px',color:"gray"}}></i>
@@ -56,7 +56,7 @@ class Dashboard extends Component {
    <button type="button" className="btn btn-outline-success">Applications</button>
   </Link>
      </div>
-     <div className="col-md-1 post-font">
+     <div className="col-md-2 post-font">
      <Link to={`/admin/users/${user._id}`}>
    <button type="button" className="btn btn-outline-success">Update</button>
   </Link>
@@ -159,7 +159,14 @@ class Dashboard extends Component {
   }
   
 
-  render() {
+  removeAlert=()=>{
+    if(this.state.message || this.state.error) {
+      setTimeout(()=>{ this.setState({error:"",message:""}) }, 3000);
+    }
+   }
+    render() {
+    this.removeAlert()
+    
       console.log(this.state)
       return (
         <div>
@@ -171,19 +178,19 @@ class Dashboard extends Component {
           </div>
 
           <div className="container" style={{marginTop:"2%"}}>
-          <h5 id="heading">Recent Users</h5>
+          <h5 id="heading" style={{background:"white",color:"#28a745",border:"1px solid #28a745"}}>Recent Users</h5>
   {this.showUsers()}
 
    </div>
 
    <div className="container" style={{marginTop:"2%"}}>
-          <h5 id="heading">Recent Companies</h5>
+          <h5 id="heading" style={{background:"white",border:"1px solid #28a745",color:"#28a745"}}>Recent Companies</h5>
   {this.showcompanies()}
 
    </div>
 
    <div className="container" style={{marginTop:"2%"}}>
-          <h5 id="heading">Recent interviewers</h5>
+          <h5 id="heading" style={{background:"white",border:"1px solid #28a745",color:"#28a745"}}>Recent interviewers</h5>
   {this.showTeam()}
 
    </div>

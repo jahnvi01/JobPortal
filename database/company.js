@@ -16,7 +16,8 @@ const companyschema=new Schema({
    company:{
        type:String,
        unique:true,
-       required:true
+       required:true,
+     
       
    },
 

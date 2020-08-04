@@ -45,6 +45,51 @@ exports.cpreSignup = (req, res) => {
 
 
 
+exports.cgooglepreSignup = (req, res) => {
+    const { email } = req.body;
+    companies.findOne({ email: email.toLowerCase() }, (err, user) => {
+        if (user) {
+            return res.status(400).json({
+                error: 'Email is taken'
+            });
+        }
+        
+    
+                   return res.json({
+                message: "Register your profile first"
+            });
+    
+    });
+};
+
+
+
+exports.cGooglesignup = (req, res) => {
+    const { email,company,website,token ,password,foundedyear,headquarter,noOfEmployees,stage } = req.body;
+ 
+       const verify=1;
+        
+
+            const cmp = new companies({ email,company,website, password,foundedyear,headquarter,noOfEmployees,stage,verify});
+            cmp.save((err, user) => {
+                if (err) {
+                    console.log(err)
+                    return res.status(401).json({
+                        error: "Something went wrong ! Try again"
+                    });
+                }
+                return res.json({
+                    message: 'Signup success!',
+                    user,token
+                });
+            });
+      
+
+};
+
+
+
+
 
 exports.csignup = (req, res) => {
     const token = req.body.token;
@@ -72,7 +117,7 @@ const verify=1;
                     });
                 }
                 return res.json({
-                    message: 'Singup success! Please signin',
+                    message: 'Signup success! Please signin',
                     user,token
                 });
             });

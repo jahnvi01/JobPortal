@@ -3,6 +3,11 @@ import { Link,withRouter } from 'react-router-dom';
 import {isAuth,userAuth} from '../../functions/auth';
 import moment from 'moment';
 import ShowAlert from '../../functions/alert';
+import { Select } from 'antd';
+import {locations} from '../../functions/data'
+import {skillset,jobroles} from '../../functions/data2'
+import { DatePicker } from 'antd';
+const { Option } = Select;
 class Users extends Component {
   state = {
     visible: false,
@@ -14,6 +19,7 @@ class Users extends Component {
     filePath:"",
     loading:false,
     jobrole:[],
+
     location:[],
     skills:[],
     salary:"",
@@ -101,19 +107,19 @@ if(this.state.fullname!==""){
   document.getElementById("experience").value=this.state.yearsOfExperience;
   document.getElementById("salary").value=this.state.salary;
   document.getElementById("achievement").value=this.state.achievements;
-const c=document.getElementsByClassName("role-list").length;
-for(var i=0;i<c;i++){
-var li= document.getElementsByClassName("role-list")[i].childNodes;
-if(this.state.jobrole.includes(li[1].innerHTML)){
-  li[0].checked=true;
-}
-}
+// const c=document.getElementsByClassName("role-list").length;
+// for(var i=0;i<c;i++){
+// var li= document.getElementsByClassName("role-list")[i].childNodes;
+// if(this.state.jobrole.includes(li[1].innerHTML)){
+//   li[0].checked=true;
+// }
+// }
 this.state.location.filter(loc=>{
-  this.setLocation(loc);
+ // this.setLocation(loc);
   
 });
 this.state.skills.filter(skill=>{
-  this.setSkill(skill);
+ // this.setSkill(skill);
   });
 }
   this.state.education.map(data=>{
@@ -123,37 +129,7 @@ this.state.skills.filter(skill=>{
     this.addEmployment(data.companyName,data.startYear,data.endYear,data.companyRole)
   })
 }
-  handlejobrole=(event)=>{
-const role=event.target.nextSibling.innerHTML;
-if(event.target.checked){
-    this.state.jobrole.push(role)
-}
-else{
-  this.setState({jobrole: this.state.jobrole.filter(word=>word!==role)}) 
 
-}
-
-  }
-
-
-addLocation=()=>{
-var name=document.getElementById("location-name").value;
-this.state.location.push(name);
-this.setLocation(name);
-
-}
-setLocation=(name)=>{
-  var li = document.createElement("LI");   // Create a <button> element
-li.innerHTML = name;   
-li.classList.add("location-style");                // Insert text
-document.getElementById("locations").appendChild(li); 
-  document.getElementById("location-name").value="";
-}
-addSkill=()=>{
-    var name=document.getElementById("skill-name").value;
-    this.state.skills.push(name);
-this.setSkill(name)
-    }
     showLocation=(location)=>{
       if(location){
            return  location.map(city=>{
@@ -163,15 +139,7 @@ this.setSkill(name)
       })
   }
   }
-setSkill=(name)=>{
-  var li = document.createElement("LI");   // Create a <button> element
-  li.innerHTML = name;   
-  li.classList.add("location-style");                // Insert text
-  document.getElementById("skills").appendChild(li); 
-
-  document.getElementById("skill-name").value="";
-}
-    addEducation=(clg,startYear,endYear,branch)=>{
+  addEducation=(clg,startYear,endYear,branch)=>{
 var div = document.createElement("DIV"); 
 div.setAttribute('class', 'education-list');       
 var ta = document.createElement("INPUT");   // Create a <button> element
@@ -384,7 +352,33 @@ fetch('/api/users/profile',{
 
 // }
   }
-  render() {
+
+  showSkills=()=>{
+    var skills=skillset.map(skill=>{
+        return(
+            <Option value={skill} key={skill} label={skill}>
+            <div className="demo-option-label-item">
+               {skill}
+            </div>
+          </Option>
+        )
+    })
+    return skills;
+  }
+  
+  handleChange=(value,name) =>{
+    console.log(`selected ${value}`);
+    this.setState({[name]:value})
+    console.log(this.state)
+  }
+
+  removeAlert=()=>{
+    if(this.state.message || this.state.error) {
+      setTimeout(()=>{ this.setState({error:"",message:""}) }, 3000);
+    }
+   }
+    render() {
+    this.removeAlert()
     
       return (
         <div>
@@ -403,58 +397,30 @@ fetch('/api/users/profile',{
 <p className="m-3 font-title">Select Your Job-role:</p> 
 </div>
     <div className="col-md-12" >
-        <ul style={{listStyle:"none"}}>
+
+<Select
+className="m-3 select"
+
+    mode="multiple"
+    style={{ width: '200px' }}
+    placeholder="Enter jobroles"
+    onChange={(event)=>{this.handleChange(event,'jobrole')}}
+    optionLabelProp="label"
+value={this.state.jobrole}
+  >
+  {
+       jobroles.map(role=>{return(
+       <Option value={role}>{role}</Option> 
+       )})
+     }
+
+     </Select>
+        {/* <ul style={{listStyle:"none"}}>
 <li className="role-list">
                 <input type="checkbox" onChange={(event)=>{this.handlejobrole(event)}} className="mr-2" />
                 <label className="form-check-label">Android Engineer</label>
             </li>
-            <li className="role-list">
-                <input type="checkbox" onChange={(event)=>{this.handlejobrole(event)}} className="mr-2" />
-                <label className="form-check-label">Backend Engineer</label>
-            </li>
-            <li className="role-list">
-                <input type="checkbox" onChange={(event)=>{this.handlejobrole(event)}} className="mr-2" />
-                <label className="form-check-label">Data Engineer</label>
-            </li>
-            <li className="role-list">
-                <input type="checkbox" onChange={(event)=>{this.handlejobrole(event)}} className="mr-2" />
-                <label className="form-check-label">DevOps</label>
-            </li>
-
-<li className="role-list">
-                <input type="checkbox" onChange={(event)=>{this.handlejobrole(event)}} className="mr-2" />
-                <label className="form-check-label">Front-end Engineer</label>
-            </li>
-            <li className="role-list">
-                <input type="checkbox" onChange={(event)=>{this.handlejobrole(event)}} className="mr-2" />
-                <label className="form-check-label">Full Stack Engineer</label>
-            </li>
-            <li className="role-list">
-                <input type="checkbox" onChange={(event)=>{this.handlejobrole(event)}} className="mr-2" />
-                <label className="form-check-label">IOS Engineer</label>
-            </li>
-            <li className="role-list">
-                <input type="checkbox" onChange={(event)=>{this.handlejobrole(event)}} className="mr-2" />
-                <label className="form-check-label">QA/SDET</label>
-            </li>
-
-<li className="role-list">
-                <input type="checkbox" onChange={(event)=>{this.handlejobrole(event)}} className="mr-2" />
-                <label className="form-check-label">Data Scientist</label>
-            </li>
-            <li className="role-list">
-                <input type="checkbox" onChange={(event)=>{this.handlejobrole(event)}} className="mr-2" />
-                <label className="form-check-label">Engineering Manager</label>
-            </li>
-            <li className="role-list">
-                <input type="checkbox" onChange={(event)=>{this.handlejobrole(event)}} className="mr-2" />
-                <label className="form-check-label">Product Manager</label>
-            </li>
-            <li className="role-list">
-                <input type="checkbox" onChange={(event)=>{this.handlejobrole(event)}} className="mr-2" />
-                <label className="form-check-label">others</label>
-            </li>
-</ul>
+           */}
             </div>
 
             <div className="col-md-12" style={{alignItems:"center",marginTop:"1%"}}>
@@ -465,14 +431,28 @@ fetch('/api/users/profile',{
 <div className="col-md-12" >
    <div style={{alignItems:"center"}}>
 <p className="m-3 font-title">Interested Locations</p> 
-<input className="m-3" type="text" id="location-name" width="30" />
-<button onClick={()=>this.addLocation()}>Add</button>
+<Select
+className="m-3 select"
+id="location"
+    mode="multiple"
+    style={{ width: '200px' }}
+    placeholder="Enter Locations"
+    onChange={(event)=>{this.handleChange(event,'location')}}
+    optionLabelProp="label"
+value={this.state.location}
+  >
+   {locations.map(location=>{
+        return(
+            <Option value={location} key={location} label={location}>
+            <div className="demo-option-label-item">
+               {location}
+            </div>
+          </Option>
+        )
+    })}
+     </Select>
 </div>
-<div>
-    <ul id="locations" style={{display:"flex"}}>
 
-    </ul>
-</div>
 </div>
 
 
@@ -480,14 +460,21 @@ fetch('/api/users/profile',{
 <div className="col-md-12" >
    <div style={{alignItems:"center"}}>
 <p className="m-3 font-title">Skills</p> 
-<input className="m-3" type="text" id="skill-name" width="30" />
-<button onClick={()=>this.addSkill()}>Add</button>
-</div>
-<div>
-    <ul id="skills" style={{display:"flex"}}>
 
-    </ul>
+<Select
+className="m-3 select"
+
+    mode="multiple"
+    style={{ width: '200px' }}
+    placeholder="Enter Skills"
+    onChange={(event)=>{this.handleChange(event,'skills')}}
+    optionLabelProp="label"
+value={this.state.skills}
+  >
+   {this.showSkills()}
+     </Select>
 </div>
+
 </div>
 
 <div className="col-md-12" style={{alignItems:"center"}}>
@@ -506,13 +493,13 @@ fetch('/api/users/profile',{
 <p className="m-3 font-title">Education</p> 
 <button onClick={()=>this.addEducation()}>Add</button>
 </div>
-<div id="education"></div>
+<div className="m-3" id="education"></div>
 
 <div className="col-md-12" style={{display:"flex",alignItems:"center"}}>
 <p className="m-3 font-title">Past Employment</p> 
 <button onClick={()=>this.addEmployment()}>Add</button>
 </div>
-<div id="employment"></div>     
+<div className="m-3" id="employment"></div>     
 <div className="col-md-12" style={{alignItems:"center"}}>
 <p className="m-3 font-title">Resume</p> 
 <form action='.' method="POST" enctype="multipart/form-data">
@@ -544,5 +531,15 @@ fetch('/api/users/profile',{
 
   
   export default withRouter(Users);
+
+
+
+
+
+
+
+
+
+
 
 

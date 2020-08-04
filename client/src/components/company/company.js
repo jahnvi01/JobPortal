@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import {isAuth,companyAuth} from '../../functions/auth';
 import ShowAlert from '../../functions/alert';
+import { Select } from 'antd';
+import {locations} from '../../functions/data'
+import {skillset,jobroles} from '../../functions/data2'
+const { Option } = Select;
 class Company extends Component {
   state = {
     visible: false,
@@ -10,7 +14,7 @@ class Company extends Component {
     loading:false,
     location:[],
     skills:[],
-  
+  jobrole:""
   };
   componentWillMount(){
     companyAuth(this.props);   
@@ -43,10 +47,28 @@ setSkill=(name)=>{
 
   document.getElementById("skill-name").value="";
 }
+  
+handleChange=(value,name) =>{
+  console.log(`selected ${value}`);
+  this.setState({[name]:value})
+  console.log(this.state)
+}
+showSkills=()=>{
+  var skills=skillset.map(skill=>{
+      return(
+          <Option value={skill} key={skill} label={skill}>
+          <div className="demo-option-label-item">
+             {skill}
+          </div>
+        </Option>
+      )
+  })
+  return skills;
+}
 
 handleSubmit=()=>{
 console.log(this.state);
-var role=document.getElementById("post-role").value
+var role=this.state.jobrole
 var salary=document.getElementById("package").value
 var description=document.getElementById("description").value
 var company=isAuth().company;
@@ -67,9 +89,18 @@ fetch('/api/company/post-job',{
   },body:JSON.stringify(postJob)
 })
 .then(res=>res.json())
-.then(res=>this.setState({message:res.message||"",error:res.error||""}))
+.then(res=>{this.setState({message:res.message||"",error:res.error||""})
+this.props.history.push("/jobs")
+})
+
 }
+removeAlert=()=>{
+  if(this.state.message || this.state.error) {
+    setTimeout(()=>{ this.setState({error:"",message:""}) }, 3000);
+  }
+ }
   render() {
+  this.removeAlert()
      
       return (
         <div>
@@ -86,43 +117,86 @@ fetch('/api/company/post-job',{
       <div className="row profile-card">
 <div className="col-md-12" style={{alignItems:"center"}} >
 <p className="m-3 font-title">Job-role:</p> 
-<input type="text" min="0"  id="post-role" />
+
+<Select
+className="m-3 select"
+
+
+    style={{ width: '200px' }}
+    placeholder="Enter jobroles"
+    onChange={(event)=>{this.handleChange(event,'jobrole')}}
+    optionLabelProp="label"
+value={this.state.jobrole}
+  >
+  {
+       jobroles.map(role=>{return(
+       <Option value={role}>{role}</Option> 
+       )})
+     }
+
+     </Select>
+
 </div>
 <div className="col-md-12" style={{alignItems:"center"}}>
 <p className="m-3 font-title">Salary (Per Enum):</p> 
-<input type="number" min="0" id="package"  width="10" />
+<input className="m-3" type="number" min="0" id="package"  width="10" />
 </div>
 
 <div className="col-md-12" style={{alignItems:"center"}}>
 <p className="m-3 font-title">Description:</p> 
-<textarea className="form-control"  rows="3" id="description"  />
+<textarea className="form-control" rows="3" id="description"  />
 
 </div>
 <div className="col-md-12" >
    <div style={{alignItems:"center"}}>
 <p className="m-3 font-title">Locations:</p> 
-<input type="text" id="location-name" width="30" />
-<button onClick={()=>this.addLocation()}>Add</button>
-</div>
-<div>
-    <ul id="locations" style={{display:"flex"}}>
+<Select
+className="m-3 select"
+id="location"
+    mode="multiple"
+    style={{ width: '200px' }}
+    placeholder="Enter Locations"
+    onChange={(event)=>{this.handleChange(event,'location')}}
+    optionLabelProp="label"
+value={this.state.location}
+  >
+   {locations.map(location=>{
+        return(
+            <Option value={location} key={location} label={location}>
+            <div className="demo-option-label-item">
+               {location}
+            </div>
+          </Option>
+        )
+    })}
+     </Select>
 
-    </ul>
+{/* <input type="text" id="location-name" width="30" />
+<button onClick={()=>this.addLocation()}>Add</button> */}
 </div>
+
 </div>
 
 <div className="col-md-12" >
    <div style={{alignItems:"center"}}>
 <p className="m-3 font-title">Skills:</p> 
-<input type="text" id="skill-name" width="30" />
-<button onClick={()=>this.addSkill()}>Add</button>
-</div>
-<ul id="skills" style={{display:"flex"}}>
 
-</ul>
+<Select
+className="m-3 select"
+
+    mode="multiple"
+    style={{ width: '200px' }}
+    placeholder="Enter Skills"
+    onChange={(event)=>{this.handleChange(event,'skills')}}
+    optionLabelProp="label"
+value={this.state.skills}
+  >
+   {this.showSkills()}
+     </Select>
+</div>
 
 </div>
-<button type="submit" onClick={()=>this.handleSubmit()} className="btn btn-success m-3">Post Job</button>  
+<button type="submit" onClick={()=>this.handleSubmit()} className="btn btn-success m-5">Post Job</button>  
 <ShowAlert error={this.state.error} message={this.state.message}/>
 </div>
 

@@ -72,13 +72,19 @@ class Interviewer extends Component {
     }
     else{
       return(
-        <h3>No interviews To Show</h3>
+        <h3 className="mt-3" style={{textAlign:"center"}}>No Applicants To Show</h3>
       )
     }
   }
 
 
-  render() {
+  removeAlert=()=>{
+    if(this.state.message || this.state.error) {
+      setTimeout(()=>{ this.setState({error:"",message:""}) }, 3000);
+    }
+   }
+    render() {
+    this.removeAlert()
      console.log(this.state.interviews)
       return (
         <div>

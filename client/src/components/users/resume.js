@@ -27,13 +27,15 @@ class Resume extends Component {
       .then(res=>res.json())
       .then(res=>{this.setState({
  
- fileName:res.fileName,
- filePath:res.filePath
+ fileName:res.data.fileName,
+ filePath:res.data.filePath
     })
     })
 }
 show=()=>{
+  console.log(this.state.filePath)
     if(this.state.filePath){
+      console.log(this.state.filePath)
         return(<embed  style={{justifyContent:"center"}} src={this.state.filePath} width="1000px" height="2100px" />)
     }
     else{

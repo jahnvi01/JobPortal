@@ -23,7 +23,7 @@ const interviewerschema=new Schema({
    contact:{
       type:String,
       required:true,
-     
+      default:"Not Given"
   },
   hashed_password:{
    type:String,
@@ -31,7 +31,7 @@ const interviewerschema=new Schema({
 },
 salt:String,
 
-company:{ type: String, required:true },
+company:{ type: String},
 credits:{
 type:Number,
 default:0

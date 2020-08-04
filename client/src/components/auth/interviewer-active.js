@@ -66,7 +66,13 @@ activate=()=>{
 componentDidMount(){
     console.log(this.state);
 }
+removeAlert=()=>{
+  if(this.state.message || this.state.error) {
+    setTimeout(()=>{ this.setState({error:"",message:""}) }, 3000);
+  }
+ }
   render() {
+  this.removeAlert()
  
     const showLoading = () => (this.state.loading ? <h2>Loading...</h2> : '');
       return (

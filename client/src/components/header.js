@@ -40,6 +40,11 @@ const Header = (props) => {
            </Link> 
          </NavItem>
          <NavItem>
+           <Link to='/admin/messages'>
+           <NavLink style={{cursor:"pointer"}} >Messages</NavLink>
+           </Link> 
+         </NavItem>
+         <NavItem>
            <Link to='/admin/List-Users'>
            <NavLink style={{cursor:"pointer"}} >User</NavLink>
            </Link> 
@@ -144,7 +149,7 @@ const Header = (props) => {
             </NavItem>
 
              
-           {!isAuth() &&(
+            {!isAuth() &&(
                   <NavItem>
                   <Link to='/signin'>
                   <NavLink style={{cursor:"pointer"}} >SignIn</NavLink>

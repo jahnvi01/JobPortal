@@ -3,6 +3,7 @@ import {withRouter } from 'react-router-dom';
 import {authentication,isAuth} from '../../functions/auth';
 import ShowAlert from '../../functions/alert';
 
+
 class CompanyActive extends Component {
   state = {
     visible: false,
@@ -37,6 +38,10 @@ class CompanyActive extends Component {
    
       
   }
+
+
+ 
+
 activate=()=>{
     const token=this.state.token;
     fetch('/api/csignup',{
@@ -66,7 +71,13 @@ activate=()=>{
 })
 }
 
+removeAlert=()=>{
+  if(this.state.message || this.state.error) {
+    setTimeout(()=>{ this.setState({error:"",message:""}) }, 3000);
+  }
+ }
   render() {
+  this.removeAlert()
  
     const showLoading = () => (this.state.loading ? <h2>Loading...</h2> : '');
       return (

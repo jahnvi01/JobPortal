@@ -129,7 +129,13 @@ addFilters=()=>{
   console.log(jobs)
   this.setState({jobs:jobs})
 }
+removeAlert=()=>{
+  if(this.state.message || this.state.error) {
+    setTimeout(()=>{ this.setState({error:"",message:""}) }, 3000);
+  }
+ }
   render() {
+  this.removeAlert()
      
       return (
         <div>

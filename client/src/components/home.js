@@ -6,11 +6,22 @@ import Accounting from'../images/accounting.png';
 import Engineer from'../images/engineer.png';
 import { Steps, Divider } from 'antd';
 import Footer from './footer';
+import Question from './question'
+
 const { Step } = Steps;
 class Home extends Component {
   
- 
+ state={
+   bottom:10,
+   erroor:""
+ }
+ removeAlert=()=>{
+  if(this.state.message || this.state.error) {
+    setTimeout(()=>{ this.setState({error:"",message:""}) }, 3000);
+  }
+ }
   render() {
+  this.removeAlert()
 
     return (
         <div>
@@ -22,62 +33,52 @@ class Home extends Component {
       
         
     <div className="col-md-12"  style={{padding:"0px",textAlign:"center",marginTop:"3%"}}>
-    <Link to='/user-signup'><button type="button" className="btn btn-outline-success home-btn">Candidate</button></Link>
+    <Link to='/whyUs-candidates'><button type="button" className="btn btn-outline-success home-btn">Candidate</button></Link>
 
     <Link to='/whyUs'><button type="button" className="btn btn-outline-success home-btn">Company</button></Link>
 
-    <Link to='/interviewer-signup'> <button type="button" className="btn btn-outline-success home-btn">Interviewer</button></Link>
+    <Link to='/whyUs-interviewers'> <button type="button" className="btn btn-outline-success home-btn">Interviewer</button></Link>
     </div>
     
     </div>
 
 <div className="col-md-10" style={{alignSelf:"center"}}>
 <div className="col-md-12">
-            <h2 style={{color:"white",fontSize:"50px",textAlign:"center",fontWeight:"bolder" ,textShadow:"rgb(0, 0, 0) 3px 0px 0px, rgb(0, 0, 0) 2.83487px 0.981584px 0px, rgb(0, 0, 0) 2.35766px 1.85511px 0px, rgb(0, 0, 0) 1.62091px 2.52441px 0px, rgb(0, 0, 0) 0.705713px 2.91581px 0px, rgb(0, 0, 0) -0.287171px 2.98622px 0px, rgb(0, 0, 0) -1.24844px 2.72789px 0px, rgb(0, 0, 0) -2.07227px 2.16926px 0px, rgb(0, 0, 0) -2.66798px 1.37182px 0px, rgb(0, 0, 0) -2.96998px 0.42336px 0px, rgb(0, 0, 0) -2.94502px -0.571704px 0px, rgb(0, 0, 0) -2.59586px -1.50383px 0px, rgb(0, 0, 0) -1.96093px -2.27041px 0px, rgb(0, 0, 0) -1.11013px -2.78704px 0px, rgb(0, 0, 0) -0.137119px -2.99686px 0px, rgb(0, 0, 0) 0.850987px -2.87677px 0px, rgb(0, 0, 0) 1.74541px -2.43999px 0px, rgb(0, 0, 0) 2.44769px -1.73459px 0px, rgb(0, 0, 0) 2.88051px -0.838247px 0px"}}>Your Dream Job</h2>
-            <h2 style={{color:"white",fontSize:"30px",textAlign:"center",fontWeight:"bolder",textShadow: "rgb(0, 0, 0) 3px 0px 0px, rgb(0, 0, 0) 2.83487px 0.981584px 0px, rgb(0, 0, 0) 2.35766px 1.85511px 0px, rgb(0, 0, 0) 1.62091px 2.52441px 0px, rgb(0, 0, 0) 0.705713px 2.91581px 0px, rgb(0, 0, 0) -0.287171px 2.98622px 0px, rgb(0, 0, 0) -1.24844px 2.72789px 0px, rgb(0, 0, 0) -2.07227px 2.16926px 0px, rgb(0, 0, 0) -2.66798px 1.37182px 0px, rgb(0, 0, 0) -2.96998px 0.42336px 0px, rgb(0, 0, 0) -2.94502px -0.571704px 0px, rgb(0, 0, 0) -2.59586px -1.50383px 0px, rgb(0, 0, 0) -1.96093px -2.27041px 0px, rgb(0, 0, 0) -1.11013px -2.78704px 0px, rgb(0, 0, 0) -0.137119px -2.99686px 0px, rgb(0, 0, 0) 0.850987px -2.87677px 0px, rgb(0, 0, 0) 1.74541px -2.43999px 0px, rgb(0, 0, 0) 2.44769px -1.73459px 0px, rgb(0, 0, 0) 2.88051px -0.838247px 0px" }}>Is Waiting For You</h2>
+            <h2 id="animation" style={{fontSize:"50px",textAlign:"center",fontWeight:"bolder" }}>Your Dream Job</h2>
+            <h2 id="animation" style={{fontSize:"30px",textAlign:"center",fontWeight:"bolder"}}>Is Waiting For You</h2>
         </div>
-
+    
 </div>
 </div>
-<div className="row" style={{marginTop:"2%"}}>
+<div className="row" style={{marginTop:"3%"}}>
     <div className="col-md-12">
       <div>
-      <h2 style={{fontSize:"20px",color:"black",  padding: "1%",textAlign:"center",fontWeight:"bold"}} >Boost Your Career In Just 3 Steps</h2>
+      <h2 id="home-title" style={{fontSize:"20px", padding: "1%",textAlign:"center",fontWeight:"bold"}} >Top Product Companies looking for Candidates like you,</h2>
+      <h2 id="home-title" style={{fontSize:"20px", padding: "1%",textAlign:"center",fontWeight:"bold"}} > So Just Submit your Resume and Let Top Companies Come to you.
+</h2>
       </div>
 
         
            </div>
         </div>
-   
-<div className="container" style={{margin:"5%"}}>
-   
-<div className="row">
-    <div className="col-md-12">
-<Steps >
-          <Step title="Step 1" description="Complete Your Profile" />
-          <Step title="Step 2" description="Apply For Jobs" />
-          <Step title="Step 3" description="Find Your Dream Job" />
-        </Steps>
-
-        </div></div></div>
-<div className="row">
-    <div className="col-md-12">
-      <div>
-      <h2 style={{fontSize:"20px",color:"black",  padding: "1%",textAlign:"center",fontWeight:"bold"}} > Why Choose Us?</h2>
-      </div>
-
-        
-           
-        </div>
-      </div>
-
+  
 <div className="container">
 
 <div className="row" style={{marginTop:"2%"}}>
+<div className="col-md-6" style={{marginTop:"2%"}}>
+      <div style={{textAlign:"center"}}>
+      <img src={Engineer} width="75" height="75" />
+      <h5 style={{margin:"2%"}}> Trusted & Quality Job</h5>
+      <p>Search for your requirements and see company profile and visit website to know your workplace before joining.</p>
+  
+      </div>
+
+        </div>
     <div className="col-md-6" style={{marginTop:"2%"}}>
       <div style={{textAlign:"center"}}>
       <img src={Money} width="75" height="75" />
-      <h5 style={{margin:"2%"}}>Search Desired Jobs</h5>
+      <h5 style={{margin:"2%"}}>Connect to Top Companies
+</h5>
      <p>Filter hundreds of jobs according to location, skills, salary etc and find your best match to boost up your career.</p>
       </div>
 
@@ -92,15 +93,7 @@ class Home extends Component {
 
         </div>
   
-        <div className="col-md-6" style={{marginTop:"2%"}}>
-      <div style={{textAlign:"center"}}>
-      <img src={Engineer} width="75" height="75" />
-      <h5 style={{margin:"2%"}}> Trusted & Quality Job</h5>
-      <p>Search for your requirements and see company profile and visit website to know your workplace before joining.</p>
   
-      </div>
-
-        </div>
         <div className="col-md-6" style={{marginTop:"2%"}}>
       <div style={{textAlign:"center"}}>
       <img src={Accounting} width="75" height="75" />
@@ -114,8 +107,9 @@ class Home extends Component {
       </div>
   
 </div>
-<Footer />
 
+<Footer />
+<Question />
       </div>
     );
   }

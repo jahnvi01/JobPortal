@@ -5,9 +5,14 @@ import hands from'../images/hands.png';
 import people from'../images/people.png';
 import person from'../images/person.png';
 import education from'../images/education.png';
+import time from'../images/chronometer.png';
+import coins from'../images/coins.svg';
+import question from'../images/question.png';
 import Accounting from'../images/accounting.png';
 import { Steps, Divider } from 'antd';
+import { Modal, Button } from 'antd';
 import Footer from './footer';
+import Question from './question'
 const { Step } = Steps;
 class WhyUs extends Component {
   state = {
@@ -18,6 +23,33 @@ class WhyUs extends Component {
  
   
   };
+  handleMessage=()=>{
+    var company=document.getElementById("company").value;
+    var email=document.getElementById("email-msg").value;
+    var message=document.getElementById("msg").value;
+    if(company && email && message){
+        const post={
+            company,email,message
+        }
+        fetch('/api/admin/message',{
+          method: "post",
+          headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+          },body:JSON.stringify(post)
+        })
+        .then(res=>res.json())
+        .then(res=>{this.setState({error:res.error||"",message:res.message||""})
+     document.getElementById("company").value="";
+     document.getElementById("email-msg").value="";
+     document.getElementById("msg").value="";
+      }) 
+    }
+    else{
+        this.setState({error:"Fill up all the fields"})
+    }
+      }
+    
   handleSubmit=()=>{
 var name=document.getElementById("fullname").value;
 var email=document.getElementById("email").value;
@@ -42,7 +74,25 @@ else{
     this.setState({error:"Fill up all the fields"})
 }
   }
-  render() {
+showModal = () => {
+console.log("ye")
+this.setState({visible:true})
+ };
+handleOk = e => {this.setState({visible:false})}
+ handleCancel = e => {
+  
+    console.log("cancelll")
+    this.setState({visible:false})
+  
+   
+  };
+  removeAlert=()=>{
+    if(this.state.message || this.state.error) {
+      setTimeout(()=>{ this.setState({error:"",message:""}) }, 3000);
+    }
+   }
+    render() {
+    this.removeAlert()
      
       return (
         <div>
@@ -50,40 +100,73 @@ else{
 <ShowAlert error={this.state.error} message={this.state.message}/>
 
 
-<div className="col-md-12" style={{alignSelf:"center",textAlign:"center"}}>
+<div className="col-md-10" style={{alignSelf:"center",textAlign:"center"}}>
 <div className="col-md-12">
-            <h2 style={{color:"white",fontSize:"50px",textAlign:"center",fontWeight:"bolder" ,textShadow:"rgb(0, 0, 0) 3px 0px 0px, rgb(0, 0, 0) 2.83487px 0.981584px 0px, rgb(0, 0, 0) 2.35766px 1.85511px 0px, rgb(0, 0, 0) 1.62091px 2.52441px 0px, rgb(0, 0, 0) 0.705713px 2.91581px 0px, rgb(0, 0, 0) -0.287171px 2.98622px 0px, rgb(0, 0, 0) -1.24844px 2.72789px 0px, rgb(0, 0, 0) -2.07227px 2.16926px 0px, rgb(0, 0, 0) -2.66798px 1.37182px 0px, rgb(0, 0, 0) -2.96998px 0.42336px 0px, rgb(0, 0, 0) -2.94502px -0.571704px 0px, rgb(0, 0, 0) -2.59586px -1.50383px 0px, rgb(0, 0, 0) -1.96093px -2.27041px 0px, rgb(0, 0, 0) -1.11013px -2.78704px 0px, rgb(0, 0, 0) -0.137119px -2.99686px 0px, rgb(0, 0, 0) 0.850987px -2.87677px 0px, rgb(0, 0, 0) 1.74541px -2.43999px 0px, rgb(0, 0, 0) 2.44769px -1.73459px 0px, rgb(0, 0, 0) 2.88051px -0.838247px 0px"}}>Hire Best Candidates Across India</h2>
-            <h2 style={{color:"white",fontSize:"30px",textAlign:"center",fontWeight:"bolder",textShadow: "rgb(0, 0, 0) 3px 0px 0px, rgb(0, 0, 0) 2.83487px 0.981584px 0px, rgb(0, 0, 0) 2.35766px 1.85511px 0px, rgb(0, 0, 0) 1.62091px 2.52441px 0px, rgb(0, 0, 0) 0.705713px 2.91581px 0px, rgb(0, 0, 0) -0.287171px 2.98622px 0px, rgb(0, 0, 0) -1.24844px 2.72789px 0px, rgb(0, 0, 0) -2.07227px 2.16926px 0px, rgb(0, 0, 0) -2.66798px 1.37182px 0px, rgb(0, 0, 0) -2.96998px 0.42336px 0px, rgb(0, 0, 0) -2.94502px -0.571704px 0px, rgb(0, 0, 0) -2.59586px -1.50383px 0px, rgb(0, 0, 0) -1.96093px -2.27041px 0px, rgb(0, 0, 0) -1.11013px -2.78704px 0px, rgb(0, 0, 0) -0.137119px -2.99686px 0px, rgb(0, 0, 0) 0.850987px -2.87677px 0px, rgb(0, 0, 0) 1.74541px -2.43999px 0px, rgb(0, 0, 0) 2.44769px -1.73459px 0px, rgb(0, 0, 0) 2.88051px -0.838247px 0px" }}>Get Best Fit For Your Requirements</h2>
-         <Link to='/company-signup'> <button style={{marginTop:"2%",fontSize:"20px",border:"1px solid black"}} className="btn btn-light">Start Hiring</button>
+            <h2 id="animation" style={{fontSize:"50px",textAlign:"center",fontWeight:"bolder" }}>Reduce 95% of your Interview Process.</h2>
+            <h2 id="animation" style={{fontSize:"30px",textAlign:"center",fontWeight:"bolder" }}> (Both Time <span><img src={time} width="30" height="30" alt="time"/></span> & Money  <span><img src={coins} width="25" height="30" alt="coin"/></span>…)</h2>
+         <Link to='/company-signup'> <button style={{marginTop:"2%",fontSize:"20px",border:"1px solid #28a745"}} className="btn btn-light">Start Hiring</button>
          </Link>  
         </div>
 
 </div>
+
+<div className="col-md-2" style={{background:"#28a745"}}>
+        <div className="col-md-12 mt-5"  style={{padding:"0px",textAlign:"center",padding:"1%",display:"flex",flexDirection:"column"}} >
+            <h2 style={{fontSize:"20px", fontWeight:"bold",borderRadius:"0px"}} id="animation"> Do You</h2>
+            <h2 style={{fontSize:"20px", fontWeight:"bold",borderRadius:"0px"}} id="animation"> Want to</h2>
+            <h2  style={{fontSize:"20px", fontWeight:"bold",borderRadius:"0px"}} id="animation"> Know</h2>
+            <button onClick={()=>this.showModal()} style={{marginTop:"2%",fontSize:"25px",color:"#28a745" ,border:"1px solid #28a745"}} className="btn btn-light">HOW ?</button>
+            <Modal
+          title="Request Call Back"
+          visible={this.state.visible}
+          onOk={()=>{this.handleOk()}}
+          onCancel={()=>{this.handleCancel()}}
+        >
+         
+         <div className="row">
+<div className="col-md-12" style={{alignItems:"center"}}>
+<p className="font-title">Email/Contact</p> 
+<input type="email" className="input-form" id="email-msg"  />
 </div>
+
+<div className="col-md-12" style={{alignItems:"center"}}>
+<p className="font-title">Company</p> 
+<input type="text" className="input-form" id="company"  />
+</div>
+
+<div className="col-md-12" style={{alignItems:"center"}}>
+<p className="font-title">Ask Anything...</p> 
+<textarea type="text"  id="msg" className="form-control"  rows="3" />
+</div>
+
+<button type="submit" onClick={()=>this.handleMessage()} className="btn btn-success m-3">Send</button>  
+      </div>
    
 
-<div className="row" style={{marginTop:"2%"}}>
+        </Modal>
+
+   
+            <img src={question} height="70" width="50" style={{marginLeft:"auto",marginRight:"auto"}} className="mt-3" alt="man"/>
+        </div>
+
+    
+    </div>
+
+
+</div>
+   
+ {/* <div className="row" style={{marginTop:"2%"}}>
     <div className="col-md-12">
       <div>
-      <h2 style={{fontSize:"20px",color:"black",  padding: "1%",textAlign:"center",fontWeight:"bold"}} >Find Best Candidates In Just 3 Steps</h2>
+      <h2 id="home-title" style={{fontSize:"20px", padding: "1%",textAlign:"center",fontWeight:"bold"}} >Hire the best talent across India</h2>
       </div>
 
         
            </div>
         </div>
-   
-<div className="container" style={{margin:"5%"}}>
-   
-<div className="row">
-    <div className="col-md-12">
-<Steps >
-          <Step title="Step 1" description="Post Your Requirements" />
-          <Step title="Step 2" description="Schedule An Interview" />
-          <Step title="Step 3" description="Find Your Best Fit" />
-        </Steps>
+ */}
 
-        </div></div></div>
-<div className="row">
+<div className="row mt-3">
     <div className="col-md-12">
       <div>
       <h2 style={{fontSize:"20px",color:"black",  padding: "1%",textAlign:"center",fontWeight:"bold"}} > Why Choose Us?</h2>
@@ -148,7 +231,7 @@ else{
 <input type="text" className="input-form" id="fullname" />
 </div>
 <div className="col-md-12" style={{alignItems:"center"}}>
-<p className="m-3 font-title">Email:</p> 
+<p className="m-3 font-title">Email:*</p> 
 <input type="email" className="input-form" id="email"  />
 </div>
 
@@ -168,6 +251,7 @@ else{
 
 </div>
 <Footer />
+<Question />
         </div>
     
       );

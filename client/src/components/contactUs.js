@@ -35,7 +35,13 @@ else{
     this.setState({error:"Fill up all the fields"})
 }
   }
-  render() {
+  removeAlert=()=>{
+    if(this.state.message || this.state.error) {
+      setTimeout(()=>{ this.setState({error:"",message:""}) }, 3000);
+    }
+   }
+    render() {
+    this.removeAlert()
      
       return (
         <div>
@@ -45,7 +51,7 @@ else{
 
      
       <div className="col-md-6 offset-3"  id="backgroundText" style={{alignSelf:"center"}}>
-            <h2 style={{color:"white",fontSize:"40px",fontWeight:"bold"}}>Conatct Us</h2>
+            <h2 style={{color:"white",fontSize:"40px",fontWeight:"bold"}}>Request Callback</h2>
         </div>
           </div>
         
@@ -58,7 +64,7 @@ else{
 <input type="text" className="input-form" id="fullname" />
 </div>
 <div className="col-md-12" style={{alignItems:"center"}}>
-<p className="m-3 font-title">Email:</p> 
+<p className="m-3 font-title">Email:*</p> 
 <input type="email" className="input-form" id="email"  />
 </div>
 

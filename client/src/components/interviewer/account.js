@@ -46,7 +46,7 @@ user:res.user||""
   document.getElementById('company-input').value=this.state.user.company||"";
   document.getElementById('credits').innerHTML=this.state.user.credits||"0";
   document.getElementById('user-input').value=this.state.user.fullname||"";
-  document.getElementById('password-input').value=this.state.user.password||"";
+
   document.getElementById('email-input').value=this.state.user.email||"";
   document.getElementById('contact-input').value=this.state.user.contact||"";
   document.getElementById('timings-input').value=this.state.user.timings||"";
@@ -61,13 +61,13 @@ this.interviews();
   var company= document.getElementById('company-input').value
 
   var fullname=  document.getElementById('user-input').value
-  var password= document.getElementById('password-input').value
+
   var email=  document.getElementById('email-input').value
    var contact= document.getElementById('contact-input').value
    var timings= document.getElementById('timings-input').value
   var experience=  document.getElementById('experience-input').value
   var _id=this.props.match.params.id;
-    if(password && email && company){
+    if(email && company){
     var post={
     _id:_id,
       company:company,
@@ -75,7 +75,7 @@ fullname:fullname,
 contact:contact,
 timings:timings,
 experience:experience,
-      password:password,
+      password:this.state.user.password,
       email:email
     
   }
@@ -91,7 +91,7 @@ return fetch('/api/interviewer/update',{
 .then(res=>this.setState({message:res.message||"",error:res.error||""}))
    }
    else{
-     this.setState({error:"enter email password and contact details properly"})
+     this.setState({error:"enter email and contact details properly"})
     
    }
 
@@ -153,11 +153,17 @@ return fetch('/api/interviewer/update',{
 
 
 
-  render() {
+  removeAlert=()=>{
+    if(this.state.message || this.state.error) {
+      setTimeout(()=>{ this.setState({error:"",message:""}) }, 3000);
+    }
+   }
+    render() {
+    this.removeAlert()
      console.log(this.state.user)
       return (
         <div>
-
+  <ShowAlert error={this.state.error} message={this.state.message}/>
 <div className="row unit-5 background text-center" >
       
       <div className="col-md-6 offset-3" id="backgroundText" style={{alignSelf:"center"}}>
@@ -194,10 +200,7 @@ return fetch('/api/interviewer/update',{
 <p className="m-2 font-title">Company:</p> 
                  <input type="text" id="company-input" className="input-form" placeholder="Company" />
                  </div>
-                 <div className="col-md-12" style={{alignItems:"center"}}>
-<p className="m-2 font-title">Password:</p> 
-                 <input type="password" id="password-input" placeholder="Password" required="required" />
-                 </div>
+
                  <div className="col-md-12" style={{alignItems:"center"}}>
 <p className="m-2 font-title">Available Timings:</p> 
                  <textarea type="text" id="timings-input" placeholder="Morning 8:00 AM to 10:00 AM" required="required" />

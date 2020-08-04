@@ -1,5 +1,6 @@
 
 JWT_ACCOUNT_ACTIVATION=require('../../config/keys').JWT_ACCOUNT_ACTIVATION;
+const {messages} =require('../../database/message');
 APIKEY=require('../../config/keys').EMAIL_API;
 exports.contact = (req, res) => {
     const { name, email,message } = req.body;
@@ -24,10 +25,24 @@ exports.contact = (req, res) => {
                error:error
             });     
           }
-                   return res.json({
-                message: `Mesaage has been sent to company.`,
-                response,body
-            });
+               
+          
+                
+                            const msg = new messages({  email,message });
+                            msg.save((err, user) => {
+                                if (err) {
+                                    return res.status(401).json({
+                                        error: err
+                                    });
+                                }
+                                return res.json({
+                                  message: `Mesaage has been sent to company.`,
+                
+                                    
+                                });
+                        
+                        });
+                    
         });
 
  
@@ -56,10 +71,20 @@ exports.feedback = (req, res) => {
              error:error
           });     
         }
-                 return res.json({
-              message: `Mesaage has been sent to company.`,
-              response,body
-          });
+        const msg = new messages({  email,message });
+        msg.save((err, user) => {
+            if (err) {
+                return res.status(401).json({
+                    error: err
+                });
+            }
+            return res.json({
+              message: `Mesaage has been sent.`,
+
+                
+            });
+    
+    });
       });
 
 

@@ -50,9 +50,12 @@ handleSubmit=(applicantId)=>{
           'Content-Type': 'application/json'
         },body:JSON.stringify(post)
       })
-      .then(res=>{this.setState({message:res.message,error:res.error||""})
       .then(res=>res.json())
-    this.props.history.push(`/admin/schedule-interview/${jobId}`)
+      .then(res=>{this.setState({message:res.message,error:res.error||""})
+      if(res.message==="Successfully Assigned"){
+        window.location.reload()
+      }
+
     })
 }}
   showUsers=()=>{
@@ -128,7 +131,13 @@ match=1;
     }
   }
   
-  render() {
+  removeAlert=()=>{
+    if(this.state.message || this.state.error) {
+      setTimeout(()=>{ this.setState({error:"",message:""}) }, 3000);
+    }
+   }
+    render() {
+    this.removeAlert()
      
       return (
         <div>

@@ -181,6 +181,11 @@ margin-top: 2%;
     margin: 2%;
     border: 1px solid #28a745;
 }
+.ant-btn{
+  background: #28a745 !important;
+  color: white;
+  border: 1px solid #28a745;
+}
 #heading{
 
   font-size: 25px;
@@ -222,6 +227,55 @@ a:hover{
   background-color: #3e4551 !important; 
   color: white !important;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+#animation{
+
+  background: linear-gradient(to right, #30CFD0 0%, #330867 100%);
+	-webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 0px white, 0 0 10px #28a745;
+}
+#home-title{
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0px, 0 0 17px #28a745;
+}
+
+
+
+
+
+@keyframes showup {
+    0% {opacity:0;}
+    20% {opacity:1;}
+    80% {opacity:1;}
+    100% {opacity:1;}
+}
+
+
+@keyframes reveal {
+    0% {opacity:0}
+    20% {opacity:1}
+
+    80% {opacity:1;}
+    100% {opacity:1}
+}
+
+
+
+
+
 @media only screen and (max-width: 650px) {
 .inputform{
     width:auto;
@@ -229,9 +283,19 @@ a:hover{
   
   }
 }
-
+@media only screen and (max-width: 425px) {
+  .home{
+  
+      height:auto;
+    
+    }
+  }
 @media only screen and (max-width: 768px) {
 #backgroundText{
 margin: 0px;
 }
   }
+
+
+
+  

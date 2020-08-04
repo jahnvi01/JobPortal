@@ -82,7 +82,13 @@ return fetch('/api/interviewer/update',{
   }
  
 
-  render() {
+  removeAlert=()=>{
+    if(this.state.message || this.state.error) {
+      setTimeout(()=>{ this.setState({error:"",message:""}) }, 3000);
+    }
+   }
+    render() {
+    this.removeAlert()
      console.log(this.state.user)
       return (
         <div>

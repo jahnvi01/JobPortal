@@ -1,5 +1,6 @@
-const {users,educations,employments}=require("../../database/users")
+const {users}=require("../../database/users")
 const {jobs} =require('../../database/jobs');
+const {messages} =require('../../database/message');
 const {interviews} =require('../../database/interviews');
 const {interviewers} =require('../../database/interviewers');
 const {companies} =require('../../database/company');
@@ -298,4 +299,44 @@ exports.getCompanies = (req, res) => {
                                                       });
                                                   };
                                                   
-                                                      
+                                                  exports.message = (req, res) => {
+                                                   var {company,email,message}=req.body
+                                                if(!company){
+                                                    company=""
+                                                }
+                                                if(!email){
+                                                    email=""
+                                                }
+                                                            const msg = new messages({  company,email,message });
+                                                            msg.save((err, user) => {
+                                                                if (err) {
+                                                                    return res.status(401).json({
+                                                                        error: err
+                                                                    });
+                                                                }
+                                                                return res.json({
+                                                                    message: 'Sent',
+                                                                    
+                                                                });
+                                                        
+                                                        });
+                                                    
+                                                };
+                                                                                              
+                                                exports.getMessages = (req, res) => {
+ 
+                                                    messages.find({})
+                                                    .sort({createdAt:1})
+                                                    .exec((err,message)=>{
+                                                        if(err){
+                                                            return res.status(400).json({
+                                                                error:err
+                                                            })
+                                                        }
+                                                        
+                                                        
+                                                        return res.json(message)
+                                                        })
+                                                  
+                                                
+                                                        }
