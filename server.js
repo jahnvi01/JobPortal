@@ -2,6 +2,7 @@ const express =require('express');
 const bodyParser=require('body-parser');
 const mongoose=require('mongoose')
 const app=express();
+const path=require('path');
 const fileupload=require("express-fileupload")
 const authroutes=require('./routes/api/auth')
 const userroutes=require('./routes/api/users')
@@ -25,6 +26,7 @@ const port=process.env.PORT||5000;
     app.use(express.static('client/build'));
     app.get('*',(req,res)=>{
         res.sendFile(path.resolve(__dirname,'client','build','index.html'));
+    
     })
 
 
