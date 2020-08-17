@@ -8,6 +8,7 @@ const mongoose=require("mongoose")
 var ObjectId = mongoose.Types.ObjectId;
 JWT_ACCOUNT_ACTIVATION=require('../../config/keys').JWT_INTERVIEWER_ACTIVATION;
 APIKEY=require('../../config/keys').EMAIL_API;
+EMAIL=require('../../config/keys').EMAIL;
 exports.intpreSignup = (req, res) => {
     const { fullname, email,contact, password,company } = req.body;
     interviewers.findOne({ email: email.toLowerCase() }, (err, user) => {
@@ -30,7 +31,7 @@ exports.intpreSignup = (req, res) => {
             'content-type': 'application/json',
             'api-key': APIKEY
           },
-          body: `{"sender":{"name":"job-portal","email":"jbdalwadi01@gmail.com"},"to":[{"email":"${email}","name":"${fullname}"}],"replyTo":{"email":"${email}","name":"${fullname}"},"htmlContent":"http://localhost:3000/interviewer-signup/${token}","subject":"verification-email"}`
+          body: `{"sender":{"name":"job-portal","email":${EMAIL}},"to":[{"email":"${email}","name":"${fullname}"}],"replyTo":{"email":"${email}","name":"${fullname}"},"htmlContent":"${URL}/interviewer-signup/${token}","subject":"verification-email"}`
         };
        
         

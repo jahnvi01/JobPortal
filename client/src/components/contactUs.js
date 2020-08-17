@@ -87,16 +87,17 @@ else{
 </div>
 <div  style={{alignItems:"center"}}>
       <p className="m-1 font-title">Address:</p> 
-      <p>203 Fake St. Mountain View, San Francisco, California, USA</p>
+      <p>Sec-3, Dwarka, New Delhi- 110078
+</p>
 </div>
 
 <div  style={{alignItems:"center"}}>
       <p className="m-1 font-title">Phone:</p> 
-      <p>+1 232 3235 324</p>
+      <p>+91 8329606547</p>
 </div>
 <div  style={{alignItems:"center"}}>
       <p className="m-1 font-title">Email Address:</p> 
-      <p>youremail@domain.com</p>
+      <p>mail@TechHire.in</p>
 </div>
 </div>
 

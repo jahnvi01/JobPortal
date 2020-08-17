@@ -19,7 +19,7 @@ class Footer extends Component {
     <div className="col-md-4 mx-auto">
 
       
-      <h5 className="font-weight-bold text-uppercase mt-3 mb-4">JobFinder</h5>
+      <h5 className="font-weight-bold text-uppercase mt-3 mb-4">TechHire</h5>
       <p>Explore thousands of jobs and find your perfect match</p>
 
     </div>
@@ -118,7 +118,7 @@ class Footer extends Component {
   </li>
 </ul>
 <div class="footer-copyright text-center py-3">© 2020 Copyright:
-    <a href="https://mdbootstrap.com/"> JobFinder.com</a>
+    <a href="https://mdbootstrap.com/"> TechHire.com</a>
   </div>
 
 </footer>

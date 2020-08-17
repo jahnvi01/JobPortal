@@ -9,7 +9,7 @@ class Question extends Component {
     erroor:""
   }
   componentDidMount() {
-   addResponseMessage("Welcome to JobFinder!");
+   addResponseMessage("Welcome to TechHire!");
  }
 
 handleNewUserMessage = (newMessage) => {

@@ -28,7 +28,7 @@ const Header = (props) => {
   
      <Navbar color="white" light expand="md">
      <Link to="/">
-     <NavbarBrand className='font-weight-bold' style={{cursor:"pointer"}}>JobFinder</NavbarBrand>
+     <NavbarBrand className='font-weight-bold' style={{cursor:"pointer"}}>TechHire</NavbarBrand>
      </Link>
      <NavbarToggler onClick={toggle} />
      <Collapse isOpen={isOpen} navbar>
@@ -100,7 +100,7 @@ const Header = (props) => {
 
         <Navbar color="white" light expand="md">
         <Link to="/">
-        <NavbarBrand className='font-weight-bold' style={{cursor:"pointer"}}>JobFinder</NavbarBrand>
+        <NavbarBrand className='font-weight-bold' style={{cursor:"pointer"}}>TechHire</NavbarBrand>
         </Link>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>

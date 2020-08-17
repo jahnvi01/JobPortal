@@ -2,6 +2,7 @@
 JWT_ACCOUNT_ACTIVATION=require('../../config/keys').JWT_ACCOUNT_ACTIVATION;
 const {messages} =require('../../database/message');
 APIKEY=require('../../config/keys').EMAIL_API;
+EMAIL=require('../../config/keys').EMAIL;
 exports.contact = (req, res) => {
     const { name, email,message } = req.body;
 
@@ -15,7 +16,7 @@ exports.contact = (req, res) => {
             'content-type': 'application/json',
             'api-key': APIKEY
           },
-          body: `{"sender":{"name":"${name}","email":"${email}"},"to":[{"email":"jbdalwadi01@gmail.com","name":"JobFinder"}],"replyTo":{"email":"jbdalwadi01@gmail.com","name":"JobFinder"},"htmlContent":"From:${name}  Message: ${message}","subject":"Message from user"}`
+          body: `{"sender":{"name":"${name}","email":"${email}"},"to":[{"email":${EMAIL},"name":"TechHire"}],"replyTo":{"email":${EMAIL},"name":"TechHire"},"htmlContent":"From:${name}  Message: ${message}","subject":"Message from user"}`
         };
        
         
@@ -61,7 +62,7 @@ exports.feedback = (req, res) => {
           'content-type': 'application/json',
           'api-key': APIKEY
         },
-        body: `{"sender":{"name":"${name}","email":"${email}"},"to":[{"email":"jbdalwadi01@gmail.com","name":"JobFinder"}],"replyTo":{"email":"jbdalwadi01@gmail.com","name":"JobFinder"},"htmlContent":"From:${name}  Message: ${message}","subject":"Message from company"}`
+        body: `{"sender":{"name":"${name}","email":"${email}"},"to":[{"email":${EMAIL},"name":"TechHire"}],"replyTo":{"email":${EMAIL},"name":"TechHire"},"htmlContent":"From:${name}  Message: ${message}","subject":"Message from company"}`
       };
      
       

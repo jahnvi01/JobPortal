@@ -8,6 +8,7 @@ const mongoose=require("mongoose")
 var ObjectId = mongoose.Types.ObjectId;
 JWT_ACCOUNT_ACTIVATION=require('../../config/keys').JWT_COMPANY_ACTIVATION;
 APIKEY=require('../../config/keys').EMAIL_API;
+EMAIL=require('../../config/keys').EMAIL;
 exports.cpreSignup = (req, res) => {
     const { email,company,website, password,foundedyear,headquarter,noOfEmployees,stage } = req.body;
     companies.findOne({ email: email.toLowerCase() }, (err, user) => {
@@ -29,7 +30,7 @@ exports.cpreSignup = (req, res) => {
             'content-type': 'application/json',
             'api-key': APIKEY
           },
-          body: `{"sender":{"name":"job-portal","email":"jbdalwadi01@gmail.com"},"to":[{"email":"${email}","name":"${company}"}],"replyTo":{"email":"${email}","name":"${company}"},"htmlContent":"http://localhost:3000/company-signup/${token}","subject":"verification-email"}`
+          body: `{"sender":{"name":"job-portal","email":${EMAIL}},"to":[{"email":"${email}","name":"${company}"}],"replyTo":{"email":"${email}","name":"${company}"},"htmlContent":"${URL}/company-signup/${token}","subject":"verification-email"}`
         };
        
         

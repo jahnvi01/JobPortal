@@ -33,7 +33,7 @@ handleSubmit=(applicantId)=>{
     var jobId=this.props.match.params.id;
     var email=document.getElementById("email").value;
     if(!email){
-      this.setState({error:"Enter Email"})
+      this.setState({error:"Enter Email Address"})
     }
     else{
 
