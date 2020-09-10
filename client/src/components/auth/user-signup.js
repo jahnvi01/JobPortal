@@ -24,7 +24,7 @@ class UserSignup extends Component {
     
   }
 console.log(post);
-return fetch('/api/presignup',{
+return fetch('/api/userpreSignup',{
   method: "post",
   headers: {
     'Accept': 'application/json, text/plain, */*',

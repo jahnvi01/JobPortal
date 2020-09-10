@@ -31,7 +31,7 @@ exports.intpreSignup = (req, res) => {
             'content-type': 'application/json',
             'api-key': APIKEY
           },
-          body: `{"sender":{"name":"job-portal","email":${EMAIL}},"to":[{"email":"${email}","name":"${fullname}"}],"replyTo":{"email":"${email}","name":"${fullname}"},"htmlContent":"${URL}/interviewer-signup/${token}","subject":"verification-email"}`
+          body: `{"sender":{"name":"job-portal","email":"${EMAIL}"},"to":[{"email":"${email}","name":"${fullname}"}],"replyTo":{"email":"${email}","name":"${fullname}"},"htmlContent":"${URL}/interviewer-signup/${token}","subject":"verification-email"}`
         };
        
         

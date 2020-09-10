@@ -30,7 +30,7 @@ exports.cpreSignup = (req, res) => {
             'content-type': 'application/json',
             'api-key': APIKEY
           },
-          body: `{"sender":{"name":"job-portal","email":${EMAIL}},"to":[{"email":"${email}","name":"${company}"}],"replyTo":{"email":"${email}","name":"${company}"},"htmlContent":"${URL}/company-signup/${token}","subject":"verification-email"}`
+          body: `{"sender":{"name":"job-portal","email":"${EMAIL}"},"to":[{"email":"${email}","name":"${company}"}],"replyTo":{"email":"${email}","name":"${company}"},"htmlContent":"${URL}/company-signup/${token}","subject":"verification-email"}`
         };
        
         

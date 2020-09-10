@@ -10,7 +10,7 @@ var ObjectId = mongoose.Types.ObjectId;
 
 URL=require('../../config/keys').URL;
 
-EMAIL=require('../../config/keys').EMAIL;
+EMAIL_ACTIVATION=require('../../config/keys').EMAIL;
 JWT_ACCOUNT_ACTIVATION=require('../../config/keys').JWT_ACCOUNT_ACTIVATION;
 APIKEY=require('../../config/keys').EMAIL_API;
 exports.preSignup = (req, res) => {
@@ -25,25 +25,45 @@ exports.preSignup = (req, res) => {
         const token = jwt.sign({ fullname, email, contact,password }, JWT_ACCOUNT_ACTIVATION, { expiresIn: '1000m' });
 
         var request = require("request");
-
         var options = {
-          method: 'POST',
-          url: 'https://api.sendinblue.com/v3/smtp/email',
-          headers: {
-            accept: 'application/json',
-            'content-type': 'application/json',
-            'api-key': APIKEY
-          },
-          body: `{"sender":{"name":"job-portal","email":${EMAIL}},"to":[{"email":"${email}","name":"${fullname}"}],"replyTo":{"email":"${email}","name":"${fullname}"},"htmlContent":"${URL}/user-signup/${token}","subject":"verification-email"}`
-        };
+            method: 'POST',
+            url: 'https://api.sendinblue.com/v3/smtp/email',
+            headers: {
+              accept: 'application/json',
+              'content-type': 'application/json',
+              'api-key': APIKEY
+            },
+            body: `{"sender":{"name":"job-portal","email":"${EMAIL_ACTIVATION}"},"to":[{"email":"${email}","name":"${fullname}"}],"replyTo":{"email":"${email}","name":"${fullname}"},"htmlContent":"${URL}/user-signup/${token}","subject":"verification-email"}`
+          };
+         
+          
+          request(options, function (error, response, body) {
+            if (error) throw new Error(console.log(error));
+            console.log(response)
+                     return res.json({
+                  message: `Email has been sent to ${email}. Follow the instructions to activate your account.`
+              });
+          });
+  
+        // var options = {
+        //   method: 'POST',
+        //   url: 'https://api.sendinblue.com/v3/smtp/email',
+        //   headers: {
+        //     accept: 'application/json',
+        //     'content-type': 'application/json',
+        //     'api-key': APIKEY
+        //   },
+        //   body: `{"sender":{"name":"job-portal","email":${EMAIL_ACTIVATION}},"to":[{"email":"${email}","name":"${fullname}"}],"replyTo":{"email":"${email}","name":"${fullname}"},"htmlContent":"http://localhost:3000/user-signup/${token}","subject":"verification-email"}`
+        // };
        
         
-        request(options, function (error, response, body) {
-          if (error) throw new Error(console.log(error));
-                   return res.json({
-                message: `Email has been sent to ${email}. Follow the instructions to activate your account.`
-            });
-        });
+        // request(options, function (error, response, body) {
+        //   if (error) throw new Error(console.log(error));
+        //   console.log(response)
+        //            return res.json({
+        //         message: `Email has been sent to ${email}. Follow the instructions to activate your account.`
+        //     });
+        // });
 
     //     const emailData = {
     //         from: process.env.EMAIL_FROM,
